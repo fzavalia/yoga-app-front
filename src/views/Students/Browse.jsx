@@ -1,15 +1,13 @@
 import React from "react";
-// reactstrap components
 import {
   Card,
   CardHeader,
   CardBody,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip
+  Button
 } from "reactstrap";
-// core components
+import { Link } from 'react-router-dom'
 import Header from "components/Headers/Header.jsx";
 
 export default () => {
@@ -25,6 +23,9 @@ export default () => {
                 <h3 className=" mb-0">Alumnos</h3>
               </CardHeader>
               <CardBody>
+                <Link to='/admin/students/create'>
+                  <Button color="primary" size="sm">Crear</Button>
+                </Link>
               </CardBody>
             </Card>
           </div>
