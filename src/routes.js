@@ -5,6 +5,7 @@ import Register from "views/examples/Register.jsx";
 import Login from "views/examples/Login.jsx";
 import Tables from "views/examples/Tables.jsx";
 import Icons from "views/examples/Icons.jsx";
+import Students from "views/Students";
 
 var routes = [
   {
@@ -12,6 +13,13 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
+    layout: "/admin"
+  },
+  {
+    path: "/students",
+    name: "Alumnos",
+    icon: "ni ni-book-bookmark text-green",
+    component: Students,
     layout: "/admin"
   },
   {
