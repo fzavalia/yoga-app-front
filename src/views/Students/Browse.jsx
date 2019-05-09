@@ -108,6 +108,33 @@ const Student = (props) => {
   return hasToUseSmallStudent ? <SmallScreenStudent {...props} /> : <NormalScreenStudent {...props} />
 }
 
+const SmallScreenStudent = ({ student }) =>
+  <Card style={{ marginBottom: 20 }}>
+    <CardBody>
+      <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
+        <div>
+          <h2>{student.name}</h2>
+          <div><i>Email:</i> {student.email || '-'}</div>
+          <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
+          <div><i>DNI:</i> {student.dni || '-'}</div>
+        </div>
+        <div style={{
+          textAlign: 'right',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: 20
+        }}>
+          <div style={{ marginRight: 40, cursor: 'pointer' }}>
+            <i className="fas fa-pen text-blue" />
+          </div>
+          <div style={{ cursor: 'pointer' }}>
+            <i className="fas fa-trash text-red" />
+          </div>
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+
 const NormalScreenStudent = ({ student }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
@@ -129,33 +156,6 @@ const NormalScreenStudent = ({ student }) =>
             <i className="fas fa-pen text-blue" />
           </div>
           <div>
-            <i className="fas fa-trash text-red" />
-          </div>
-        </div>
-      </div>
-    </CardBody>
-  </Card>
-
-const SmallScreenStudent = ({ student }) =>
-  <Card style={{ marginBottom: 20 }}>
-    <CardBody>
-      <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
-        <div>
-          <h2>{student.name}</h2>
-          <div><i>Email:</i> {student.email || '-'}</div>
-          <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
-          <div><i>DNI:</i> {student.dni || '-'}</div>
-        </div>
-        <div style={{
-          textAlign: 'right',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginTop: 20
-        }}>
-          <div style={{ marginRight: 40, cursor: 'pointer' }}>
-            <i className="fas fa-pen text-blue" />
-          </div>
-          <div style={{ cursor: 'pointer' }}>
             <i className="fas fa-trash text-red" />
           </div>
         </div>
