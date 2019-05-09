@@ -5,7 +5,6 @@ import {
   CardBody,
   Container,
   Row,
-  Col,
   Button,
 } from "reactstrap";
 import { Link } from 'react-router-dom'
@@ -61,32 +60,29 @@ const students = [
   },
 ]
 
-export default () => {
-  return (
-    <>
-      <Header />
-      {/* Page content */}
-      <Container className=" mt--7" fluid>
-        <Row>
-          <div className=" col">
-            <Card className=" shadow">
-              <CardHeader className=" bg-transparent">
-                <h3 className=" mb-0">Alumnos</h3>
-              </CardHeader>
-              <CardBody>
-                <Link to='/admin/students/create'>
-                  <Button color="primary" size="sm">Crear</Button>
-                </Link>
-                <div style={{ height: 20 }}></div>
-                {students.map(student => <Student key={student.id} student={student} />)}
-              </CardBody>
-            </Card>
-          </div>
-        </Row>
-      </Container>
-    </>
-  )
-}
+export default () =>
+  <>
+    <Header />
+    {/* Page content */}
+    <Container className=" mt--7" fluid>
+      <Row>
+        <div className=" col">
+          <Card className=" shadow">
+            <CardHeader className=" bg-transparent">
+              <h3 className=" mb-0">Alumnos</h3>
+            </CardHeader>
+            <CardBody>
+              <Link to='/admin/students/create'>
+                <Button color="primary" size="sm">Crear</Button>
+              </Link>
+              <div style={{ height: 20 }}></div>
+              {students.map(student => <Student key={student.id} student={student} />)}
+            </CardBody>
+          </Card>
+        </div>
+      </Row>
+    </Container>
+  </>
 
 const Student = (props) => {
 
