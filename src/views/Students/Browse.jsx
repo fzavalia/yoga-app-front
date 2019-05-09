@@ -32,13 +32,6 @@ const students = [
     dni: '37989060'
   },
   {
-    id: 3,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    phoneNumber: '1131952988',
-    dni: '37989060'
-  },
-  {
     id: 4,
     name: 'Fernando Zavalia',
 
@@ -84,24 +77,28 @@ export default () =>
     </Container>
   </>
 
-const Student = ({ student }) => {
+const Student = ({ student }) => useIsScreenSmall()
+  ? <SmallScreenStudent student={student} />
+  : <NormalScreenStudent student={student} />
+
+const useIsScreenSmall = () => {
 
   const isScreenSmall = () => window.screen.width < 767
 
-  const [hasToUseSmallStudent, setHasToUseSmallStudent] = useState(isScreenSmall())
+  const [isSmall, setIsSmall] = useState(isScreenSmall())
 
   useEffect(() => {
 
-    const handleResize = () => setHasToUseSmallStudent(isScreenSmall())
+    const handleResize = () => setIsSmall(isScreenSmall())
 
     window.addEventListener('resize', handleResize)
 
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  })
 
-  return hasToUseSmallStudent ? <SmallScreenStudent student={student} /> : <NormalScreenStudent student={student} />
+  return isSmall
 }
 
 const SmallScreenStudent = ({ student }) =>
