@@ -84,7 +84,7 @@ export default () =>
     </Container>
   </>
 
-const Student = (props) => {
+const Student = ({ student }) => {
 
   const isScreenSmall = () => window.screen.width < 767
 
@@ -101,22 +101,14 @@ const Student = (props) => {
     }
   }, [])
 
-  return hasToUseSmallStudent ? <SmallScreenStudent {...props} /> : <NormalScreenStudent {...props} />
+  return hasToUseSmallStudent ? <SmallScreenStudent student={student} /> : <NormalScreenStudent student={student} />
 }
 
 const SmallScreenStudent = ({ student }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
-      <div>
-        <h2>{student.name}</h2>
-        <div><i>Email:</i> {student.email || '-'}</div>
-        <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
-        <div><i>DNI:</i> {student.dni || '-'}</div>
-      </div>
-      <div style={{ textAlign: 'right', marginTop: 20 }}>
-        <i style={{ marginRight: 40, cursor: 'pointer' }} className="fas fa-pen text-blue" />
-        <i style={{ cursor: 'pointer' }} className="fas fa-trash text-red" />
-      </div>
+      <StudentInfo student={student} />
+      <SmallScreenButtonsContainer student={student} />
     </CardBody>
   </Card>
 
@@ -124,22 +116,40 @@ const NormalScreenStudent = ({ student }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
       <div style={{ display: 'flex', width: '100%' }}>
-        <div style={{ flex: 1 }}>
-          <h2>{student.name}</h2>
-          <div><i>Email:</i> {student.email || '-'}</div>
-          <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
-          <div><i>DNI:</i> {student.dni || '-'}</div>
-        </div>
-        <div style={{
-          flex: 1,
-          textAlign: 'right',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around'
-        }}>
-          <div><i style={{ cursor: 'pointer' }} className="fas fa-pen text-blue" /></div>
-          <div><i style={{ cursor: 'pointer' }} className="fas fa-trash text-red" /></div>
-        </div>
+        <StudentInfo student={student} style={{ flex: 1 }} />
+        <NormalScreenButtonsContainer student={student} />
       </div>
     </CardBody>
   </Card>
+
+const SmallScreenButtonsContainer = ({ student }) =>
+  <ButtonsContainer style={{ marginTop: 20 }}>
+    <SmallScreenUpdateButton student={student} />
+    <i style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" />
+  </ButtonsContainer>
+
+const NormalScreenButtonsContainer = ({ student }) =>
+  <ButtonsContainer style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+    <NormalScreenUpdateButton student={student} />
+    <div><i style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" /></div>
+  </ButtonsContainer>
+
+const ButtonsContainer = ({ children, style = {} }) =>
+  <div style={{ textAlign: 'right', ...style }}>{children}</div>
+
+const SmallScreenUpdateButton = ({ student }) =>
+  <UpdateButton student={student} iStyle={{ marginRight: 40 }} />
+
+const NormalScreenUpdateButton = ({ student }) =>
+  <UpdateButton student={student} />
+
+const UpdateButton = ({ student, iStyle = {} }) =>
+  <Link to={`/admin/students/update/${student.id}`}><i style={{ cursor: 'pointer', ...iStyle }} className="fas fa-pen text-primary" /></Link>
+
+const StudentInfo = ({ student, style = {} }) =>
+  <div style={style}>
+    <h2>{student.name}</h2>
+    <div><i>Email:</i> {student.email || '-'}</div>
+    <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
+    <div><i>DNI:</i> {student.dni || '-'}</div>
+  </div>
