@@ -111,26 +111,15 @@ const Student = (props) => {
 const SmallScreenStudent = ({ student }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
-      <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
-        <div>
-          <h2>{student.name}</h2>
-          <div><i>Email:</i> {student.email || '-'}</div>
-          <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
-          <div><i>DNI:</i> {student.dni || '-'}</div>
-        </div>
-        <div style={{
-          textAlign: 'right',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginTop: 20
-        }}>
-          <div style={{ marginRight: 40, cursor: 'pointer' }}>
-            <i className="fas fa-pen text-blue" />
-          </div>
-          <div style={{ cursor: 'pointer' }}>
-            <i className="fas fa-trash text-red" />
-          </div>
-        </div>
+      <div>
+        <h2>{student.name}</h2>
+        <div><i>Email:</i> {student.email || '-'}</div>
+        <div><i>Teléfono:</i> {student.phoneNumber || '-'}</div>
+        <div><i>DNI:</i> {student.dni || '-'}</div>
+      </div>
+      <div style={{ textAlign: 'right', marginTop: 20 }}>
+        <i style={{ marginRight: 40, cursor: 'pointer' }} className="fas fa-pen text-blue" />
+        <i style={{ cursor: 'pointer' }} className="fas fa-trash text-red" />
       </div>
     </CardBody>
   </Card>
@@ -152,12 +141,8 @@ const NormalScreenStudent = ({ student }) =>
           flexDirection: 'column',
           justifyContent: 'space-around'
         }}>
-          <div>
-            <i className="fas fa-pen text-blue" />
-          </div>
-          <div>
-            <i className="fas fa-trash text-red" />
-          </div>
+          <div><i style={{ cursor: 'pointer' }} className="fas fa-pen text-blue" /></div>
+          <div><i style={{ cursor: 'pointer' }} className="fas fa-trash text-red" /></div>
         </div>
       </div>
     </CardBody>
