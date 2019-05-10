@@ -9,72 +9,47 @@ import {
 } from "reactstrap";
 import { Link } from 'react-router-dom'
 import Header from "components/Headers/Header.jsx";
+import api from "../../modules/api";
 
-const students = [
-  {
-    id: 1,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    phoneNumber: '1131952988',
-    dni: '37989060'
-  },
-  {
-    id: 2,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    phoneNumber: '1131952988',
-  },
-  {
-    id: 3,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    phoneNumber: '1131952988',
-    dni: '37989060'
-  },
-  {
-    id: 4,
-    name: 'Fernando Zavalia',
+export default () => {
 
-    phoneNumber: '1131952988',
-    dni: '37989060'
-  },
-  {
-    id: 5,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    phoneNumber: '1131952988',
-    dni: '37989060'
-  },
-  {
-    id: 6,
-    name: 'Fernando Zavalia',
-    email: 'zavaliafernando@gmail.com',
-    dni: '37989060'
-  },
-]
+  const [students, setStudents] = useState([])
 
-export default () =>
-  <>
-    <Header />
-    <Container className=" mt--7" fluid>
-      <Row>
-        <div className=" col">
-          <Card className=" shadow">
-            <CardHeader className=" bg-transparent">
-              <h3 className=" mb-0">Alumnos</h3>
-            </CardHeader>
-            <CardBody>
-              <Link to='/admin/students/create'>
-                <Button color="primary" size="sm">Crear</Button>
-              </Link>
-              <div style={{ height: 20 }}></div>
-              {students.map(student => <Student key={student.id} student={student} />)}
-            </CardBody>
-          </Card>
-        </div>
-      </Row>
-    </Container>
-  </>
+  useEffect(() => {
+    api.student.list()
+      .then(students => setStudents(students))
+  }, [])
+
+  return (
+    <BrowserView students={students} />
+  )
+}
+
+const BrowserView = ({ students }) => {
+  return (
+    <>
+      <Header />
+      <Container className=" mt--7" fluid>
+        <Row>
+          <div className=" col">
+            <Card className=" shadow">
+              <CardHeader className=" bg-transparent">
+                <h3 className=" mb-0">Alumnos</h3>
+              </CardHeader>
+              <CardBody>
+                <Link to='/admin/students/create'>
+                  <Button color="primary" size="sm">Crear</Button>
+                </Link>
+                <div style={{ height: 20 }}></div>
+                {students.map(student => <Student key={student.id} student={student} />)}
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
+    </>
+  )
+}
 
 const Student = ({ student }) => useIsScreenSmall()
   ? <SmallScreenStudent student={student} />
