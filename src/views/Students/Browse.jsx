@@ -56,7 +56,6 @@ const students = [
 export default () =>
   <>
     <Header />
-    {/* Page content */}
     <Container className=" mt--7" fluid>
       <Row>
         <div className=" col">
