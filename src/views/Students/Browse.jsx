@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import {
   Card,
   CardHeader,
@@ -47,7 +47,7 @@ const BrowserView = ({ students, onFilterChange }) => {
                   <Button color="primary" size="sm">Crear</Button>
                 </Link>
                 <div style={{ height: 20 }}></div>
-                <Input onChange={e => onFilterChange(e.target.value)} />
+                <FilterStudentByName onChange={value => onFilterChange(value)} />
                 <div style={{ height: 20 }}></div>
                 {students.map(student => <Student key={student.id} student={student} />)}
               </CardBody>
@@ -59,9 +59,28 @@ const BrowserView = ({ students, onFilterChange }) => {
   )
 }
 
-const Student = ({ student }) => useIsScreenSmall()
-  ? <SmallScreenStudent student={student} />
-  : <NormalScreenStudent student={student} />
+class FilterStudentByName extends Component {
+
+  state = { value: '', previous: '' }
+
+  componentDidMount = () => {
+    this.interval = setInterval(() => {
+      if (this.state.value === this.state.previous) {
+        return
+      }
+      this.props.onChange(this.state.value)
+      this.setState({ previous: this.state.value })
+    }, 1000);
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.interval)
+  }
+
+  render = () => <Input onChange={e => this.setState({ value: e.target.value })} value={this.state.value} />
+}
+
+const Student = ({ student }) => useIsScreenSmall() ? <SmallScreenStudent student={student} /> : <NormalScreenStudent student={student} />
 
 const useIsScreenSmall = () => {
 
