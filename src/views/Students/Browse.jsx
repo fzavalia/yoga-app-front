@@ -6,6 +6,7 @@ import {
   Container,
   Row,
   Button,
+  Input
 } from "reactstrap";
 import { Link } from 'react-router-dom'
 import Header from "components/Headers/Header.jsx";
@@ -15,17 +16,22 @@ export default () => {
 
   const [students, setStudents] = useState([])
 
-  useEffect(() => {
-    api.student.list()
+  const fetchStudents = (name = '') =>
+    api.student.list({
+      where: {
+        name
+      }
+    })
       .then(students => setStudents(students))
+
+  useEffect(() => {
+    fetchStudents()
   }, [])
 
-  return (
-    <BrowserView students={students} />
-  )
+  return <BrowserView students={students} onFilterChange={name => fetchStudents(name)} />
 }
 
-const BrowserView = ({ students }) => {
+const BrowserView = ({ students, onFilterChange }) => {
   return (
     <>
       <Header />
@@ -40,6 +46,8 @@ const BrowserView = ({ students }) => {
                 <Link to='/admin/students/create'>
                   <Button color="primary" size="sm">Crear</Button>
                 </Link>
+                <div style={{ height: 20 }}></div>
+                <Input onChange={e => onFilterChange(e.target.value)} />
                 <div style={{ height: 20 }}></div>
                 {students.map(student => <Student key={student.id} student={student} />)}
               </CardBody>
