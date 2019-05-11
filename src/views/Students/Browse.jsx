@@ -6,7 +6,10 @@ import {
   Container,
   Row,
   Button,
-  Input
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Modal
 } from "reactstrap";
 import { Link } from 'react-router-dom'
 import Header from "components/Headers/Header.jsx";
@@ -16,22 +19,38 @@ export default () => {
 
   const [students, setStudents] = useState([])
 
-  const fetchStudents = (name = '') =>
+  const fetchStudents = (value, type) =>
     api.student.list({
       where: {
-        name
+        [type]: value
       }
     })
       .then(students => setStudents(students))
 
   useEffect(() => {
-    fetchStudents()
+    fetchStudents('', 'name')
   }, [])
 
-  return <BrowserView students={students} onFilterChange={name => fetchStudents(name)} />
+  return (
+    <BrowserView
+      students={students}
+      onFilter={(value, type) => fetchStudents(value, type)}
+      onDelete={deletableStudent =>
+        api.student.delete(deletableStudent.id)
+          .then(() => setStudents(students.filter(student => student.id !== deletableStudent.id)))}
+    />
+  )
 }
 
-const BrowserView = ({ students, onFilterChange }) => {
+const BrowserView = ({ students, onFilter, onDelete }) => {
+
+  const [filterValue, setFilterValue] = useState('')
+  const [filterType, setFilterType] = useState('name')
+
+  useEffect(() => {
+    onFilter(filterValue, filterType)
+  }, [filterValue, filterType])
+
   return (
     <>
       <Header />
@@ -47,9 +66,9 @@ const BrowserView = ({ students, onFilterChange }) => {
                   <Button color="primary" size="sm">Crear</Button>
                 </Link>
                 <div style={{ height: 20 }}></div>
-                <FilterStudentByName onChange={value => onFilterChange(value)} />
+                <Filter onTypeChange={setFilterType} onValueChange={setFilterValue} />
                 <div style={{ height: 20 }}></div>
-                {students.map(student => <Student key={student.id} student={student} />)}
+                {students.map(student => <Student key={student.id} student={student} onDelete={() => onDelete(student)} />)}
               </CardBody>
             </Card>
           </div>
@@ -59,11 +78,39 @@ const BrowserView = ({ students, onFilterChange }) => {
   )
 }
 
-class FilterStudentByName extends Component {
+const Filter = ({ onValueChange, onTypeChange }) =>
+  <InputGroup>
+    <FilterValue onChange={onValueChange} />
+    <InputGroupAddon addonType='prepend'>
+      <FilterType onChange={onTypeChange} />
+    </InputGroupAddon>
+  </InputGroup>
+
+
+const FilterType = ({ onChange }) =>
+  <Input
+    type='select'
+    onChange={e => onChange(e.target.value)}
+  >
+    <option value={'name'}>Nombre</option>
+    <option value={'email'}>Email</option>
+    <option value={'phoneNumber'}>Teléfono</option>
+    <option value={'dni'}>DNI</option>
+  </Input>
+
+class FilterValue extends Component {
 
   state = { value: '', previous: '' }
 
   componentDidMount = () => {
+    this.startInterval()
+  }
+
+  componentWillUnmount = () => {
+    this.stopInterval()
+  }
+
+  startInterval = () => {
     this.interval = setInterval(() => {
       if (this.state.value === this.state.previous) {
         return
@@ -73,14 +120,29 @@ class FilterStudentByName extends Component {
     }, 1000);
   }
 
-  componentWillUnmount = () => {
+  stopInterval = () => {
     clearInterval(this.interval)
   }
 
-  render = () => <Input onChange={e => this.setState({ value: e.target.value })} value={this.state.value} />
+  resetInterval = () => {
+    this.stopInterval()
+    this.startInterval()
+  }
+
+  render = () =>
+    <Input
+      onChange={e => {
+        this.setState({ value: e.target.value })
+        this.resetInterval()
+      }}
+      value={this.state.value}
+    />
 }
 
-const Student = ({ student }) => useIsScreenSmall() ? <SmallScreenStudent student={student} /> : <NormalScreenStudent student={student} />
+const Student = ({ student, onDelete }) =>
+  useIsScreenSmall()
+    ? <SmallScreenStudent student={student} onDelete={onDelete} />
+    : <NormalScreenStudent student={student} onDelete={onDelete} />
 
 const useIsScreenSmall = () => {
 
@@ -102,34 +164,34 @@ const useIsScreenSmall = () => {
   return isSmall
 }
 
-const SmallScreenStudent = ({ student }) =>
+const SmallScreenStudent = ({ student, onDelete }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
       <StudentInfo student={student} />
-      <SmallScreenButtonsContainer student={student} />
+      <SmallScreenButtonsContainer student={student} onDelete={onDelete} />
     </CardBody>
   </Card>
 
-const NormalScreenStudent = ({ student }) =>
+const NormalScreenStudent = ({ student, onDelete }) =>
   <Card style={{ marginBottom: 20 }}>
     <CardBody>
       <div style={{ display: 'flex', width: '100%' }}>
         <StudentInfo student={student} style={{ flex: 1 }} />
-        <NormalScreenButtonsContainer student={student} />
+        <NormalScreenButtonsContainer student={student} onDelete={onDelete} />
       </div>
     </CardBody>
   </Card>
 
-const SmallScreenButtonsContainer = ({ student }) =>
+const SmallScreenButtonsContainer = ({ student, onDelete }) =>
   <ButtonsContainer style={{ marginTop: 20 }}>
     <SmallScreenUpdateButton student={student} />
-    <i style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" />
+    <i onClick={onDelete} style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" />
   </ButtonsContainer>
 
-const NormalScreenButtonsContainer = ({ student }) =>
+const NormalScreenButtonsContainer = ({ student, onDelete }) =>
   <ButtonsContainer style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
     <NormalScreenUpdateButton student={student} />
-    <div><i style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" /></div>
+    <div onClick={onDelete}><i style={{ cursor: 'pointer' }} className="fas fa-trash text-danger" /></div>
   </ButtonsContainer>
 
 const ButtonsContainer = ({ children, style = {} }) =>

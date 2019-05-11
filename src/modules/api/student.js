@@ -2,6 +2,10 @@ import Http from "./Http";
 
 export default {
 
+  show: (id) =>
+    Http.fetch(`/students/${id}`, 'get')
+      .then(student => ({ ...student, phoneNumber: student.phone_number })),
+
   list: (options = {}) => {
 
     let path = '/students'
@@ -16,5 +20,8 @@ export default {
     }
 
     return Http.fetch(path, 'get')
-  }
+      .then(students => students.map(student => ({ ...student, phoneNumber: student.phone_number })))
+  },
+
+  delete: (id) => Http.fetch(`/students/${id}`, 'delete')
 }
