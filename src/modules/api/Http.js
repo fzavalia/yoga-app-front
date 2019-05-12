@@ -1,8 +1,12 @@
+import HttpHelpers from "./HttpHelpers";
+
 class Http {
 
   constructor(host) {
     this.host = host
   }
+
+  helpers = new HttpHelpers()
 
   /**
    * @param {string} path
@@ -29,28 +33,6 @@ class Http {
 
     return method
   }
-
-  appendWhereQueryString = (path, listOptions) => {
-
-    const prefix = path.includes('?') ? '&' : '?'
-
-    if (listOptions.where) {
-
-      const filters = Object.keys(listOptions.where).filter(key => listOptions.where[key])
-
-      path += prefix + 'where=' + filters.map(key => `${key}:${listOptions.where[key]}`).join(',')
-    }
-
-    return path
-  }
-
-  removeEmptyProperties = (data) =>
-    Object.keys(data).reduce((acc, next) => {
-      if (data[next]) {
-        acc[next] = data[next]
-      }
-      return acc
-    }, {})
 }
 
 export default new Http('http://localhost:8000')

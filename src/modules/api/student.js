@@ -10,7 +10,7 @@ export default {
 
     let path = '/students'
 
-    path = Http.appendWhereQueryString(path, options)
+    path = Http.helpers.appendWhereQueryString(path, options)
 
     return Http.fetch(path, 'get')
       .then(students => students.map(student => ({ ...student, phoneNumber: student.phone_number })))
@@ -37,7 +37,7 @@ export default {
 
   update: (id, data) => {
 
-    data = Http.removeEmptyProperties(data)
+    data = Http.helpers.removeEmptyProperties(data)
 
     if (data.phoneNumber) {
 

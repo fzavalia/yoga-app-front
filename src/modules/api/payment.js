@@ -8,7 +8,7 @@ export default {
 
     let path = '/payments'
 
-    path = Http.appendWhereQueryString(path, options)
+    path = Http.helpers.appendWhereQueryString(path, options)
 
     return Http.fetch(path, 'get')
   },
@@ -27,7 +27,7 @@ export default {
 
   update: (id, data) => {
 
-    data = Http.removeEmptyProperties(data)
+    data = Http.helpers.removeEmptyProperties(data)
 
     return Http.fetch(`/payments/${id}`, 'put', { body: JSON.stringify(data) })
   },
