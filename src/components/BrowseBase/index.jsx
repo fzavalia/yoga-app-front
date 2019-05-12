@@ -1,14 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Container,
-  Row,
-  Button
-} from "reactstrap";
+import { Button } from "reactstrap";
 import { Link } from 'react-router-dom'
-import Header from "components/Headers/Header.jsx";
 import { FilterElements } from "./FilterElements";
 import { DeleteElementModal } from "./DeleteElementModal";
 import Element from "./Element";
