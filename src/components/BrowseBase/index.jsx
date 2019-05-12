@@ -12,6 +12,7 @@ import Header from "components/Headers/Header.jsx";
 import { FilterElements } from "./FilterElements";
 import { DeleteElementModal } from "./DeleteElementModal";
 import Element from "./Element";
+import AdminViewContainer from "../AdminViewContainer";
 
 export default ({
   fetchElements,
@@ -36,33 +37,19 @@ export default ({
   }, [])
 
   return (
-    <>
-      <Header />
-      <Container className=" mt--7" fluid>
-        <Row>
-          <div className=" col">
-            <Card className=" shadow">
-              <CardHeader className=" bg-transparent">
-                <h3 className=" mb-0">{title}</h3>
-              </CardHeader>
-              <CardBody>
-                <Link to={createPage}><Button color="primary" size="sm">Crear</Button></Link>
-                <div style={{ height: 20 }}></div>
-                <FilterElements filters={filters} fetchElements={fetchElementsAndSet} />
-                <div style={{ height: 20 }}></div>
-                {elements.map(element =>
-                  <Element
-                    key={element.id}
-                    element={element}
-                    renderContent={renderElementContent}
-                    updatePage={updatePage}
-                    deleteElementModalRef={deleteElementModalRef}
-                  />)}
-              </CardBody>
-            </Card>
-          </div>
-        </Row>
-      </Container>
+    <AdminViewContainer title={title} >
+      <Link to={createPage}><Button color="primary" size="sm">Crear</Button></Link>
+      <div style={{ height: 20 }}></div>
+      <FilterElements filters={filters} fetchElements={fetchElementsAndSet} />
+      <div style={{ height: 20 }}></div>
+      {elements.map(element =>
+        <Element
+          key={element.id}
+          element={element}
+          renderContent={renderElementContent}
+          updatePage={updatePage}
+          deleteElementModalRef={deleteElementModalRef}
+        />)}
       <DeleteElementModal
         ref={deleteElementModalRef}
         deleteElement={deleteElement}
@@ -70,6 +57,6 @@ export default ({
         title={deleteModalTitle}
         renderContent={renderDeleteModalContent}
       />
-    </>
+    </AdminViewContainer>
   )
 }
