@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Input } from "reactstrap";
 import DatePicker from 'react-datepicker'
-import { format as formatDate, addDays } from "date-fns";
+import { format as formatDate, } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css"
 
 export class FilterElements extends Component {
@@ -26,11 +26,14 @@ export class FilterElements extends Component {
 
   startInterval = () => {
     this.interval = setInterval(() => {
-      const { value, filter } = this.state;
+      let { value, filter } = this.state;
       if (value !== this.previousValue || filter !== this.previousFilter) {
-        this.props.fetchElements(value, filter.value);
         this.previousValue = value;
         this.previousFilter = filter;
+        if (this.state.filter.type === 'date') {
+          value = formatDate(value, 'YYYY-MM-DD')
+        }
+        this.props.fetchElements(value, filter.value);
       }
     }, 1000);
   };
@@ -45,7 +48,7 @@ export class FilterElements extends Component {
       <DatePicker
         customInput={<CustomDatePickerInput />}
         selected={new Date(this.state.value || Date.now())}
-        onChange={e => this.setState({ value: formatDate(e, 'YYYY-MM-DD') })}
+        onChange={e => this.setState({ value: e })}
       />
     </div>
 
