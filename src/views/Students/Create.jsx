@@ -11,6 +11,7 @@ import {
 } from 'reactstrap'
 import Header from "components/Headers/Header.jsx";
 import api from '../../modules/api';
+import validate from '../../helpers/validate';
 
 export default ({ history }) => {
   return (
@@ -24,9 +25,7 @@ export default ({ history }) => {
       validate={values => {
         const errors = {}
         if (!values.name) errors.name = 'Requerido'
-        // if (!values.email) errors.email = 'Requerido'
-        // if (!values.phoneNumber) errors.phoneNumber = 'Requerido'
-        // if (!values.dni) errors.dni = 'Requerido'
+        if (values.email && !validate.email(values.email)) errors.email = 'Debe ingresar un email valido'
         return errors
       }}
       onSubmit={(values, actions) => {
