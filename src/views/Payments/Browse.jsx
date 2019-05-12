@@ -4,7 +4,7 @@ import BrowseBase from "../../components/BrowseBase";
 
 export default () => {
 
-  const [studentOptions, setStudentOptions] = useState('')
+  const [studentOptions, setStudentOptions] = useState([])
 
   useEffect(() => {
     api.student.list()
