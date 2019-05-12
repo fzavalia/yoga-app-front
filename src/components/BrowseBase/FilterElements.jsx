@@ -40,46 +40,47 @@ export class FilterElements extends Component {
     this.startInterval();
   };
 
+  renderDatePickerInput = () =>
+    <div style={{ flex: 3 }}>
+      <DatePicker
+        customInput={<CustomDatePickerInput />}
+        selected={new Date(this.state.value || Date.now())}
+        onChange={e => this.setState({ value: formatDate(e, 'YYYY-MM-DD') })}
+      />
+    </div>
+
+  renderSelectInput = () =>
+    <Input
+      type='select'
+      style={{ flex: 3 }}
+      onChange={e => {
+        this.setState({ value: e.target.value });
+        this.resetInterval();
+      }}
+      value={this.state.value}
+    >
+      <option value=''></option>
+      {this.state.filter.options.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
+    </Input>
+
+  renderDefaultInput = () =>
+    <Input
+      style={{ flex: 3 }}
+      onChange={e => {
+        this.setState({ value: e.target.value });
+        this.resetInterval();
+      }}
+      value={this.state.value}
+    />
+
   renderInput = () => {
-    console.log(this.state.filter)
-    console.log(this.props)
     switch (this.state.filter.type) {
       case 'date':
-        return (
-          <div style={{ flex: 3 }}>
-            <DatePicker
-              customInput={<CustomDatePickerInput />}
-              selected={new Date(this.state.value || Date.now())}
-              onChange={e => this.setState({ value: formatDate(addDays(e, 1), 'YYYY-MM-DD') })}
-            />
-          </div>
-        )
+        return this.renderDatePickerInput()
       case 'select':
-        return (
-          <Input
-            type='select'
-            style={{ flex: 3 }}
-            onChange={e => {
-              this.setState({ value: e.target.value });
-              this.resetInterval();
-            }}
-            value={this.state.value}
-          >
-            <option value=''></option>
-            {this.state.filter.options.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
-          </Input>
-        )
+        return this.renderSelectInput()
       default:
-        return (
-          <Input
-            style={{ flex: 3 }}
-            onChange={e => {
-              this.setState({ value: e.target.value });
-              this.resetInterval();
-            }}
-            value={this.state.value}
-          />
-        )
+        return this.renderDefaultInput()
     }
   }
 
