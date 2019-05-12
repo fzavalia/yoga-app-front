@@ -44,7 +44,7 @@ export class FilterElements extends Component {
         value={this.state.value}
       />
       <Input
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginLeft: 10 }}
         type='select'
         onChange={e => {
           this.setState({ type: e.target.value });
