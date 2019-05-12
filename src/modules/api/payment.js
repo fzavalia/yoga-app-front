@@ -8,14 +8,7 @@ export default {
 
     let path = '/payments'
 
-    if (options.where) {
-
-      const filters = Object.keys(options.where).filter(key => options.where[key])
-
-      if (filters.length > 0) {
-        path += '?where=' + filters.map(key => `${key}:${options.where[key]}`).join(',')
-      }
-    }
+    path = Http.appendWhereQueryString(path, options)
 
     return Http.fetch(path, 'get')
   },
@@ -34,12 +27,7 @@ export default {
 
   update: (id, data) => {
 
-    data = Object.keys(data).reduce((acc, next) => {
-      if (data[next]) {
-        acc[next] = data[next]
-      }
-      return acc
-    }, {})
+    data = Http.removeEmptyProperties(data)
 
     return Http.fetch(`/payments/${id}`, 'put', { body: JSON.stringify(data) })
   },

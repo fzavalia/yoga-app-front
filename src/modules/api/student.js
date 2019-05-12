@@ -10,14 +10,7 @@ export default {
 
     let path = '/students'
 
-    if (options.where) {
-
-      const filters = Object.keys(options.where).filter(key => options.where[key])
-
-      if (filters.length > 0) {
-        path += '?where=' + filters.map(key => `${key}:${options.where[key]}`).join(',')
-      }
-    }
+    path = Http.appendWhereQueryString(path, options)
 
     return Http.fetch(path, 'get')
       .then(students => students.map(student => ({ ...student, phoneNumber: student.phone_number })))
@@ -44,12 +37,7 @@ export default {
 
   update: (id, data) => {
 
-    data = Object.keys(data).reduce((acc, next) => {
-      if (data[next]) {
-        acc[next] = data[next]
-      }
-      return acc
-    }, {})
+    data = Http.removeEmptyProperties(data)
 
     if (data.phoneNumber) {
 
