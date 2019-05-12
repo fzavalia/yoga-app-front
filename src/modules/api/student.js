@@ -18,12 +18,7 @@ export default {
 
   create: (data) => {
 
-    data = Object.keys(data).reduce((acc, next) => {
-      if (data[next]) {
-        acc[next] = data[next]
-      }
-      return acc
-    }, {})
+    data = Http.helpers.removeEmptyProperties(data)
 
     if (data.phoneNumber) {
 

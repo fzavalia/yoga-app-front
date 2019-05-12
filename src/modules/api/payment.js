@@ -15,12 +15,7 @@ export default {
 
   create: (data) => {
 
-    data = Object.keys(data).reduce((acc, next) => {
-      if (data[next]) {
-        acc[next] = data[next]
-      }
-      return acc
-    }, {})
+    data = Http.helpers.removeEmptyProperties(data)
 
     return Http.fetch('/payments', 'post', { body: JSON.stringify(data) })
   },
