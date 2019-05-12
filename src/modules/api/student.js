@@ -42,5 +42,24 @@ export default {
     return Http.fetch('/students', 'post', { body: JSON.stringify(data) })
   },
 
+  update: (id, data) => {
+
+    data = Object.keys(data).reduce((acc, next) => {
+      if (data[next]) {
+        acc[next] = data[next]
+      }
+      return acc
+    }, {})
+
+    if (data.phoneNumber) {
+
+      data.phone_number = data.phoneNumber
+
+      delete data.phoneNumber
+    }
+
+    return Http.fetch(`/students/${id}`, 'put', { body: JSON.stringify(data) })
+  },
+
   delete: (id) => Http.fetch(`/students/${id}`, 'delete')
 }
