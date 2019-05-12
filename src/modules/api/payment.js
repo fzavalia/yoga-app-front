@@ -10,6 +10,8 @@ export default {
 
     path = Http.helpers.appendWhereQueryString(path, options)
 
+    path = Http.helpers.appendCoverQueryString(path, options)
+
     return Http.fetch(path, 'get')
   },
 
