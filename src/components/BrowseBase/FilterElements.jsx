@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Input } from "reactstrap";
 import DatePicker from 'react-datepicker'
 import { format as formatDate, } from "date-fns";
+import Select from 'react-select'
 import "react-datepicker/dist/react-datepicker.css"
 
 export class FilterElements extends Component {
@@ -24,8 +25,8 @@ export class FilterElements extends Component {
     }
   }
 
-  startInterval = () => {
-    this.interval = setInterval(() => {
+  startFilterTimer = () => {
+    this.timeout = setTimeout(() => {
       let { value, filter } = this.state;
       if (value !== this.previousValue || filter !== this.previousFilter) {
         this.previousValue = value;
@@ -38,9 +39,9 @@ export class FilterElements extends Component {
     }, 1000);
   };
 
-  resetInterval = () => {
-    clearInterval(this.interval);
-    this.startInterval();
+  resetFilterTimer = () => {
+    clearTimeout(this.timeout);
+    this.startFilterTimer();
   };
 
   renderDatePickerInput = () =>
@@ -48,30 +49,29 @@ export class FilterElements extends Component {
       <DatePicker
         customInput={<CustomDatePickerInput />}
         selected={new Date(this.state.value || Date.now())}
-        onChange={e => this.setState({ value: e })}
+        onChange={e => {
+          this.setState({ value: e })
+          this.resetFilterTimer()
+        }}
       />
     </div>
 
   renderSelectInput = () =>
-    <Input
-      type='select'
-      style={{ flex: 3 }}
+    <Select
+      styles={{ container: (base) => ({ ...base, flex: 3 }), control: (base) => ({ ...base, height: '100%' }) }}
+      options={[{ value: '', label: 'Todos' }].concat(this.state.filter.options)}
       onChange={e => {
-        this.setState({ value: e.target.value });
-        this.resetInterval();
+        this.setState({ value: e.value })
+        this.resetFilterTimer()
       }}
-      value={this.state.value}
-    >
-      <option value=''></option>
-      {this.state.filter.options.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
-    </Input>
+    />
 
   renderDefaultInput = () =>
     <Input
       style={{ flex: 3 }}
       onChange={e => {
         this.setState({ value: e.target.value });
-        this.resetInterval();
+        this.resetFilterTimer();
       }}
       value={this.state.value}
     />
@@ -98,7 +98,7 @@ export class FilterElements extends Component {
             value: '',
             filter: this.props.filters.find(filter => filter.value == e.target.value)
           });
-          this.resetInterval();
+          this.resetFilterTimer();
         }}
         value={this.state.type}
       >
