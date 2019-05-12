@@ -8,13 +8,6 @@ class Http {
 
   helpers = new HttpHelpers()
 
-  /**
-   * @param {string} path
-   * @param {string} method
-   * @param {object} options
-   * @param {any} options.body
-   * @param {object} options.headers
-   */
   fetch = (path, method, options = {}) => {
 
     if (['post', 'put'].includes(method)) {
