@@ -8,14 +8,16 @@ export interface ListOptions {
   pagination?: Pagination
 }
 
-export default abstract class ModelRequest {
+export default class ModelRequest {
 
-  abstract basePath: string
-
-  constructor(protected httpClient: HttpClient, protected queryStringBuilder: (path: string) => QueryStringBuilder) { }
+  constructor(
+    protected basePath: string,
+    protected httpClient: HttpClient,
+    protected queryStringBuilder: (path: string) => QueryStringBuilder
+  ) { }
 
   list = (options: ListOptions) => {
-    
+
     const path = this.queryStringBuilder(this.basePath)
       .withInclude(options.include)
       .withOrder(options.order)
