@@ -1,4 +1,4 @@
-import StudentRequest from "./FetchStudentModel";
+import StudentRequest from "./StudentRequest";
 import FetchHttpClient from "./FetchHttpClient";
 
 const fetch = new FetchHttpClient('http://localhost:8000')
