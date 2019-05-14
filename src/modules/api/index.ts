@@ -1,9 +1,11 @@
-import FetchHttpClient from "./FetchHttpClient";
-import ApiQueryStringBuilder from "./ApiQueryStringBuilder";
-import ModelRequest from "./ModelRequest";
+import FetchHttpClient from "./impl/FetchHttpClient";
+import ApiQueryStringBuilder from "./impl/ApiQueryStringBuilder";
+import ModelRequest from "./core/ModelRequest";
+import HttpClient from "./core/HttpClient";
+import QueryStringBuilder from "./core/QueryStringBuilder";
 
-const fetch = new FetchHttpClient('http://localhost:8000')
-const queryStringBuilder = (path: string) => new ApiQueryStringBuilder(path)
+const fetch: HttpClient = new FetchHttpClient('http://localhost:8000')
+const queryStringBuilder: (path: string) => QueryStringBuilder = path => new ApiQueryStringBuilder(path)
 
 export default {
   student: new ModelRequest('/students', fetch, queryStringBuilder),

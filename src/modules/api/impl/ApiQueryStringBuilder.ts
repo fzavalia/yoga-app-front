@@ -1,4 +1,4 @@
-import QueryStringBuilder, { Pagination, Order, OrderType, Where } from "./QueryStringBuilder";
+import QueryStringBuilder, { Pagination, Order, OrderType, Where } from "../core/QueryStringBuilder";
 
 export default class ApiQueryStringBuilder implements QueryStringBuilder {
 
@@ -9,11 +9,9 @@ export default class ApiQueryStringBuilder implements QueryStringBuilder {
   }
 
   withInclude = (include?: string[]) => {
-
     if (include && include.length > 0) {
       this.path += this.getPathPrefix() + 'include=' + include.join(',')
     }
-
     return this
   }
 

@@ -6,7 +6,7 @@ import HttpClient, {
   BodyArgs,
   Headers,
   RequestError
-} from "./HttpClient";
+} from "../core/HttpClient";
 
 export default class FetchHttpClient implements HttpClient {
 
