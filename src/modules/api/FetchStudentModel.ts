@@ -1,9 +1,9 @@
-import FetchModel from "./FetchModel";
-import { FetchMethod } from "./Fetch";
+import ModelRequest from "./ModelRequest";
+import { Method } from "./HttpClient";
 
-export default class FetchStudentModel extends FetchModel {
-  
+export default class StudentRequest extends ModelRequest {
+
   list = (options: any) => {
-    return this.fetch.fetch('/students', FetchMethod.GET)
+    return this.httpClient.fetch('/students', Method.GET)
   }
 }

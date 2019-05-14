@@ -1,8 +1,8 @@
-import FetchStudentModel from "./FetchStudentModel";
-import DefaultFetch from "./DefaultFetch";
+import StudentRequest from "./FetchStudentModel";
+import FetchHttpClient from "./FetchHttpClient";
 
-const fetch = new DefaultFetch('http://localhost:8000')
+const fetch = new FetchHttpClient('http://localhost:8000')
 
 export default {
-  student: new FetchStudentModel(fetch)
+  student: new StudentRequest(fetch)
 }
