@@ -31,5 +31,5 @@ export class FetchError {
 }
 
 export default interface Fetch {
-  fetch: (path: string, method: FetchMethod, options: FetchOptions) => Promise<{}>
+  fetch: (path: string, method: FetchMethod, options?: FetchOptions) => Promise<{}>
 }

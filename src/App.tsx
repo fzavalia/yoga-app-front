@@ -14,7 +14,7 @@ const App: React.FC = () => {
         </header>
         <section>
           <Switch>
-            {routes.map(r => <Route path={r.path} component={r.component} />)}
+            {routes.map((r, i) => <Route key={i} path={r.path} component={r.component} />)}
             <Redirect from='/' to={routes[0].path} />
           </Switch>
         </section>

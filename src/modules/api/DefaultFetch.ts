@@ -1,20 +1,28 @@
-import Fetch, { FetchMethod, FetchOptions, FetchOptionsBody, FetchOptionsBodyType, FetchOptionsBodyArgs, FetchOptionsHeaders, FetchError } from "../core/Fetch";
+import Fetch, {
+  FetchMethod,
+  FetchOptions,
+  FetchOptionsBody,
+  FetchOptionsBodyType,
+  FetchOptionsBodyArgs,
+  FetchOptionsHeaders,
+  FetchError
+} from "./Fetch";
 
 export default class DefaultFetch implements Fetch {
 
   constructor(private host: string) { }
 
-  fetch = async (path: string, method: FetchMethod, options: FetchOptions) => {
+  fetch = async (path: string, method: FetchMethod, options?: FetchOptions) => {
 
-    const body = options.body ? this.mapBody(options.body) : undefined
-    const headers = this.mapHeaders(options)
+    const body = options && options.body ? this.mapBody(options.body) : undefined
+    const headers = options ? this.mapHeaders(options) : {}
     const res = await fetch(`${this.host}${path}`, { method: this.mapMethod(method), body, headers })
 
     if (res.status >= 300) {
       const error = await res.text()
       throw new FetchError(res.status, error)
     }
-    
+
     return await res.json()
   }
 
