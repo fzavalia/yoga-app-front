@@ -31,5 +31,5 @@ export class RequestError {
 }
 
 export default interface HttpClient {
-  fetch: (path: string, method: Method, options?: Options) => Promise<{}>
+  fetch: (path: string, method: Method, options?: Options) => Promise<any>
 }

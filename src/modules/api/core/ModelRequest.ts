@@ -1,5 +1,6 @@
-import HttpClient, { Method } from "./HttpClient";
+import HttpClient from "./HttpClient";
 import QueryStringBuilder, { Where, Order, Pagination } from "./QueryStringBuilder";
+import ModelRequestHelpers from "../impl/ModelRequestHelpers";
 
 export interface ListOptions {
   where?: Where
@@ -12,34 +13,21 @@ export interface ShowOptions {
   include?: string[]
 }
 
-export default class ModelRequest {
+export default abstract class ModelRequest<T> {
+
+  protected helpers: ModelRequestHelpers
 
   constructor(
     protected basePath: string,
     protected httpClient: HttpClient,
     protected queryStringBuilder: (path: string) => QueryStringBuilder
-  ) { }
-
-  list = (options: ListOptions = {}) => {
-
-    const path = this.queryStringBuilder(this.basePath)
-      .withInclude(options.include)
-      .withOrder(options.order)
-      .withPagination(options.pagination)
-      .withWhere(options.where)
-      .build()
-
-    return this.httpClient.fetch(path, Method.GET)
+  ) { 
+    this.helpers = new ModelRequestHelpers(basePath, httpClient, queryStringBuilder)
   }
 
-  show = (id: number, options: ShowOptions = {}) => {
+  abstract list: (options: ListOptions) => Promise<T[]>
 
-    const path = this.basePath + '/' + id
+  abstract show: (id: number, options: ShowOptions) => Promise<T>
 
-    const pathWithQueryString = this.queryStringBuilder(path)
-      .withInclude(options.include)
-      .build()
-
-    return this.httpClient.fetch(pathWithQueryString, Method.GET)
-  }
+  protected abstract mapApiModel: (apiModel: any) => T
 }
