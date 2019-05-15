@@ -2,5 +2,5 @@ import React from 'react'
 import Form from './Form';
 
 export default () => {
-  return <Form title='Actualizar Alumno'/>
+  return <Form title='Crear Alumno'/>
 }
