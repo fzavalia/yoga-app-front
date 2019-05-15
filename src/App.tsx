@@ -9,7 +9,7 @@ const App: React.FC = () => {
         <header>
           {routes.map((r, i) =>
             <Link key={i} to={r.path}>
-              <button className='header-link'>{r.name}</button>
+              <button>{r.name}</button>
             </Link>)}
         </header>
         <section>

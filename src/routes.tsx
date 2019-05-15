@@ -1,9 +1,10 @@
 import React from 'react'
+import Students from './views/students/Routes';
 
 const routes: { path: string, component: any, name: string }[] = [
     {
         path: '/students',
-        component: (props: any) => <div>Students</div>,
+        component: Students,
         name: 'Alumnos'
     },
     {

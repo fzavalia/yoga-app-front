@@ -16,17 +16,3 @@ code {
   --color-bg: #143642;
   --color-text: #F7FFF7;
 }
-
-header {
-  background-color: var(--color-bg); 
-  height: 50px; 
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.header-link {
-  color: var(--color-text); 
-  background-color: unset;
-  border-style: none;
-}

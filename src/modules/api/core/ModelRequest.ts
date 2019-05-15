@@ -8,6 +8,10 @@ export interface ListOptions {
   pagination?: Pagination
 }
 
+export interface ShowOptions {
+  include?: string[]
+}
+
 export default class ModelRequest {
 
   constructor(
@@ -16,7 +20,7 @@ export default class ModelRequest {
     protected queryStringBuilder: (path: string) => QueryStringBuilder
   ) { }
 
-  list = (options: ListOptions) => {
+  list = (options: ListOptions = {}) => {
 
     const path = this.queryStringBuilder(this.basePath)
       .withInclude(options.include)
@@ -26,5 +30,16 @@ export default class ModelRequest {
       .build()
 
     return this.httpClient.fetch(path, Method.GET)
+  }
+
+  show = (id: number, options: ShowOptions = {}) => {
+
+    const path = this.basePath + '/' + id
+
+    const pathWithQueryString = this.queryStringBuilder(path)
+      .withInclude(options.include)
+      .build()
+
+    return this.httpClient.fetch(pathWithQueryString, Method.GET)
   }
 }
