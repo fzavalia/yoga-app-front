@@ -28,6 +28,4 @@ export default abstract class ModelRequest<T> {
   abstract list: (options: ListOptions) => Promise<T[]>
 
   abstract show: (id: number, options: ShowOptions) => Promise<T>
-
-  protected abstract mapApiModel: (apiModel: any) => T
 }
