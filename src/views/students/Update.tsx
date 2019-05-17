@@ -1,6 +1,13 @@
-import React from 'react'
-import Form from './Form';
+import React from "react";
+import Form from "./Form";
+import { History } from "history";
 
-export default () => {
-  return <Form title='Actualizar Alumno'/>
-}
+export default (props: { history: History }) => {
+  return (
+    <Form
+      title="Actualizar Alumno"
+      history={props.history}
+      submit={_ => Promise.resolve()}
+    />
+  );
+};
