@@ -8,6 +8,7 @@ export default (props: {
   dni: string;
   onChange: (inputName: string, value: any) => void;
   onCancel: () => void;
+  onSubmit: () => void;
 }) => {
   return (
     <>
@@ -51,7 +52,9 @@ export default (props: {
         <button type="button" onClick={props.onCancel}>
           Cancelar
         </button>
-        <button type="submit">Enviar</button>
+        <button type="submit" onClick={props.onSubmit}>
+          Enviar
+        </button>
       </form>
     </>
   );
