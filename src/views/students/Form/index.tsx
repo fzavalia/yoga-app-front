@@ -2,7 +2,7 @@ import React from "react";
 import { History } from "history";
 import { Formik } from "formik";
 import FormView from "./FormView";
-import { SubmittableStudent } from "../../../modules/api/impl/StudentModelRequest";
+import { SubmittableStudent } from "../../../modules/api/apiModelRequests/StudentApiModelRequest";
 
 export default (props: {
   history: History;

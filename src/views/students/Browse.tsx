@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import { Student } from "../../modules/api/impl/StudentModelRequest";
+import { Student } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
 
 export default (props: { history: History }) => {
   const [students, setStudents] = useState<Student[]>([]);
