@@ -1,13 +1,14 @@
 import React from "react";
 import Form from "./Form";
 import { History } from "history";
+import api from "../../modules/api";
 
 export default (props: { history: History }) => {
   return (
     <Form
       title="Crear Alumno"
       history={props.history}
-      submit={_ => Promise.resolve()}
+      submit={student => api.student.create(student)}
     />
   );
 };

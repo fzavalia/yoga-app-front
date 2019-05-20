@@ -1,6 +1,10 @@
-import ModelRequest, { ListOptions, ShowOptions } from "../core/ModelRequest";
+import ModelRequest from "../core/ModelRequest";
 import HttpClient, { Method, BodyType } from "../core/HttpClient";
 import QueryStringBuilder from "../core/QueryStringBuilder";
+import ApiModelRequestHelpers, {
+  ListOptions,
+  ShowOptions
+} from "./ApiModelRequestHelpers";
 
 export interface Student {
   id: number;
@@ -17,12 +21,19 @@ export interface SubmitableStudent {
   dni: string;
 }
 
-export default class StudentModelRequest extends ModelRequest<Student> {
+export default class StudentModelRequest extends ModelRequest {
+  private helpers: ApiModelRequestHelpers;
+
   constructor(
     httpClient: HttpClient,
     queryStringBuilder: (path: string) => QueryStringBuilder
   ) {
     super("/students", httpClient, queryStringBuilder);
+    this.helpers = new ApiModelRequestHelpers(
+      this.basePath,
+      this.httpClient,
+      this.queryStringBuilder
+    );
   }
 
   list = (options: ListOptions = {}) =>
@@ -33,10 +44,18 @@ export default class StudentModelRequest extends ModelRequest<Student> {
   show = (id: number, options: ShowOptions = {}) =>
     this.helpers.show(id, options).then(this.mapStudentFromApi);
 
-  update = (id: number, student: any) =>
+  create = (student: SubmitableStudent) =>
+    this.httpClient.fetch("/students", Method.POST, {
+      body: { type: BodyType.JSON, args: this.mapStudentForApi(student) }
+    });
+
+  update = (id: number, student: SubmitableStudent) =>
     this.httpClient.fetch("/students/" + id, Method.PUT, {
       body: { type: BodyType.JSON, args: this.mapStudentForApi(student) }
     });
+
+  delete = (id: number) =>
+    this.httpClient.fetch("/students/" + id, Method.DELETE);
 
   private mapStudentFromApi: (student: any) => Student = student => ({
     ...student,
@@ -46,5 +65,5 @@ export default class StudentModelRequest extends ModelRequest<Student> {
   private mapStudentForApi = (student: SubmitableStudent) => ({
     ...student,
     phone_number: student.phoneNumber
-  })
+  });
 }

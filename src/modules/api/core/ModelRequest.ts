@@ -1,31 +1,16 @@
 import HttpClient from "./HttpClient";
-import QueryStringBuilder, { Where, Order, Pagination } from "./QueryStringBuilder";
-import ModelRequestHelpers from "../impl/ModelRequestHelpers";
+import QueryStringBuilder, {
+  Where,
+  Order,
+  Pagination
+} from "./QueryStringBuilder";
 
-export interface ListOptions {
-  where?: Where
-  include?: string[],
-  order?: Order
-  pagination?: Pagination
-}
 
-export interface ShowOptions {
-  include?: string[]
-}
 
-export default abstract class ModelRequest<T> {
-
-  protected helpers: ModelRequestHelpers
-
+export default abstract class ModelRequest {
   constructor(
     protected basePath: string,
     protected httpClient: HttpClient,
     protected queryStringBuilder: (path: string) => QueryStringBuilder
-  ) { 
-    this.helpers = new ModelRequestHelpers(basePath, httpClient, queryStringBuilder)
-  }
-
-  abstract list: (options: ListOptions) => Promise<T[]>
-
-  abstract show: (id: number, options: ShowOptions) => Promise<T>
+  ) {}
 }
