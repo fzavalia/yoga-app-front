@@ -2,13 +2,13 @@ import React from "react";
 import { History } from "history";
 import { Formik } from "formik";
 import FormView from "./FormView";
-import { SubmitableStudent } from "../../../modules/api/impl/StudentModelRequest";
+import { SubmittableStudent } from "../../../modules/api/impl/StudentModelRequest";
 
 export default (props: {
   history: History;
   title: string;
-  initialValues?: SubmitableStudent;
-  submit: (values: SubmitableStudent) => Promise<void>;
+  initialValues?: SubmittableStudent;
+  submit: (values: SubmittableStudent) => Promise<void>;
 }) => {
   return (
     <Formik
