@@ -1,5 +1,6 @@
 import React from 'react'
 import Students from './views/students/Routes';
+import Payments from './views/payments/Routes';
 
 const routes: { path: string, component: any, name: string }[] = [
     {
@@ -9,7 +10,7 @@ const routes: { path: string, component: any, name: string }[] = [
     },
     {
         path: '/payments',
-        component: (props: any) => <div>Payments</div>,
+        component: Payments,
         name: 'Pagos'
     },
     {

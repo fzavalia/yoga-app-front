@@ -11,7 +11,8 @@ export interface Payment {
   amount: number;
   payedAt: Date;
   type: PaymentType;
-  student: Student;
+  studentId: number;
+  student?: Student;
 }
 
 export interface SubmittablePayment {
@@ -27,8 +28,10 @@ export default class PaymentApiModelRequest extends ApiModelRequest<
 > {
   protected mapModelFromApi: (model: any) => Payment = model => ({
     ...model,
-    payedAt: new Date(model.payedAt),
-    student: StudentApiModelRequest.mapModelFromApi(model.student),
+    payedAt: new Date(model.payed_at),
+    student: model.student
+      ? StudentApiModelRequest.mapModelFromApi(model.student)
+      : undefined,
     type: model.type === "cash" ? PaymentType.CASH : PaymentType.CARD
   });
 

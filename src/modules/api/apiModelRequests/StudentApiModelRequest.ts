@@ -24,10 +24,10 @@ export default class StudentApiModelRequest extends ApiModelRequest<
     phoneNumber: model.phone_number
   });
 
-  protected mapModelFromApi: (model: any) => Student = model => ({
-    ...model,
-    phoneNumber: model.phone_number
-  });
+  protected mapModelFromApi = StudentApiModelRequest.mapModelFromApi;
 
-  protected mapModelForApi = StudentApiModelRequest.mapModelFromApi;
+  protected mapModelForApi = (model: SubmittableStudent) => ({
+    ...model,
+    phone_number: model.phoneNumber
+  });
 }
