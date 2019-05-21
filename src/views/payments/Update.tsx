@@ -4,7 +4,6 @@ import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
 import { Payment } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
-import { format } from "date-fns";
 import helpers from "../../helpers";
 
 export default (props: { history: History; match: match<{ id: string }> }) => {

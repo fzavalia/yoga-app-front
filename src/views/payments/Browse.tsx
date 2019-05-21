@@ -5,7 +5,6 @@ import {
   Payment,
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
-import { format } from "date-fns";
 import helpers from "../../helpers";
 
 export default (props: { history: History }) => {
