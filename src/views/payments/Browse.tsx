@@ -6,6 +6,7 @@ import {
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
 import { format } from "date-fns";
+import helpers from "../../helpers";
 
 export default (props: { history: History }) => {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -52,7 +53,8 @@ const BrowseView = (props: {
           <section>
             Cantidad: {payment.amount}
             <br />
-            Fecha: {format(new Date(payment.payedAt.toISOString()), "YYYY-MMM-DD")}
+            Fecha:{" "}
+            {helpers.date.normalizeAndFormat(payment.payedAt, "DD-MMM-YYYY")}
             <br />
             Forma de Pago:{" "}
             {payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"}

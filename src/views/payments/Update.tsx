@@ -5,6 +5,7 @@ import api from "../../modules/api";
 import { match } from "react-router";
 import { Payment } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
 import { format } from "date-fns";
+import helpers from "../../helpers";
 
 export default (props: { history: History; match: match<{ id: string }> }) => {
   const [payment, setPayment] = useState<Payment>();
@@ -36,12 +37,12 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
       history={props.history}
       initialValues={{
         amount: payment.amount,
-        payedAt: format(payment.payedAt, "YYYY-MM-DD"),
+        payedAt: helpers.date.normalizeAndFormatForInput(payment.payedAt),
         studentId: payment.studentId,
         type: payment.type
       }}
       submit={values => api.payment.update(payment.id, values)}
       studentOptions={studentOptions}
     />
-  );
+  );  
 };
