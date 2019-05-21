@@ -2,8 +2,8 @@ import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentApiModelRequest, { Student } from "./StudentApiModelRequest";
 
 export enum PaymentType {
-  CREDIT_CARD = 'credit_card',
-  CASH = 'cash'
+  CREDIT_CARD = "credit_card",
+  CASH = "cash"
 }
 
 export interface Payment {
@@ -26,14 +26,18 @@ export default class PaymentApiModelRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
-  protected mapModelFromApi: (model: any) => Payment = model => ({
-    ...model,
-    payedAt: new Date(model.payed_at),
-    student: model.student
-      ? StudentApiModelRequest.mapModelFromApi(model.student)
-      : undefined,
-    type: model.type === "cash" ? PaymentType.CASH : PaymentType.CREDIT_CARD
-  });
+  protected mapModelFromApi: (model: any) => Payment = model => {
+    return {
+      amount: model.amount,
+      id: model.id,
+      payedAt: new Date(model.payed_at),
+      student: model.student
+        ? StudentApiModelRequest.mapModelFromApi(model.student)
+        : undefined,
+      studentId: model.student_id,
+      type: model.type
+    };
+  };
 
   protected mapModelForApi: (model: SubmittablePayment) => any = model => {
     const res: any = {};

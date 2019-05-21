@@ -36,7 +36,10 @@ export default abstract class ApiModelRequest<Model, Submittable> {
       .then(models => models.map(this.mapModelFromApi));
   };
 
-  show = (id: number, options: ShowOptions = {}) => {
+  show: (id: number, options?: ShowOptions) => Promise<Model> = (
+    id,
+    options = {}
+  ) => {
     const path = this.basePath + "/" + id;
 
     const pathWithQueryString = this.queryStringBuilder(path)

@@ -52,7 +52,7 @@ const BrowseView = (props: {
           <section>
             Cantidad: {payment.amount}
             <br />
-            Fecha: {format(payment.payedAt, "DD-MMM-YYYY")}
+            Fecha: {format(new Date(payment.payedAt.toISOString()), "YYYY-MMM-DD")}
             <br />
             Forma de Pago:{" "}
             {payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"}

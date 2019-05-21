@@ -33,7 +33,6 @@ export default (props: {
       }
       onSubmit={(values, actions) => {
         actions.setSubmitting(true);
-        console.log(values);
         props
           .submit({
             amount: values.amount,
