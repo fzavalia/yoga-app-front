@@ -15,12 +15,11 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
     return null;
   }
 
-  return (
-    <Form
-      title="Actualizar Alumno"
-      history={props.history}
-      initialValues={student}
-      submit={values => api.student.update(student.id, values)}
-    />
-  );
+  return null;
+  // <Form
+  //   title="Actualizar Alumno"
+  //   history={props.history}
+  //   initialValues={student}
+  //   submit={values => api.student.update(student.id, values)}
+  // />
 };

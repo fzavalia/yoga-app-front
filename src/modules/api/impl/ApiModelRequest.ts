@@ -23,7 +23,7 @@ export default abstract class ApiModelRequest<Model, Submittable> {
     protected queryStringBuilder: (path: string) => QueryStringBuilder
   ) {}
 
-  list = (options: ListOptions = {}) => {
+  list: (options?: ListOptions) => Promise<Model[]> = (options = {}) => {
     const path = this.queryStringBuilder(this.basePath)
       .withInclude(options.include)
       .withOrder(options.order)

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import { Payment } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
+import {
+  Payment,
+  PaymentType
+} from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
 import { format } from "date-fns";
 
 export default (props: { history: History }) => {
@@ -40,7 +43,7 @@ const BrowseView = (props: {
   onDeletePaymentClick: (payment: Payment) => void;
 }) => (
   <>
-    <h1>Alumnos</h1>
+    <h1>Pagos</h1>
     <button onClick={props.onCreatePaymentClick}>Crear</button>
     <ul>
       {props.payments.map((payment: Payment) => (
@@ -50,6 +53,9 @@ const BrowseView = (props: {
             Cantidad: {payment.amount}
             <br />
             Fecha: {format(payment.payedAt, "DD-MMM-YYYY")}
+            <br />
+            Forma de Pago:{" "}
+            {payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"}
           </section>
           <section>
             <button onClick={() => props.onUpdatePaymentClick(payment)}>
