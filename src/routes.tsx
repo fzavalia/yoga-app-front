@@ -6,7 +6,7 @@ import BrowsePayments from "./views/payments/BrowsePayments";
 import CreatePayments from "./views/payments/CreatePayments";
 import UpdatePayments from "./views/payments/UpdatePayments";
 
-interface Route {
+export interface Route {
   path: string;
   component: any;
   name: string;

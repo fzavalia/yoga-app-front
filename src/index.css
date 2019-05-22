@@ -16,3 +16,7 @@ code {
   --color-bg: #143642;
   --color-text: #F7FFF7;
 }
+
+a {
+  text-decoration: none;
+}
