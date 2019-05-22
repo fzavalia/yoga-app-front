@@ -13,8 +13,9 @@ code {
 }
 
 :root {
-  --color-bg: #143642;
-  --color-text: #F7FFF7;
+  --color-light: #999;
+  --color-dark: #222;
+  --color-darker: #111;
 }
 
 a {
@@ -23,4 +24,8 @@ a {
 
 ul {
   list-style-type: none;
+}
+
+* {
+  box-sizing: border-box;
 }

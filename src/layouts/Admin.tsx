@@ -33,7 +33,7 @@ const Admin: Layout = (props: {
 
 const Header = styled.header`
   width: 100%;
-  background-color: #222;
+  background-color: var(--color-dark);
   height: 90px;
   display: flex;
   align-items: center;
@@ -49,17 +49,17 @@ const HeaderLinksContainer = styled.div`
 `;
 
 const HeaderLink = styled.span`
-  color: #999;
-  border: 1px solid #999;
+  color: var(--color-light);
+  border: 1px solid var(--color-light);
   border-radius: 5px;
   padding: 0.7rem 1rem;
   cursor: pointer;
   &:hover {
-    background-color: #111;
+    background-color: var(--color-darker);
   }
   &.selected {
-    background-color: #999;
-    color: #111;
+    background-color: var(--color-light);
+    color: var(--color-darker);
   }
 `;
 
