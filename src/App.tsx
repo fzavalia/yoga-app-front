@@ -1,8 +1,8 @@
 import React from "react";
-import Admin from "./layouts/Admin";
+import Router from "./routes/Router";
 
 const App: React.FC = () => {
-  return <Admin />;
+  return <Router />;
 };
 
 export default App;

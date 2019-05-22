@@ -1,69 +1,35 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Link,
-  Redirect,
-  RouteComponentProps
-} from "react-router-dom";
-import routes from "../routes";
+import { Link, RouteComponentProps } from "react-router-dom";
+import routes from "../routes/routes";
 import styled from "styled-components";
 import classnames from "classnames";
+import Layout from "./Layout";
 
-const Admin: React.FC = () => {
-  return (
-    <div>
-      <BrowserRouter>
-        <Switch>
-          {routes.map((route, key) => (
-            <Route
-              exact
-              key={key}
-              path={route.path}
-              render={props => (
-                <RouteComponentWrapper routeComponentProps={props}>
-                  {route.component}
-                </RouteComponentWrapper>
-              )}
-            />
-          ))}
-          <Redirect from="/" to={routes[0].path} />
-        </Switch>
-      </BrowserRouter>
-    </div>
-  );
-};
-
-const RouteComponentWrapper = (props: {
+const Admin: Layout = (props: {
+  children: any;
   routeComponentProps: RouteComponentProps;
-  children: (props: RouteComponentProps) => JSX.Element;
-}) => {
-  return (
-    <>
-      <Header>
-        <HeaderLinksContainer>
-          {routes
-            .filter(route => route.showInHeader)
-            .map((route, key) => (
-              <Link key={key} to={route.path}>
-                <HeaderLink
-                  className={classnames({
-                    selected: window.location.pathname.startsWith(route.path)
-                  })}
-                >
-                  {route.name}
-                </HeaderLink>
-              </Link>
-            ))}
-        </HeaderLinksContainer>
-      </Header>
-      <section>
-        <props.children {...props.routeComponentProps} />
-      </section>
-    </>
-  );
-};
+}) => (
+  <>
+    <Header>
+      <HeaderLinksContainer>
+        {routes
+          .filter(route => route.isModuleEntrypoint)
+          .map((route, key) => (
+            <Link key={key} to={route.path}>
+              <HeaderLink
+                className={classnames({
+                  selected: window.location.pathname.startsWith(route.path)
+                })}
+              >
+                {route.name}
+              </HeaderLink>
+            </Link>
+          ))}
+      </HeaderLinksContainer>
+    </Header>
+    <section>{props.children}</section>
+  </>
+);
 
 const Header = styled.header`
   width: 100%;
