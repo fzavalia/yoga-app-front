@@ -13,9 +13,8 @@ code {
 }
 
 :root {
-  --color-light: #999;
-  --color-dark: #222;
-  --color-darker: #111;
+  --color-primary: #999;
+  --color-secondary: #222;
 }
 
 a {
