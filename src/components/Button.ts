@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-export default styled.div<{
-  colors: { main: string; selected?: string };
-}>`
+export default styled.div<{colors: { main: string; selected?: string };}>`
   display: inline-block;
   text-align: center;
   color: ${props => props.colors.main};
