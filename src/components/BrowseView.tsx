@@ -15,28 +15,31 @@ export default (props: {
   <Container>
     <CreateButton onClick={props.onCreateClick} />
     <ItemsContainer>
-      {props.items.map(props.mapItem).map((item, key) => (
-        <Item key={key}>
-          <h3>{item.title}</h3>
-          <section>
-            {item.props.map((prop, key) => (
-              <ItemValue>
-                <span>{prop.label}: </span>
-                <span>{prop.value}</span>
-              </ItemValue>
-            ))}
-          </section>
-          <br />
-          <ItemButtonsContainer>
-            <ItemButton onClick={() => props.onUpdateClick(item)}>
-              Editar
-            </ItemButton>
-            <ItemButton onClick={() => props.onDeleteClick(item)}>
-              Borrar
-            </ItemButton>
-          </ItemButtonsContainer>
-        </Item>
-      ))}
+      {props.items.map((item, key) => {
+        const mapped = props.mapItem(item);
+        return (
+          <Item key={key}>
+            <h3>{mapped.title}</h3>
+            <section>
+              {mapped.props.map((prop, key) => (
+                <ItemValue>
+                  <span>{prop.label}: </span>
+                  <span>{prop.value}</span>
+                </ItemValue>
+              ))}
+            </section>
+            <br />
+            <ItemButtonsContainer>
+              <ItemButton onClick={() => props.onUpdateClick(item)}>
+                Editar
+              </ItemButton>
+              <ItemButton onClick={() => props.onDeleteClick(item)}>
+                Borrar
+              </ItemButton>
+            </ItemButtonsContainer>
+          </Item>
+        );
+      })}
     </ItemsContainer>
   </Container>
 );

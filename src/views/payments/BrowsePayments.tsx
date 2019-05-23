@@ -6,6 +6,7 @@ import {
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
 import helpers from "../../helpers";
+import BrowseView from "../../components/BrowseView";
 
 export default (props: { history: History }) => {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -16,11 +17,29 @@ export default (props: { history: History }) => {
 
   return (
     <BrowseView
-      payments={payments}
-      onUpdatePaymentClick={payment =>
-        props.history.push(`/payments/${payment.id}/update`)
+      items={payments}
+      mapItem={payment => ({
+        title: payment.student.name,
+        props: [
+          { label: "Monto", value: '$' + payment.amount },
+          {
+            label: "Fecha",
+            value: helpers.date.normalizeAndFormat(
+              payment.payedAt,
+              "DD-MMM-YYYY"
+            )
+          },
+          {
+            label: "Forma de Pago",
+            value:
+              payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"
+          }
+        ]
+      })}
+      onUpdateClick={payment =>
+        props.history.push(`/payments/update/${payment.id}`)
       }
-      onDeletePaymentClick={payment => {
+      onDeleteClick={payment => {
         if (
           window.confirm(
             "Eliminar Pago de " + (payment.student ? payment.student.name : "")
@@ -31,43 +50,7 @@ export default (props: { history: History }) => {
             .then(() => setPayments(payments.filter(x => x.id !== payment.id)));
         }
       }}
-      onCreatePaymentClick={() => props.history.push(`/payments/create`)}
+      onCreateClick={() => props.history.push(`/payments/create`)}
     />
   );
 };
-
-const BrowseView = (props: {
-  payments: Payment[];
-  onCreatePaymentClick: () => void;
-  onUpdatePaymentClick: (payment: Payment) => void;
-  onDeletePaymentClick: (payment: Payment) => void;
-}) => (
-  <>
-    <h1>Pagos</h1>
-    <button onClick={props.onCreatePaymentClick}>Crear</button>
-    <ul>
-      {props.payments.map((payment: Payment) => (
-        <li key={payment.id}>
-          <h3>{payment.student ? payment.student.name : ""}</h3>
-          <section>
-            Cantidad: {payment.amount}
-            <br />
-            Fecha:{" "}
-            {helpers.date.normalizeAndFormat(payment.payedAt, "DD-MMM-YYYY")}
-            <br />
-            Forma de Pago:{" "}
-            {payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"}
-          </section>
-          <section>
-            <button onClick={() => props.onUpdatePaymentClick(payment)}>
-              Editar
-            </button>
-            <button onClick={() => props.onDeletePaymentClick(payment)}>
-              Borrar
-            </button>
-          </section>
-        </li>
-      ))}
-    </ul>
-  </>
-);

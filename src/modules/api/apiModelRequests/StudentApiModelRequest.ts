@@ -20,7 +20,10 @@ export default class StudentApiModelRequest extends ApiModelRequest<
   SubmittableStudent
 > {
   static mapModelFromApi: (model: any) => Student = model => ({
-    ...model,
+    id: model.id,
+    name: model.name,
+    email: model.email,
+    dni: model.dni,
     phoneNumber: model.phone_number
   });
 
