@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "./Button";
 import helpers from "../helpers";
 
@@ -43,7 +43,7 @@ export const InputTitle = styled.div`
   font-size: 0.8rem;
 `;
 
-export const Input = styled.input`
+const sharedStyle = css`
   width: 100%;
   border: unset;
   font-size: 1rem;
@@ -52,10 +52,19 @@ export const Input = styled.input`
   margin-bottom: 1rem;
   transition: border-bottom-color 500ms;
   &.invalid {
-    border-bottom-color: ${helpers.color.danger}
+    border-bottom-color: ${helpers.color.danger};
   }
   &:focus {
-    outline: unset
+    outline: unset;
     border-bottom-color: ${helpers.color.secondaryLight};
   }
+`;
+
+export const Input = styled.input`
+  ${sharedStyle}
+`;
+
+export const Select = styled.select`
+  ${sharedStyle}
+  background-color: unset;
 `;

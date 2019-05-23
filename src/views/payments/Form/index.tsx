@@ -56,7 +56,7 @@ export default (props: {
             title={props.title}
             studentOptions={props.studentOptions}
             onCancel={props.history.goBack}
-            onChange={(name, value) => formikProps.handleChange(name)(value)}
+            onChange={formikProps.handleChange}
             onSubmit={formikProps.handleSubmit}
           />
         );
