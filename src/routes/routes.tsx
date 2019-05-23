@@ -25,15 +25,15 @@ const routes: Route[] = [
     layout: Admin
   },
   {
-    path: "/students/create",
-    component: CreateStudent,
+    path: "/students/update/:id",
+    component: UpdateStudent,
     name: "Alumnos",
     isModuleEntrypoint: false,
     layout: Admin
   },
   {
-    path: "/students/update/:id",
-    component: UpdateStudent,
+    path: "/students/create",
+    component: CreateStudent,
     name: "Alumnos",
     isModuleEntrypoint: false,
     layout: Admin

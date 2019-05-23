@@ -1,18 +1,22 @@
 import styled from "styled-components";
 
-const foo = (props: { dark?: Boolean }) => props.dark ? 'var(--color-primary)' : 'var(--color-secondary)'
-
-const bar = (props: { dark?: Boolean }) => props.dark ? 'var(--color-secondary)' : 'var(--color-primary)'
-
-export default styled.div<{ dark?: Boolean }>`
-  color: ${foo};
-  border: 1px solid ${foo};
+export default styled.div<{
+  colors: { main: string; selected?: string };
+}>`
+  display: inline-block;
+  text-align: center;
+  color: ${props => props.colors.main};
+  border: 1px solid ${props => props.colors.main};
   border-radius: 5px;
   padding: 0.7rem 1rem;
   cursor: pointer;
-  &.selected {
-    background-color: ${foo};
-    border-color: ${bar};
-    color: ${bar};
+  transition: color 500ms, border-color 500ms;
+  &.selected,
+  &:hover {
+    border-color: ${props => props.colors.selected || props.colors.main};
+    color: ${props => props.colors.selected || props.colors.main};
+  }
+  &.sm {
+    padding: 0.4rem 0.7rem;
   }
 `;
