@@ -13,7 +13,7 @@ export default (props: {
 }) => {
   return (
     <FormView
-      title="Crear Alumno"
+      title={props.title}
       onCancel={props.onCancel}
       onSubmit={props.onSubmit}
     >
