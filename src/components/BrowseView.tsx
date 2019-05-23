@@ -12,7 +12,7 @@ export default (props: {
   onUpdateClick: (item: any) => void;
   onDeleteClick: (item: any) => void;
 }) => (
-  <Container>
+  <>
     <CreateButton onClick={props.onCreateClick} />
     <ItemsContainer>
       {props.items.map((item, key) => {
@@ -41,14 +41,8 @@ export default (props: {
         );
       })}
     </ItemsContainer>
-  </Container>
+  </>
 );
-
-const Container = styled.section`
-  position: relative;
-  max-width: 500px;
-  margin: auto;
-`;
 
 const CreateButton = (props: { onClick: () => void }) => (
   <Button

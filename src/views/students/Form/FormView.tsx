@@ -1,4 +1,7 @@
 import React from "react";
+import styled from "styled-components";
+import helpers from "../../../helpers";
+import Button from "../../../components/Button";
 
 export default (props: {
   title: string;
@@ -6,56 +9,74 @@ export default (props: {
   email: string;
   phoneNumber: string;
   dni: string;
-  onChange: (inputName: string, value: any) => void;
+  onChange: (e: React.ChangeEvent<any>) => void;
   onCancel: () => void;
   onSubmit: () => void;
 }) => {
   return (
     <>
-      <h3>{props.title}</h3>
+      <Title>{props.title}</Title>
       <form onSubmit={e => e.preventDefault()}>
-        Nombre
-        <br />
-        <input
-          name="name"
-          value={props.name}
-          onChange={e => props.onChange(e.target.name, e.target.value)}
-        />
-        <br />
-        Email
-        <br />
-        <input
+        <InputTitle>Nombre</InputTitle>
+        <Input name="name" value={props.name} onChange={props.onChange} />
+        <InputTitle>Email</InputTitle>
+        <Input
           name="email"
           type="email"
           value={props.email}
-          onChange={e => props.onChange(e.target.name, e.target.value)}
+          onChange={props.onChange}
         />
-        <br />
-        Telefono
-        <br />
-        <input
+        <InputTitle>Telefono</InputTitle>
+        <Input
           name="phoneNumber"
           type="tel"
           value={props.phoneNumber}
-          onChange={e => props.onChange(e.target.name, e.target.value)}
+          onChange={props.onChange}
         />
-        <br />
-        DNI
-        <br />
-        <input
-          name="dni"
-          value={props.dni}
-          onChange={e => props.onChange(e.target.name, e.target.value)}
-        />
-        <br />
-        <br />
-        <button type="button" onClick={props.onCancel}>
+        <InputTitle>DNI</InputTitle>
+        <Input name="dni" value={props.dni} onChange={props.onChange} />
+        <Button
+          className="sm"
+          colors={{ main: helpers.color.secondary }}
+          onClick={props.onCancel}
+        >
           Cancelar
-        </button>
-        <button type="submit" onClick={props.onSubmit}>
+        </Button>
+        <Button
+          style={{ float: "right" }}
+          className="sm"
+          colors={{ main: helpers.color.secondary }}
+          onClick={props.onSubmit}
+        >
           Enviar
-        </button>
+        </Button>
       </form>
     </>
   );
 };
+
+const Title = styled.h1`
+  text-align: center;
+`;
+
+const InputTitle = styled.div`
+  color: ${helpers.color.secondary}
+  font-size: 0.8rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  border: unset;
+  font-size: 1rem;
+  height: 2rem;
+  border-bottom: solid 1px ${helpers.color.secondary};
+  margin-bottom: 1rem;
+  transition: border-bottom-color 500ms;
+  &.invalid {
+    border-bottom-color: ${helpers.color.danger}
+  }
+  &:focus {
+    outline: unset
+    border-bottom-color: ${helpers.color.secondaryLight};
+  }
+`;

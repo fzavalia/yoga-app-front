@@ -39,7 +39,7 @@ export default (props: {
             dni={dni}
             title={props.title}
             onCancel={props.history.goBack}
-            onChange={(name, value) => formikProps.handleChange(name)(value)}
+            onChange={formikProps.handleChange}
             onSubmit={formikProps.handleSubmit}
           />
         );

@@ -33,7 +33,9 @@ const Admin: Layout = (props: {
           ))}
       </HeaderLinksContainer>
     </Header>
-    <Content>{props.children}</Content>
+    <ContentContainer>
+      <Content>{props.children}</Content>
+    </ContentContainer>
   </>
 );
 
@@ -53,13 +55,19 @@ const HeaderLinksContainer = styled.div`
   width: 100%;
   max-width: 500px;
   margin: 0 1rem;
-  left: 50%;
 `;
 
-const Content = styled.section`
+const ContentContainer = styled.section`
   height: calc(100vh - 90px);
-  overflow-x: scroll;
-  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem;
 `;
 
 export default Admin;
