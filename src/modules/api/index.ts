@@ -4,6 +4,7 @@ import HttpClient from "./core/HttpClient";
 import QueryStringBuilder from "./core/QueryStringBuilder";
 import StudentApiModelRequest from "./apiModelRequests/StudentApiModelRequest";
 import PaymentApiModelRequest from "./apiModelRequests/PaymentApiModelRequest";
+import YogaClassApiModelRequest from "./apiModelRequests/YogaClassApiModelRequest";
 
 const httpClient: HttpClient = new FetchHttpClient("http://localhost:8000");
 const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
@@ -17,6 +18,11 @@ export default {
   ),
   payment: new PaymentApiModelRequest(
     "/payments",
+    httpClient,
+    queryStringBuilder
+  ),
+  yogaClass: new YogaClassApiModelRequest(
+    "/yoga_classes",
     httpClient,
     queryStringBuilder
   )
