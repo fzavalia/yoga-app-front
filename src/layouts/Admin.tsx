@@ -42,6 +42,7 @@ const Header = styled.header`
   background-color: ${helpers.color.secondary};
   height: 90px;
   display: flex;
+  justify-content: center;
   align-items: center;
   box-shadow: 0 0 5px black;
 `;
@@ -49,16 +50,16 @@ const Header = styled.header`
 const HeaderLinksContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: auto;
   width: 100%;
-  padding: 0 1rem;
   max-width: 500px;
+  margin: 0 1rem;
   left: 50%;
 `;
 
 const Content = styled.section`
   height: calc(100vh - 90px);
   overflow-x: scroll;
+  padding: 1rem;
 `;
 
 export default Admin;

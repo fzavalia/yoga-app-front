@@ -46,7 +46,6 @@ export default (props: {
 
 const Container = styled.section`
   position: relative;
-  padding: 1rem;
   max-width: 500px;
   margin: auto;
 `;
