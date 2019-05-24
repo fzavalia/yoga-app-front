@@ -3,11 +3,16 @@ import { History } from "history";
 import { Formik } from "formik";
 import FormView from "./FormView";
 import { SubmittableStudent } from "../../../modules/api/apiModelRequests/StudentApiModelRequest";
+import { SubmittableYogaClass } from "../../../modules/api/apiModelRequests/YogaClassApiModelRequest";
+
+interface YogaClassFormValues {
+  date: 
+}
 
 export default (props: {
   history: History;
   title: string;
-  initialValues?: SubmittableStudent;
+  initialValues?: SubmittableYogaClass;
   submit: (values: SubmittableStudent) => Promise<void>;
 }) => {
   return (

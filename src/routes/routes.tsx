@@ -8,6 +8,8 @@ import BrowsePayments from "../views/payments/BrowsePayments";
 import CreatePayments from "../views/payments/CreatePayments";
 import UpdatePayments from "../views/payments/UpdatePayments";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
+import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
+import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
 
 export interface Route {
   path: string;
@@ -65,6 +67,20 @@ const routes: Route[] = [
     component: BrowseYogaClasses,
     name: "Clases",
     isModuleEntrypoint: true,
+    layout: Admin
+  },
+  {
+    path: "/yoga_classes/create",
+    component: CreateYogaClass,
+    name: "Clases",
+    isModuleEntrypoint: false,
+    layout: Admin
+  },
+  {
+    path: "/yoga_classes",
+    component: UpdateYogaClass,
+    name: "Clases",
+    isModuleEntrypoint: false,
     layout: Admin
   }
 ];
