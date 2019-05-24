@@ -7,6 +7,9 @@ export default class DateHelpers {
   normalizeAndFormat = (date: Date, format: string) =>
     _format(this.normalize(date), format);
 
+  normalizeAndFormatForView = (date: Date) =>
+    this.normalizeAndFormat(date, "DD-MMM-YYYY");
+
   normalizeAndFormatForInput = (date: Date) =>
     this.normalizeAndFormat(date, "YYYY-MM-DD");
 }

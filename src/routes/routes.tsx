@@ -7,6 +7,7 @@ import UpdateStudent from "../views/students/UpdateStudent";
 import BrowsePayments from "../views/payments/BrowsePayments";
 import CreatePayments from "../views/payments/CreatePayments";
 import UpdatePayments from "../views/payments/UpdatePayments";
+import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 
 export interface Route {
   path: string;
@@ -60,8 +61,8 @@ const routes: Route[] = [
     layout: Admin
   },
   {
-    path: "/classes",
-    component: (props: any) => <div>Classes</div>,
+    path: "/yoga_classes",
+    component: BrowseYogaClasses,
     name: "Clases",
     isModuleEntrypoint: true,
     layout: Admin
