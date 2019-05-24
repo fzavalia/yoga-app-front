@@ -1,4 +1,3 @@
-import React from "react";
 import Layout from "../layouts/Layout";
 import Admin from "../layouts/Admin";
 import BrowseStudents from "../views/students/BrowseStudents";
