@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Form from "./Form";
+import Form from "./PaymentForm";
 import { History } from "history";
 import api from "../../modules/api";
 

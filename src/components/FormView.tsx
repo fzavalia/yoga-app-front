@@ -1,4 +1,4 @@
-import React, { useState, Children } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import helpers from "../helpers";
 import { Formik, FormikProps } from "formik";
@@ -37,7 +37,7 @@ export class FormBuilder<T> {
           (formikProps.errors as FormErrors)[props.name]
       );
       return (
-        <div style={{ marginBottom: "1rem" }}>
+        <InputControl>
           <InputTitle>{props.label}</InputTitle>
           <NewInput
             value={(formikProps.values as any)[props.name]}
@@ -51,7 +51,38 @@ export class FormBuilder<T> {
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
           </InputError>
-        </div>
+        </InputControl>
+      );
+    });
+    return this;
+  };
+
+  withSelect = (props: {
+    name: string;
+    label: string;
+    options: { value: any; label: string }[];
+  }) => {
+    this.components.push(formikProps => {
+      const isInvalid = Boolean(
+        (formikProps.touched as any)[props.name] &&
+          (formikProps.errors as FormErrors)[props.name]
+      );
+      return (
+        <InputControl>
+          <InputTitle>{props.label}</InputTitle>
+          <NewSelect
+            name={props.name}
+            onChange={e =>
+              formikProps.setFieldValue(props.name, e.target.value)
+            }
+            invalid={isInvalid}
+            options={props.options}
+            value={(formikProps.values as any)[props.name]}
+          />
+          <InputError show={isInvalid}>
+            {(formikProps.errors as any)[props.name]}
+          </InputError>
+        </InputControl>
       );
     });
     return this;
@@ -136,6 +167,10 @@ const Title = (props: { children: any }) => (
   <h1 style={{ textAlign: "center" }}>{props.children}</h1>
 );
 
+const InputControl = (props: { children: any }) => (
+  <div style={{ marginBottom: "1rem" }}>{props.children}</div>
+);
+
 export const InputTitle = (props: { children: any }) => (
   <div style={{ color: helpers.color.secondary, fontSize: "0.8rem" }}>
     {props.children}
@@ -217,3 +252,51 @@ export const Select = (
     HTMLSelectElement
   >
 ) => <select style={{ ...sharedStyle, backgroundColor: "unset" }} {...props} />;
+
+const NewSelect = (props: {
+  name: string;
+  value: any;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: { value: any; label: string }[];
+  invalid?: boolean;
+}) => {
+  const [isFocus, setIsFocus] = useState(false);
+
+  let style: React.CSSProperties = {
+    width: "100%",
+    border: "unset",
+    fontSize: "1rem",
+    height: "2rem",
+    borderBottom: "solid 1px " + helpers.color.secondary,
+    transition: "border-bottom-color 500ms",
+    backgroundColor: "unset"
+  };
+
+  if (isFocus) {
+    style.outline = "unset";
+    style.borderBottomColor = helpers.color.secondaryLight;
+  }
+
+  if (props.invalid) {
+    style.borderBottomColor = helpers.color.danger;
+  }
+
+  return (
+    <select
+      name={props.name}
+      value={props.value}
+      style={style}
+      onFocus={() => setIsFocus(true)}
+      onBlur={() => setIsFocus(false)}
+      onChange={props.onChange}
+    >
+      {props.options.map((o, k) => {
+        return (
+          <option key={k} value={o.value}>
+            {o.label}
+          </option>
+        );
+      })}
+    </select>
+  );
+};

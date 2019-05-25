@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Form from "./Form";
+import Form from "./PaymentForm";
 import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
@@ -43,5 +43,5 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
       submit={values => api.payment.update(payment.id, values)}
       studentOptions={studentOptions}
     />
-  );  
+  );
 };
