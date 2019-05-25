@@ -1,8 +1,6 @@
 import React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import routes from "../routes/routes";
-import styled from "styled-components";
-import classnames from "classnames";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
@@ -23,9 +21,7 @@ const Admin: Layout = (props: {
                   main: helpers.color.primary,
                   selected: helpers.color.primaryLight
                 }}
-                className={classnames({
-                  selected: window.location.pathname.startsWith(route.path)
-                })}
+                selected={window.location.pathname.startsWith(route.path)}
               >
                 {route.name}
               </Button>
@@ -39,35 +35,59 @@ const Admin: Layout = (props: {
   </>
 );
 
-const Header = styled.header`
-  width: 100%;
-  background-color: ${helpers.color.secondary};
-  height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 5px black;
-`;
+const Header = (props: { children: any }) => (
+  <header
+    style={{
+      width: "100%",
+      backgroundColor: helpers.color.secondary,
+      height: 90,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      boxShadow: "0 0 5px black"
+    }}
+  >
+    {props.children}
+  </header>
+);
 
-const HeaderLinksContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 1rem;
-`;
+const HeaderLinksContainer = (props: { children: any }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      width: "100%",
+      maxWidth: "500px",
+      margin: "0 1rem"
+    }}
+  >
+    {props.children}
+  </div>
+);
 
-const ContentContainer = styled.section`
-  height: calc(100vh - 90px);
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-`;
+const ContentContainer = (props: { children: any }) => (
+  <section
+    style={{
+      height: "calc(100vh - 90px)",
+      overflowY: "auto",
+      display: "flex",
+      justifyContent: "center"
+    }}
+  >
+    {props.children}
+  </section>
+);
 
-const Content = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem;
-`;
+const Content = (props: { children: any }) => (
+  <div
+    style={{
+      width: "100%",
+      maxWidth: "500px",
+      margin: "1rem"
+    }}
+  >
+    {props.children}
+  </div>
+);
 
 export default Admin;

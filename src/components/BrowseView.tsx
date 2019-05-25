@@ -1,7 +1,6 @@
 import React from "react";
-import Button from "./Button";
 import helpers from "../helpers";
-import styled from "styled-components";
+import Button from "./Button";
 
 export default (props: {
   items: any[];
@@ -14,7 +13,7 @@ export default (props: {
 }) => (
   <>
     <CreateButton onClick={props.onCreateClick} />
-    <ItemsContainer>
+    <ul>
       {props.items.map((item, key) => {
         const mapped = props.mapItem(item);
         return (
@@ -40,7 +39,7 @@ export default (props: {
           </Item>
         );
       })}
-    </ItemsContainer>
+    </ul>
   </>
 );
 
@@ -57,25 +56,25 @@ const CreateButton = (props: { onClick: () => void }) => (
   </Button>
 );
 
-const ItemsContainer = styled.ul``;
+const Item = (props: { children: any }) => (
+  <li style={{ padding: `0 0 1rem`, borderBottom: "solid 1px" }}>
+    {props.children}
+  </li>
+);
 
-const Item = styled.li`
-  padding: 0 0 1rem;
-  border-bottom: solid 1px;
-`;
+const ItemValue = (props: { children: any }) => (
+  <div style={{ display: "flex", justifyContent: "space-between" }}>
+    {props.children}
+  </div>
+);
 
-const ItemValue = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ItemButtonsContainer = styled.div`
-  text-align: right;
-`;
+const ItemButtonsContainer = (props: { children: any }) => (
+  <div style={{ textAlign: "right" }}>{props.children}</div>
+);
 
 const ItemButton = (props: { onClick: () => void; children: any }) => (
   <Button
-    className="sm"
+    size="sm"
     style={{ marginLeft: "1rem" }}
     colors={{ main: helpers.color.secondary }}
     onClick={props.onClick}

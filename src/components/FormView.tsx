@@ -1,5 +1,4 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import Button from "./Button";
 import helpers from "../helpers";
 
@@ -15,15 +14,15 @@ export default (props: {
       <form onSubmit={e => e.preventDefault()}>
         {props.children}
         <Button
-          className="sm"
+          size="sm"
           colors={{ main: helpers.color.secondary }}
           onClick={props.onCancel}
         >
           Cancelar
         </Button>
         <Button
+          size="sm"
           style={{ float: "right" }}
-          className="sm"
           colors={{ main: helpers.color.secondary }}
           onClick={props.onSubmit}
         >
@@ -34,37 +33,52 @@ export default (props: {
   );
 };
 
-const Title = styled.h1`
-  text-align: center;
-`;
+const Title = (props: { children: any }) => (
+  <h1 style={{ textAlign: "center" }}>{props.children}</h1>
+);
 
-export const InputTitle = styled.div`
-  color: ${helpers.color.secondary}
-  font-size: 0.8rem;
-`;
+export const InputTitle = (props: { children: any }) => (
+  <div style={{ color: helpers.color.secondary, fontSize: "0.8rem" }}>
+    {props.children}
+  </div>
+);
 
-const sharedStyle = css`
-  width: 100%;
-  border: unset;
-  font-size: 1rem;
-  height: 2rem;
-  border-bottom: solid 1px ${helpers.color.secondary};
-  margin-bottom: 1rem;
-  transition: border-bottom-color 500ms;
-  &.invalid {
-    border-bottom-color: ${helpers.color.danger};
-  }
-  &:focus {
-    outline: unset;
-    border-bottom-color: ${helpers.color.secondaryLight};
-  }
-`;
+const sharedStyle: React.CSSProperties = {
+  width: "100%",
+  border: "unset",
+  fontSize: "1rem",
+  height: "2rem",
+  borderBottom: "solid 1px " + helpers.color.secondary,
+  marginBottom: "1rem",
+  transition: "border-bottom-color 500ms"
+};
+// css`
+//   width: 100%;
+//   border: unset;
+//   font-size: 1rem;
+//   height: 2rem;
+//   border-bottom: solid 1px ${helpers.color.secondary};
+//   margin-bottom: 1rem;
+//   transition: border-bottom-color 500ms;
+//   &.invalid {
+//     border-bottom-color: ${helpers.color.danger};
+//   }
+//   &:focus {
+//     outline: unset;
+//     border-bottom-color: ${helpers.color.secondaryLight};
+//   }
+// `;
 
-export const Input = styled.input`
-  ${sharedStyle}
-`;
+export const Input = (
+  props: React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >
+) => <input style={sharedStyle} {...props} />;
 
-export const Select = styled.select`
-  ${sharedStyle}
-  background-color: unset;
-`;
+export const Select = (
+  props: React.DetailedHTMLProps<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  >
+) => <select style={{ ...sharedStyle, backgroundColor: "unset" }} {...props} />;
