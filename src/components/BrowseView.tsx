@@ -21,7 +21,7 @@ export default (props: {
             <h3>{mapped.title}</h3>
             <section>
               {mapped.props.map((prop, key) => (
-                <ItemValue>
+                <ItemValue key={key}>
                   <span>{prop.label}: </span>
                   <span>{prop.value}</span>
                 </ItemValue>
