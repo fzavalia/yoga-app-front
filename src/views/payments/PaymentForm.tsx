@@ -9,7 +9,7 @@ import api from "../../modules/api";
 
 interface PaymentFormValues {
   amount: number;
-  type: PaymentType;
+  type?: PaymentType;
   payedAt?: string;
   studentId?: number;
 }
@@ -36,16 +36,15 @@ export default (props: PaymentFormProps) => {
   }, []);
 
   const defaultInitialValues: PaymentFormValues = {
-    amount: 0,
-    type: PaymentType.CASH
+    amount: 0
   };
 
   const submit = (values: PaymentFormValues) => {
     const mapped: SubmittablePayment = {
       amount: values.amount,
       payedAt: values.payedAt ? new Date(values.payedAt) : new Date(),
-      studentId: values.studentId ? values.studentId : -1,
-      type: values.type
+      studentId: values.studentId || -1,
+      type: values.type || PaymentType.CASH
     };
     return props.submit(mapped);
   };
@@ -54,7 +53,7 @@ export default (props: PaymentFormProps) => {
     initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     title: props.title,
-    submit,
+    submit
   })
     .withInput({ name: "amount", type: "number", label: "Cantidad" })
     .withInput({ name: "payedAt", type: "date", label: "Fecha del Pago" })
