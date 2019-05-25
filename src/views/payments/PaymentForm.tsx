@@ -3,32 +3,41 @@ import {
   SubmittablePayment,
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder";
+import FormBuilder from "../../components/FormBuilder";
+import { useState, useEffect } from "react";
+import api from "../../modules/api";
 
-export interface PaymentFormValues {
+interface PaymentFormValues {
   amount: number;
   type: PaymentType;
   payedAt?: string;
   studentId?: number;
 }
 
-export default (props: {
+interface PaymentFormProps {
   history: History;
   title: string;
   initialValues?: PaymentFormValues;
-  studentOptions: { value: number; label: string }[];
   submit: (values: SubmittablePayment) => Promise<void>;
-}) => {
+}
+
+export default (props: PaymentFormProps) => {
+  const [studentOptions, setStudentOptions] = useState<
+    { value: number; label: string }[]
+  >([]);
+
+  useEffect(() => {
+    api.student
+      .list()
+      .then(students =>
+        students.map(student => ({ value: student.id, label: student.name }))
+      )
+      .then(setStudentOptions);
+  }, []);
+
   const defaultInitialValues: PaymentFormValues = {
     amount: 0,
-    payedAt: undefined,
-    studentId: undefined,
     type: PaymentType.CASH
-  };
-
-  const validate = (values: PaymentFormValues) => {
-    const errors: FormErrors = {};
-    return errors;
   };
 
   const submit = (values: PaymentFormValues) => {
@@ -46,14 +55,13 @@ export default (props: {
     cancel: () => props.history.goBack(),
     title: props.title,
     submit,
-    validate
   })
     .withInput({ name: "amount", type: "number", label: "Cantidad" })
     .withInput({ name: "payedAt", type: "date", label: "Fecha del Pago" })
     .withSelect({
       name: "studentId",
       label: "Alumno",
-      options: props.studentOptions
+      options: studentOptions
     })
     .withSelect({
       name: "type",

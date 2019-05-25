@@ -60,7 +60,7 @@ export default class FormBuilder<T> {
   withSelect = (props: {
     name: string;
     label: string;
-    options: { value: any; label: string }[];
+    options: SelectOptions;
   }) => {
     this.components.push(formikProps => {
       const isInvalid = Boolean(
@@ -196,11 +196,13 @@ const Input = (props: {
   );
 };
 
+type SelectOptions = { value: any; label: string }[];
+
 const Select = (props: {
   name: string;
   value: any;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: { value: any; label: string }[];
+  options: SelectOptions;
   invalid?: boolean;
 }) => {
   const [isFocus, setIsFocus] = useState(false);

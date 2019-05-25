@@ -13,20 +13,7 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
     api.payment.show(parseInt(props.match.params.id)).then(setPayment);
   }, [props.match.params.id]);
 
-  const [studentOptions, setStudentOptions] = useState<
-    { value: number; label: string }[] | undefined
-  >();
-
-  useEffect(() => {
-    api.student
-      .list()
-      .then(students =>
-        students.map(student => ({ value: student.id, label: student.name }))
-      )
-      .then(setStudentOptions);
-  }, []);
-
-  if (!payment || !studentOptions) {
+  if (!payment) {
     return null;
   }
 
@@ -41,7 +28,6 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
         type: payment.type
       }}
       submit={values => api.payment.update(payment.id, values)}
-      studentOptions={studentOptions}
     />
   );
 };
