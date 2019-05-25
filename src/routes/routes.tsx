@@ -4,8 +4,8 @@ import BrowseStudents from "../views/students/BrowseStudents";
 import CreateStudent from "../views/students/CreateStudent";
 import UpdateStudent from "../views/students/UpdateStudent";
 import BrowsePayments from "../views/payments/BrowsePayments";
-import CreatePayments from "../views/payments/CreatePayments";
-import UpdatePayments from "../views/payments/UpdatePayments";
+import CreatePayments from "../views/payments/CreatePayment";
+import UpdatePayments from "../views/payments/UpdatePayment";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 
 export interface Route {
