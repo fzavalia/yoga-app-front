@@ -19,7 +19,7 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
 
   return (
     <Form
-      title="Actualizar Alumno"
+      title="Actualizar Pago"
       history={props.history}
       initialValues={{
         amount: payment.amount,
