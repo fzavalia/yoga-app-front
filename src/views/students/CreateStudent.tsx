@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "./Form";
+import Form from "./StudentForm";
 import { History } from "history";
 import api from "../../modules/api";
 
