@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Form from "./StudentForm";
+import StudentForm from "./StudentForm";
 import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
@@ -16,7 +16,7 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
   }
 
   return (
-    <Form
+    <StudentForm
       title="Actualizar Alumno"
       history={props.history}
       initialValues={student}

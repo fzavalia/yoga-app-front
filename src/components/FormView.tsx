@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, Children } from "react";
 import Button from "./Button";
 import helpers from "../helpers";
 import { Formik, FormikProps } from "formik";
 
-type Errors = {
+export type FormErrors = {
   [error: string]: string;
 };
 
@@ -12,7 +12,7 @@ export class FormBuilder<T> {
   private title: string;
   private submit: (values: T) => Promise<void>;
   private cancel: () => void;
-  private validate?: (values: T) => Errors;
+  private validate?: (values: T) => FormErrors;
 
   private components: ((props: FormikProps<T>) => JSX.Element)[] = [];
 
@@ -21,7 +21,7 @@ export class FormBuilder<T> {
     title: string;
     submit: (values: T) => Promise<void>;
     cancel: () => void;
-    validate?: (values: T) => Errors;
+    validate?: (values: T) => FormErrors;
   }) {
     this.initial = props.initial;
     this.title = props.title;
@@ -34,10 +34,10 @@ export class FormBuilder<T> {
     this.components.push(formikProps => {
       const isInvalid = Boolean(
         (formikProps.touched as any)[props.name] &&
-          (formikProps.errors as Errors)[props.name]
+          (formikProps.errors as FormErrors)[props.name]
       );
       return (
-        <>
+        <div style={{ marginBottom: "1rem" }}>
           <InputTitle>{props.label}</InputTitle>
           <NewInput
             value={(formikProps.values as any)[props.name]}
@@ -48,7 +48,10 @@ export class FormBuilder<T> {
               formikProps.setFieldValue(props.name, e.target.value)
             }
           />
-        </>
+          <InputError show={isInvalid}>
+            {(formikProps.errors as any)[props.name]}
+          </InputError>
+        </div>
       );
     });
     return this;
@@ -139,6 +142,19 @@ export const InputTitle = (props: { children: any }) => (
   </div>
 );
 
+const InputError = (props: { show: boolean; children: any }) => {
+  let style: React.CSSProperties = {
+    opacity: 0,
+    fontSize: "0.8rem",
+    color: helpers.color.danger,
+    transition: "opacity 500ms"
+  };
+  if (props.show) {
+    style.opacity = 1;
+  }
+  return <label style={style}>{props.children}</label>;
+};
+
 const sharedStyle: React.CSSProperties = {
   width: "100%",
   border: "unset",
@@ -148,22 +164,6 @@ const sharedStyle: React.CSSProperties = {
   marginBottom: "1rem",
   transition: "border-bottom-color 500ms"
 };
-// css`
-//   width: 100%;
-//   border: unset;
-//   font-size: 1rem;
-//   height: 2rem;
-//   border-bottom: solid 1px ${helpers.color.secondary};
-//   margin-bottom: 1rem;
-//   transition: border-bottom-color 500ms;
-//   &.invalid {
-//     border-bottom-color: ${helpers.color.danger};
-//   }
-//   &:focus {
-//     outline: unset;
-//     border-bottom-color: ${helpers.color.secondaryLight};
-//   }
-// `;
 
 export const Input = (
   props: React.DetailedHTMLProps<
@@ -187,7 +187,6 @@ const NewInput = (props: {
     fontSize: "1rem",
     height: "2rem",
     borderBottom: "solid 1px " + helpers.color.secondary,
-    marginBottom: "1rem",
     transition: "border-bottom-color 500ms"
   };
 

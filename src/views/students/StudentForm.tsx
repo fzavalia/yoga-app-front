@@ -1,6 +1,6 @@
 import { History } from "history";
 import { SubmittableStudent } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
-import { FormBuilder } from "../../components/FormView";
+import { FormBuilder, FormErrors } from "../../components/FormView";
 
 export default (props: {
   history: History;
@@ -8,15 +8,31 @@ export default (props: {
   initialValues?: SubmittableStudent;
   submit: (values: SubmittableStudent) => Promise<void>;
 }) => {
+  const defaultInitialValues: SubmittableStudent = {
+    dni: "",
+    email: "",
+    name: "",
+    phoneNumber: ""
+  };
+
+  const validate = (values: SubmittableStudent) => {
+    const errors: FormErrors = {};
+    if (!values.name) {
+      errors.name = "Requerido";
+    }
+    return errors;
+  };
+
   return new FormBuilder<SubmittableStudent>({
-    initial: props.initialValues || { dni: "", email: "", name: "", phoneNumber: "" },
+    initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     submit: props.submit,
-    title: props.title
+    title: props.title,
+    validate
   })
-    .withInput({ name: "name", type: "text", label: "Nombre" })
-    .withInput({ name: "email", type: "text", label: "Email" })
-    .withInput({ name: "phoneNumber", type: "text", label: "Telefono" })
-    .withInput({ name: "dni", type: "text", label: "DNI" })
+    .withInput({ name: "name", label: "Nombre" })
+    .withInput({ name: "email", label: "Email" })
+    .withInput({ name: "phoneNumber", label: "Telefono" })
+    .withInput({ name: "dni", label: "DNI" })
     .build();
 };
