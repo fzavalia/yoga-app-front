@@ -3,7 +3,7 @@ import {
   SubmittablePayment,
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
-import { FormBuilder, FormErrors } from "../../components/FormView";
+import FormBuilder, { FormErrors } from "../../components/FormBuilder";
 
 export interface PaymentFormValues {
   amount: number;

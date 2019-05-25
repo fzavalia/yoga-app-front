@@ -7,7 +7,7 @@ export type FormErrors = {
   [error: string]: string;
 };
 
-export class FormBuilder<T> {
+export default class FormBuilder<T> {
   private initial: T;
   private title: string;
   private submit: (values: T) => Promise<void>;
@@ -37,9 +37,9 @@ export class FormBuilder<T> {
           (formikProps.errors as FormErrors)[props.name]
       );
       return (
-        <InputControl>
-          <InputTitle>{props.label}</InputTitle>
-          <NewInput
+        <InputContainer>
+          <InputName>{props.label}</InputName>
+          <Input
             value={(formikProps.values as any)[props.name]}
             name={props.name}
             type={props.type || "text"}
@@ -51,7 +51,7 @@ export class FormBuilder<T> {
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
           </InputError>
-        </InputControl>
+        </InputContainer>
       );
     });
     return this;
@@ -68,9 +68,9 @@ export class FormBuilder<T> {
           (formikProps.errors as FormErrors)[props.name]
       );
       return (
-        <InputControl>
-          <InputTitle>{props.label}</InputTitle>
-          <NewSelect
+        <InputContainer>
+          <InputName>{props.label}</InputName>
+          <Select
             name={props.name}
             onChange={e =>
               formikProps.setFieldValue(props.name, e.target.value)
@@ -82,7 +82,7 @@ export class FormBuilder<T> {
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
           </InputError>
-        </InputControl>
+        </InputContainer>
       );
     });
     return this;
@@ -103,7 +103,7 @@ export class FormBuilder<T> {
         {formikProps => {
           return (
             <>
-              <Title>{this.title}</Title>
+              <FormTitle>{this.title}</FormTitle>
               <form onSubmit={e => e.preventDefault()}>
                 {this.components.map(c => c(formikProps))}
                 <Button
@@ -130,48 +130,15 @@ export class FormBuilder<T> {
   };
 }
 
-const FormView = (props: {
-  title: string;
-  children: any;
-  onCancel: () => void;
-  onSubmit: () => void;
-}) => {
-  return (
-    <>
-      <Title>{props.title}</Title>
-      <form onSubmit={e => e.preventDefault()}>
-        {props.children}
-        <Button
-          size="sm"
-          colors={{ main: helpers.color.secondary }}
-          onClick={props.onCancel}
-        >
-          Cancelar
-        </Button>
-        <Button
-          size="sm"
-          style={{ float: "right" }}
-          colors={{ main: helpers.color.secondary }}
-          onClick={props.onSubmit}
-        >
-          Enviar
-        </Button>
-      </form>
-    </>
-  );
-};
-
-export default FormView;
-
-const Title = (props: { children: any }) => (
+const FormTitle = (props: { children: any }) => (
   <h1 style={{ textAlign: "center" }}>{props.children}</h1>
 );
 
-const InputControl = (props: { children: any }) => (
+const InputContainer = (props: { children: any }) => (
   <div style={{ marginBottom: "1rem" }}>{props.children}</div>
 );
 
-export const InputTitle = (props: { children: any }) => (
+const InputName = (props: { children: any }) => (
   <div style={{ color: helpers.color.secondary, fontSize: "0.8rem" }}>
     {props.children}
   </div>
@@ -190,24 +157,7 @@ const InputError = (props: { show: boolean; children: any }) => {
   return <label style={style}>{props.children}</label>;
 };
 
-const sharedStyle: React.CSSProperties = {
-  width: "100%",
-  border: "unset",
-  fontSize: "1rem",
-  height: "2rem",
-  borderBottom: "solid 1px " + helpers.color.secondary,
-  marginBottom: "1rem",
-  transition: "border-bottom-color 500ms"
-};
-
-export const Input = (
-  props: React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
-) => <input style={sharedStyle} {...props} />;
-
-const NewInput = (props: {
+const Input = (props: {
   name: string;
   type: string;
   value: any;
@@ -246,14 +196,7 @@ const NewInput = (props: {
   );
 };
 
-export const Select = (
-  props: React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  >
-) => <select style={{ ...sharedStyle, backgroundColor: "unset" }} {...props} />;
-
-const NewSelect = (props: {
+const Select = (props: {
   name: string;
   value: any;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
