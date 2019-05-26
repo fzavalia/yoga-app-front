@@ -8,6 +8,7 @@ import CreatePayments from "../views/payments/CreatePayment";
 import UpdatePayments from "../views/payments/UpdatePayment";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
+import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
 
 export interface Route {
   path: string;
@@ -71,6 +72,13 @@ const routes: Route[] = [
     path: "/yoga_classes/create",
     component: CreateYogaClass,
     name: "Crear Clase",
+    isModuleEntrypoint: false,
+    layout: Admin
+  },
+  {
+    path: "/yoga_classes/update/:id",
+    component: UpdateYogaClass,
+    name: "Actualizar Clase",
     isModuleEntrypoint: false,
     layout: Admin
   }
