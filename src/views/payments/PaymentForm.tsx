@@ -7,6 +7,7 @@ import FormBuilder from "../../components/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import helpers from "../../helpers";
+import { FormErrors } from "../../components/FormBuilder/FormBuilder";
 
 interface PaymentFormValues {
   amount: number;
@@ -38,7 +39,9 @@ export default (props: PaymentFormProps) => {
 
   const defaultInitialValues: PaymentFormValues = {
     amount: 0,
-    payedAt: helpers.date.formatForInput(new Date())
+    payedAt: helpers.date.formatForInput(new Date()),
+    studentId: undefined,
+    type: undefined
   };
 
   const submit = (values: PaymentFormValues) => {
@@ -55,7 +58,23 @@ export default (props: PaymentFormProps) => {
     initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     title: props.title,
-    submit
+    submit,
+    validate: values => {
+      const errors: FormErrors = {};
+      if (!values.payedAt) {
+        errors.payedAt = "Requerido";
+      }
+      if (!values.studentId) {
+        errors.studentId = "Requerido";
+      }
+      if (!values.type) {
+        errors.type = "Requerido";
+      }
+      if (values.amount <= 0) {
+        errors.amount = "Mayor a 0";
+      }
+      return errors;
+    }
   })
     .withInput({ name: "amount", type: "number", label: "Cantidad" })
     .withInput({ name: "payedAt", type: "date", label: "Fecha del Pago" })

@@ -3,6 +3,7 @@ import FormBuilder from "../../components/FormBuilder";
 import helpers from "../../helpers";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
+import { FormErrors } from "../../components/FormBuilder/FormBuilder";
 
 interface YogaClassFormValues {
   date: string;
@@ -39,7 +40,14 @@ export default (props: {
     initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     submit: props.submit,
-    title: props.title
+    title: props.title,
+    validate: values => {
+      const errors: FormErrors = {};
+      if (!values.date) {
+        errors.date = "Requerido";
+      }
+      return errors;
+    }
   })
     .withInput({ name: "date", type: "date", label: "Fecha" })
     .withMultiSelect({
