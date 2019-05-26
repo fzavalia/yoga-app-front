@@ -36,18 +36,20 @@ export default (props: {
     selectedStudentIds: []
   };
 
+  const validate = (values: YogaClassFormValues) => {
+    const errors: FormErrors = {};
+    if (!values.date) {
+      errors.date = "Requerido";
+    }
+    return errors;
+  };
+
   return new FormBuilder<YogaClassFormValues>({
     initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     submit: props.submit,
     title: props.title,
-    validate: values => {
-      const errors: FormErrors = {};
-      if (!values.date) {
-        errors.date = "Requerido";
-      }
-      return errors;
-    }
+    validate
   })
     .withInput({ name: "date", type: "date", label: "Fecha" })
     .withMultiSelect({

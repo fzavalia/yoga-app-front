@@ -54,27 +54,29 @@ export default (props: PaymentFormProps) => {
     return props.submit(mapped);
   };
 
+  const validate = (values: PaymentFormValues) => {
+    const errors: FormErrors = {};
+    if (!values.payedAt) {
+      errors.payedAt = "Requerido";
+    }
+    if (!values.studentId) {
+      errors.studentId = "Requerido";
+    }
+    if (!values.type) {
+      errors.type = "Requerido";
+    }
+    if (values.amount <= 0) {
+      errors.amount = "Mayor a 0";
+    }
+    return errors;
+  };
+
   return new FormBuilder<PaymentFormValues>({
     initial: props.initialValues || defaultInitialValues,
     cancel: () => props.history.goBack(),
     title: props.title,
     submit,
-    validate: values => {
-      const errors: FormErrors = {};
-      if (!values.payedAt) {
-        errors.payedAt = "Requerido";
-      }
-      if (!values.studentId) {
-        errors.studentId = "Requerido";
-      }
-      if (!values.type) {
-        errors.type = "Requerido";
-      }
-      if (values.amount <= 0) {
-        errors.amount = "Mayor a 0";
-      }
-      return errors;
-    }
+    validate
   })
     .withInput({ name: "amount", type: "number", label: "Cantidad" })
     .withInput({ name: "payedAt", type: "date", label: "Fecha del Pago" })
