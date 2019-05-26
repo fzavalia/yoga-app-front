@@ -276,7 +276,7 @@ const MultiSelect = (props: {
       {props.values.map((value, key) => {
         const match = helpers.array.findOrFail<SelectOption>(
           props.options,
-          o => o.value == value
+          o => o.value === value
         );
         return (
           <div
@@ -284,7 +284,7 @@ const MultiSelect = (props: {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              margin: '0.5rem'
+              margin: "0.5rem"
             }}
             key={key}
           >
