@@ -3,9 +3,10 @@ import StudentForm from "./StudentForm";
 import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
+import { Student } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
 
 export default (props: { history: History; match: match<{ id: string }> }) => {
-  const [student, setStudent] = useState();
+  const [student, setStudent] = useState<Student>();
 
   useEffect(() => {
     api.student.show(parseInt(props.match.params.id)).then(setStudent);
