@@ -53,12 +53,12 @@ export default abstract class ApiModelRequest<Model, Submittable> {
 
   create = (student: Submittable) =>
     this.httpClient.fetch(this.basePath, Method.POST, {
-      body: { type: BodyType.JSON, args: this.mapModelForApi(student) }
+      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) }
     });
 
   update = (id: number, student: Submittable) =>
     this.httpClient.fetch(`${this.basePath}/${id}`, Method.PUT, {
-      body: { type: BodyType.JSON, args: this.mapModelForApi(student) }
+      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) }
     });
 
   delete = (id: number) =>
@@ -66,5 +66,5 @@ export default abstract class ApiModelRequest<Model, Submittable> {
 
   protected abstract mapModelFromApi: (model: any) => Model;
 
-  protected abstract mapModelForApi: (model: Submittable) => any;
+  protected abstract mapSubmittableForApi: (model: Submittable) => any;
 }

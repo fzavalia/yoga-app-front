@@ -24,7 +24,7 @@ export default class YogaClassApiModelRequest extends ApiModelRequest<
       : undefined
   });
 
-  protected mapModelForApi = (model: SubmittableYogaClass) => {
+  protected mapSubmittableForApi = (model: SubmittableYogaClass) => {
     const res: any = {};
     res.date = model.date;
     res.student_ids = model.studentIds;

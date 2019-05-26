@@ -29,7 +29,7 @@ export default class StudentApiModelRequest extends ApiModelRequest<
 
   protected mapModelFromApi = StudentApiModelRequest.mapModelFromApi;
 
-  protected mapModelForApi = (model: SubmittableStudent) => {
+  protected mapSubmittableForApi = (model: SubmittableStudent) => {
     const res: any = {};
     if (model.phoneNumber) {
       res.phone_number = model.phoneNumber;

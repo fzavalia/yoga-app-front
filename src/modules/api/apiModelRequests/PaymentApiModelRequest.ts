@@ -42,7 +42,7 @@ export default class PaymentApiModelRequest extends ApiModelRequest<
     };
   };
 
-  protected mapModelForApi: (model: SubmittablePayment) => any = model => {
+  protected mapSubmittableForApi: (model: SubmittablePayment) => any = model => {
     const res: any = {};
     res.amount = model.amount;
     res.payed_at = model.payedAt;
