@@ -27,7 +27,7 @@ export default (props: {
   }, []);
 
   if (!studentOptions) {
-    return null
+    return null;
   }
 
   const defaultInitialValues: YogaClassFormValues = {
