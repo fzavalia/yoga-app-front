@@ -7,6 +7,7 @@ import BrowsePayments from "../views/payments/BrowsePayments";
 import CreatePayments from "../views/payments/CreatePayment";
 import UpdatePayments from "../views/payments/UpdatePayment";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
+import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 
 export interface Route {
   path: string;
@@ -25,16 +26,16 @@ const routes: Route[] = [
     layout: Admin
   },
   {
-    path: "/students/update/:id",
-    component: UpdateStudent,
-    name: "Alumnos",
+    path: "/students/create",
+    component: CreateStudent,
+    name: "Crear Alumno",
     isModuleEntrypoint: false,
     layout: Admin
   },
   {
-    path: "/students/create",
-    component: CreateStudent,
-    name: "Alumnos",
+    path: "/students/update/:id",
+    component: UpdateStudent,
+    name: "Actualizar Alumno",
     isModuleEntrypoint: false,
     layout: Admin
   },
@@ -48,14 +49,14 @@ const routes: Route[] = [
   {
     path: "/payments/create",
     component: CreatePayments,
-    name: "Alumnos",
+    name: "Crear Pago",
     isModuleEntrypoint: false,
     layout: Admin
   },
   {
     path: "/payments/update/:id",
     component: UpdatePayments,
-    name: "Alumnos",
+    name: "Editar Pago",
     isModuleEntrypoint: false,
     layout: Admin
   },
@@ -64,6 +65,13 @@ const routes: Route[] = [
     component: BrowseYogaClasses,
     name: "Clases",
     isModuleEntrypoint: true,
+    layout: Admin
+  },
+  {
+    path: "/yoga_classes/create",
+    component: CreateYogaClass,
+    name: "Crear Clase",
+    isModuleEntrypoint: false,
     layout: Admin
   }
 ];

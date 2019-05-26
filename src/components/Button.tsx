@@ -3,7 +3,7 @@ import React, { useState } from "react";
 type ButtonProps = {
   colors: { main: string; selected?: string };
   children?: any;
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
   style?: React.CSSProperties;
   selected?: boolean;
   onClick?: () => void;
@@ -30,17 +30,28 @@ const makeStyle = (props: ButtonProps, isHover: boolean) => {
     color: props.colors.main,
     border: "1px solid " + props.colors.main,
     borderRadius: "5px",
-    padding: "0.7rem 1rem",
     cursor: "pointer",
     transition: "color 500ms, border-color 500ms"
   };
+
   if (props.selected || isHover) {
     style.borderColor = props.colors.selected || props.colors.main;
     style.color = props.colors.selected || props.colors.main;
   }
-  style = { ...style, ...(props.style || {}) };
-  if (props.size === "sm") {
-    style.padding = "0.4rem 0.7rem";
+
+  switch (props.size) {
+    case "xs":
+      style.padding = "0.2rem 0.4rem";
+      break;
+    case "sm":
+      style.padding = "0.4rem 0.7rem";
+      break;
+    default:
+      style.padding = "0.7rem 1rem";
+      break;
   }
+
+  style = { ...style, ...(props.style || {}) };
+
   return style;
 };

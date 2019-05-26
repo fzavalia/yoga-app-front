@@ -60,7 +60,7 @@ export default class FormBuilder<T> {
   withSelect = (props: {
     name: string;
     label: string;
-    options: SelectOptions;
+    options: SelectOption[];
   }) => {
     this.components.push(formikProps => {
       const isInvalid = Boolean(
@@ -78,6 +78,35 @@ export default class FormBuilder<T> {
             invalid={isInvalid}
             options={props.options}
             value={(formikProps.values as any)[props.name]}
+          />
+          <InputError show={isInvalid}>
+            {(formikProps.errors as any)[props.name]}
+          </InputError>
+        </InputContainer>
+      );
+    });
+    return this;
+  };
+
+  withMultiSelect = (props: {
+    name: string;
+    label: string;
+    options: SelectOption[];
+  }) => {
+    this.components.push(formikProps => {
+      const isInvalid = Boolean(
+        (formikProps.touched as any)[props.name] &&
+          (formikProps.errors as FormErrors)[props.name]
+      );
+      return (
+        <InputContainer>
+          <InputName>{props.label}</InputName>
+          <MultiSelect
+            name={props.name}
+            onChange={formikProps.setFieldValue}
+            values={(formikProps.values as any)[props.name]}
+            invalid={isInvalid}
+            options={props.options}
           />
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
@@ -164,25 +193,12 @@ const Input = (props: {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   invalid?: boolean;
 }) => {
-  const [isFocus, setIsFocus] = useState(false);
+  const [focused, setFocused] = useState(false);
 
-  let style: React.CSSProperties = {
-    width: "100%",
-    border: "unset",
-    fontSize: "1rem",
-    height: "2rem",
-    borderBottom: "solid 1px " + helpers.color.secondary,
-    transition: "border-bottom-color 500ms"
-  };
-
-  if (isFocus) {
-    style.outline = "unset";
-    style.borderBottomColor = helpers.color.secondaryLight;
-  }
-
-  if (props.invalid) {
-    style.borderBottomColor = helpers.color.danger;
-  }
+  let style: React.CSSProperties = makeSharedStyle({
+    focused,
+    invalid: props.invalid
+  });
 
   return (
     <input
@@ -190,52 +206,41 @@ const Input = (props: {
       style={style}
       onChange={props.onChange}
       value={props.value}
-      onFocus={() => setIsFocus(true)}
-      onBlur={() => setIsFocus(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
     />
   );
 };
 
-type SelectOptions = { value: any; label: string }[];
+type SelectOption = { value: any; label: string };
 
 const Select = (props: {
   name: string;
   value: any;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: SelectOptions;
+  options: SelectOption[];
   invalid?: boolean;
 }) => {
-  const [isFocus, setIsFocus] = useState(false);
+  const [focused, setFocused] = useState(false);
 
-  let style: React.CSSProperties = {
-    width: "100%",
-    border: "unset",
-    fontSize: "1rem",
-    height: "2rem",
-    borderBottom: "solid 1px " + helpers.color.secondary,
-    transition: "border-bottom-color 500ms",
-    backgroundColor: "unset"
-  };
-
-  if (isFocus) {
-    style.outline = "unset";
-    style.borderBottomColor = helpers.color.secondaryLight;
-  }
-
-  if (props.invalid) {
-    style.borderBottomColor = helpers.color.danger;
-  }
+  let style: React.CSSProperties = makeSharedStyle({
+    focused: focused,
+    invalid: props.invalid
+  });
+  style.backgroundColor = "unset";
 
   return (
     <select
       name={props.name}
       value={props.value}
       style={style}
-      onFocus={() => setIsFocus(true)}
-      onBlur={() => setIsFocus(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       onChange={props.onChange}
     >
-      <option>-</option>
+      <option value="" disabled selected>
+        -
+      </option>
       {props.options.map((o, k) => {
         return (
           <option key={k} value={o.value}>
@@ -245,4 +250,108 @@ const Select = (props: {
       })}
     </select>
   );
+};
+
+const MultiSelect = (props: {
+  name: string;
+  values: any[];
+  onChange: (name: string, value: any[]) => void;
+  options: SelectOption[];
+  invalid?: boolean;
+}) => {
+  const [focused, setFocused] = useState(false);
+
+  let style: React.CSSProperties = makeSharedStyle({
+    focused: focused,
+    invalid: props.invalid
+  });
+  style.backgroundColor = "unset";
+
+  const selectableOptions = props.options.filter(
+    option => !props.values.includes(option.value)
+  );
+
+  return (
+    <>
+      {props.values.map((value, key) => {
+        const match = helpers.array.findOrFail<SelectOption>(
+          props.options,
+          o => o.value == value
+        );
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              margin: '0.5rem'
+            }}
+            key={key}
+          >
+            <div style={{ fontSize: "0.9rem" }}>{match.label}</div>
+            <Button
+              size="xs"
+              colors={{ main: helpers.color.danger }}
+              onClick={() =>
+                props.onChange(
+                  props.name,
+                  props.values.filter(otherValue => otherValue !== value)
+                )
+              }
+            >
+              X
+            </Button>
+          </div>
+        );
+      })}
+      <select
+        name={props.name}
+        style={style}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onChange={e => {
+          if (!e.target.value) {
+            return;
+          }
+          props.onChange(
+            props.name,
+            props.values.concat([parseInt(e.target.value)])
+          );
+          e.currentTarget.value = "";
+        }}
+      >
+        <option value="" disabled selected>
+          -
+        </option>
+        {selectableOptions.map((o, k) => {
+          return (
+            <option key={k} value={o.value}>
+              {o.label}
+            </option>
+          );
+        })}
+      </select>
+    </>
+  );
+};
+
+const makeSharedStyle = (props: { focused: boolean; invalid?: boolean }) => {
+  let style: React.CSSProperties = {
+    width: "100%",
+    border: "unset",
+    fontSize: "1rem",
+    height: "2rem",
+    borderBottom: "solid 1px " + helpers.color.secondary,
+    transition: "border-bottom-color 500ms"
+  };
+
+  if (props.focused) {
+    style.outline = "unset";
+    style.borderBottomColor = helpers.color.secondaryLight;
+  }
+
+  if (props.invalid) {
+    style.borderBottomColor = helpers.color.danger;
+  }
+  return style;
 };

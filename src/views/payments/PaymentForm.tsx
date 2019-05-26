@@ -6,11 +6,12 @@ import {
 import FormBuilder from "../../components/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
+import helpers from "../../helpers";
 
 interface PaymentFormValues {
   amount: number;
+  payedAt: string;
   type?: PaymentType;
-  payedAt?: string;
   studentId?: number;
 }
 
@@ -36,13 +37,14 @@ export default (props: PaymentFormProps) => {
   }, []);
 
   const defaultInitialValues: PaymentFormValues = {
-    amount: 0
+    amount: 0,
+    payedAt: helpers.date.formatForInput(new Date())
   };
 
   const submit = (values: PaymentFormValues) => {
     const mapped: SubmittablePayment = {
       amount: values.amount,
-      payedAt: values.payedAt ? new Date(values.payedAt) : new Date(),
+      payedAt: new Date(values.payedAt),
       studentId: values.studentId || -1,
       type: values.type || PaymentType.CASH
     };
