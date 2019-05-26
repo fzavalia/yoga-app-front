@@ -1,6 +1,5 @@
 import { History } from "history";
-import { SubmittableStudent } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder";
+import FormBuilder from "../../components/FormBuilder";
 import helpers from "../../helpers";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
