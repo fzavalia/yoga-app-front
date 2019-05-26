@@ -17,8 +17,8 @@ export default (props: {
   submit: (values: YogaClassFormValues) => Promise<void>;
 }) => {
   const [studentOptions, setStudentOptions] = useState<
-    { value: number; label: string }[]
-  >([]);
+    { value: number; label: string }[] | undefined
+  >();
 
   useEffect(() => {
     api.student
@@ -26,6 +26,10 @@ export default (props: {
       .then(students => students.map(s => ({ value: s.id, label: s.name })))
       .then(setStudentOptions);
   }, []);
+
+  if (!studentOptions) {
+    return null
+  }
 
   const defaultInitialValues: YogaClassFormValues = {
     date: helpers.date.formatForInput(new Date()),
