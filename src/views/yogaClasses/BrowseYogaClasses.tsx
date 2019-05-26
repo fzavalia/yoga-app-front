@@ -27,7 +27,7 @@ export default (props: { history: History }) => {
       }
       onDeleteClick={yogaClass => {
         if (window.confirm("Eliminar Clase " + date(yogaClass))) {
-          api.student
+          api.yogaClass
             .delete(yogaClass.id)
             .then(() =>
               setYogaClasses(yogaClasses.filter(x => x.id !== yogaClass.id))
