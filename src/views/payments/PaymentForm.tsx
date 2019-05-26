@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import helpers from "../../helpers";
 import { FormErrors } from "../../components/FormBuilder/FormBuilder";
+import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface PaymentFormValues {
   amount: number;
@@ -30,7 +31,7 @@ export default (props: PaymentFormProps) => {
 
   useEffect(() => {
     api.student
-      .list()
+      .list({ order: { by: "name", type: OrderType.ASC } })
       .then(students =>
         students.map(student => ({ value: student.id, label: student.name }))
       )

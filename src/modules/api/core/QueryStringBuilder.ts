@@ -1,17 +1,20 @@
-export enum OrderType { ASC, DESC }
+export enum OrderType {
+  ASC = "asc",
+  DESC = "desc"
+}
 
 export interface Pagination {
-  page: number,
-  limit?: number
+  page: number;
+  limit?: number;
 }
 
 export interface Order {
-  by: string,
-  type?: OrderType
+  by: string;
+  type?: OrderType;
 }
 
 export interface Where {
-  [props: string]: any
+  [props: string]: any;
 }
 
 export default interface QueryStringBuilder {

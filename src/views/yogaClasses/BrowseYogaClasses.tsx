@@ -4,12 +4,18 @@ import { History } from "history";
 import BrowseView from "../../components/BrowseView";
 import { YogaClass } from "../../modules/api/apiModelRequests/YogaClassApiModelRequest";
 import helpers from "../../helpers";
+import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 export default (props: { history: History }) => {
   const [yogaClasses, setYogaClasses] = useState<YogaClass[]>([]);
 
   useEffect(() => {
-    api.yogaClass.list({ include: ["students"] }).then(setYogaClasses);
+    api.yogaClass
+      .list({
+        include: ["students"],
+        order: { by: "date", type: OrderType.DESC }
+      })
+      .then(setYogaClasses);
   }, []);
 
   const date = (yogaClass: YogaClass) =>

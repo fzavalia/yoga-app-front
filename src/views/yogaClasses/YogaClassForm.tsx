@@ -4,6 +4,7 @@ import helpers from "../../helpers";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { FormErrors } from "../../components/FormBuilder/FormBuilder";
+import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface YogaClassFormValues {
   date: string;
@@ -22,7 +23,7 @@ export default (props: {
 
   useEffect(() => {
     api.student
-      .list()
+      .list({ order: { by: "name", type: OrderType.ASC } })
       .then(students => students.map(s => ({ value: s.id, label: s.name })))
       .then(setStudentOptions);
   }, []);

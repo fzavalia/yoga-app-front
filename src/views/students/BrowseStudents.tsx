@@ -3,12 +3,15 @@ import api from "../../modules/api";
 import { History } from "history";
 import { Student } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
 import BrowseView from "../../components/BrowseView";
+import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 export default (props: { history: History }) => {
   const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
-    api.student.list().then(setStudents);
+    api.student
+      .list({ order: { by: "name", type: OrderType.ASC } })
+      .then(setStudents);
   }, []);
 
   return (

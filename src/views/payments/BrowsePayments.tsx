@@ -7,12 +7,18 @@ import {
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
 import helpers from "../../helpers";
 import BrowseView from "../../components/BrowseView";
+import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 export default (props: { history: History }) => {
   const [payments, setPayments] = useState<Payment[]>([]);
 
   useEffect(() => {
-    api.payment.list({ include: ["student"] }).then(setPayments);
+    api.payment
+      .list({
+        include: ["student"],
+        order: { by: "payed_at", type: OrderType.DESC }
+      })
+      .then(setPayments);
   }, []);
 
   return (
@@ -21,7 +27,7 @@ export default (props: { history: History }) => {
       mapItem={payment => ({
         title: payment.student.name,
         props: [
-          { label: "Monto", value: '$' + payment.amount },
+          { label: "Monto", value: "$" + payment.amount },
           {
             label: "Fecha",
             value: helpers.date.normalizeAndFormat(
