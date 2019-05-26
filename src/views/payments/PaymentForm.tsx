@@ -50,7 +50,8 @@ export default (props: PaymentFormProps) => {
       amount: values.amount,
       payedAt: new Date(values.payedAt),
       studentId: values.studentId || -1,
-      type: values.type || PaymentType.CASH
+      type: values.type || PaymentType.CASH,
+      invoiced: false
     };
     return props.submit(mapped);
   };
