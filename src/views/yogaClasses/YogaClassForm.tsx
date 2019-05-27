@@ -1,9 +1,8 @@
 import { History } from "history";
-import FormBuilder from "../../components/FormBuilder";
+import FormBuilder, { FormErrors } from "../../components/FormBuilder";
 import helpers from "../../helpers";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
-import { FormErrors } from "../../components/FormBuilder/FormBuilder";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface YogaClassFormValues {
