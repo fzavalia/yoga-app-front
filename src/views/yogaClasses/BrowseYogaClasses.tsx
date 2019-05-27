@@ -5,6 +5,7 @@ import BrowseView from "../../components/BrowseView";
 import { YogaClass } from "../../modules/api/apiModelRequests/YogaClassApiModelRequest";
 import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
+import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
   const [yogaClasses, setYogaClasses] = useState<YogaClass[]>([]);
@@ -22,25 +23,50 @@ export default (props: { history: History }) => {
     helpers.date.normalizeAndFormatForView(yogaClass.date);
 
   return (
-    <BrowseView
-      items={yogaClasses}
-      mapItem={yogaClass => ({
-        title: date(yogaClass),
-        props: [{ label: "Asistencias", value: yogaClass.students.length }]
-      })}
-      onUpdateClick={yogaClass =>
-        props.history.push(`/yoga_classes/update/${yogaClass.id}`)
-      }
-      onDeleteClick={yogaClass => {
-        if (window.confirm("Eliminar Clase " + date(yogaClass))) {
-          api.yogaClass
-            .delete(yogaClass.id)
-            .then(() =>
-              setYogaClasses(yogaClasses.filter(x => x.id !== yogaClass.id))
-            );
+    <>
+      <TopButton
+        onClick={() => props.history.push("/yoga_classes/assistance_graph")}
+      />
+      <BrowseView
+        items={yogaClasses}
+        mapItem={yogaClass => ({
+          title: date(yogaClass),
+          props: [{ label: "Asistencias", value: yogaClass.students.length }]
+        })}
+        onUpdateClick={yogaClass =>
+          props.history.push(`/yoga_classes/update/${yogaClass.id}`)
         }
+        onDeleteClick={yogaClass => {
+          if (window.confirm("Eliminar Clase " + date(yogaClass))) {
+            api.yogaClass
+              .delete(yogaClass.id)
+              .then(() =>
+                setYogaClasses(yogaClasses.filter(x => x.id !== yogaClass.id))
+              );
+          }
+        }}
+        onCreateClick={() => props.history.push(`/yoga_classes/create`)}
+      />
+    </>
+  );
+};
+
+const TopButton = (props: { onClick: () => void }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        marginBottom: "1rem"
       }}
-      onCreateClick={() => props.history.push(`/yoga_classes/create`)}
-    />
+    >
+      <Button
+        colors={{ main: helpers.color.secondary }}
+        size="sm"
+        onClick={props.onClick}
+      >
+        Ver Grafico de Asistencias
+      </Button>
+    </div>
   );
 };
