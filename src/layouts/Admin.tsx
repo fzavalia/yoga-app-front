@@ -1,14 +1,11 @@
 import React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 import routes from "../routes/routes";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
 
-const Admin: Layout = (props: {
-  children: any;
-  routeComponentProps: RouteComponentProps;
-}) => (
+const Admin: Layout = (props: { children: any }) => (
   <>
     <Header>
       <HeaderLinksContainer>

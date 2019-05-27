@@ -113,7 +113,13 @@ export default class FormBuilder<T> {
       const isInvalid = this.isInvalid(formikProps, props);
       return (
         <>
-          <InputContainer horizontal>
+          <InputContainer
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
             <InputName>{props.label}</InputName>
             <Checkbox
               name={props.name}
@@ -183,25 +189,26 @@ const FormTitle = (props: { children: any }) => (
   <h1 style={{ textAlign: "center" }}>{props.children}</h1>
 );
 
-const InputContainer = (props: { children: any; horizontal?: boolean }) => {
-  const style: React.CSSProperties = {
+export const InputContainer = (props: {
+  children: any;
+  style?: React.CSSProperties;
+}) => {
+  let style: React.CSSProperties = {
     marginBottom: "1rem"
   };
-  if (props.horizontal) {
-    style.display = "flex";
-    style.justifyContent = "space-between";
-    style.alignItems = "center";
+  if (props.style) {
+    style = { ...style, ...props.style };
   }
   return <div style={style}>{props.children}</div>;
 };
 
-const InputName = (props: { children: any }) => (
+export const InputName = (props: { children: any }) => (
   <div style={{ color: helpers.color.secondary, fontSize: "0.8rem" }}>
     {props.children}
   </div>
 );
 
-const InputError = (props: { show: boolean; children: any }) => {
+export const InputError = (props: { show: boolean; children: any }) => {
   let style: React.CSSProperties = {
     display: "none",
     opacity: 0,

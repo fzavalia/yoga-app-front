@@ -1,7 +1,10 @@
 import QueryStringBuilder, {
   Pagination,
   Order,
-  Where
+  Where,
+  WhereRelation,
+  WhereBetween,
+  WhereRelationBetween
 } from "../core/QueryStringBuilder";
 
 export default class ApiQueryStringBuilder implements QueryStringBuilder {
@@ -45,6 +48,42 @@ export default class ApiQueryStringBuilder implements QueryStringBuilder {
         "where=" +
         Object.keys(where)
           .map(x => `${x}:${where[x]}`)
+          .join(",");
+    }
+    return this;
+  };
+
+  withWhereRelation = (where?: WhereRelation) => {
+    if (where && Object.keys(where).length > 0) {
+      this.path +=
+        this.getPathPrefix() +
+        "where_relation=" +
+        Object.keys(where)
+          .map(x => `${where[x].relation}.${x}:${where[x].value}`)
+          .join(",");
+    }
+    return this;
+  };
+
+  withWhereBetween = (where?: WhereBetween) => {
+    if (where && Object.keys(where).length > 0) {
+      this.path +=
+        this.getPathPrefix() +
+        "where_between=" +
+        Object.keys(where)
+          .map(x => `${x}:${where[x].min}:${where[x].max}`)
+          .join(",");
+    }
+    return this;
+  };
+
+  withWhereRelationBetween = (where?: WhereRelationBetween) => {
+    if (where && Object.keys(where).length > 0) {
+      this.path +=
+        this.getPathPrefix() +
+        "where_relation_between=" +
+        Object.keys(where)
+          .map(x => `${where[x].relation}.${x}:${where[x].min}:${where[x].max}`)
           .join(",");
     }
     return this;

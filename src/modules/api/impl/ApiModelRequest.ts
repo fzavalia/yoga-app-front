@@ -2,11 +2,17 @@ import HttpClient, { Method, BodyType } from "../core/HttpClient";
 import QueryStringBuilder, {
   Where,
   Order,
-  Pagination
+  Pagination,
+  WhereBetween,
+  WhereRelation,
+  WhereRelationBetween
 } from "../core/QueryStringBuilder";
 
 export interface ListOptions {
   where?: Where;
+  whereBetween?: WhereBetween;
+  whereRelation?: WhereRelation;
+  whereRelationBetween?: WhereRelationBetween;
   include?: string[];
   order?: Order;
   pagination?: Pagination;
@@ -28,6 +34,10 @@ export default abstract class ApiModelRequest<Model, Submittable> {
       .withInclude(options.include)
       .withOrder(options.order)
       .withPagination(options.pagination)
+      .withWhere(options.where)
+      .withWhereRelation(options.whereRelation)
+      .withWhereBetween(options.whereBetween)
+      .withWhereRelationBetween(options.whereRelationBetween)
       .withWhere(options.where)
       .build();
 

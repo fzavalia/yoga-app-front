@@ -3,6 +3,9 @@ import { format as _format } from "date-fns";
 export default class DateHelpers {
   format = (date: Date, format: string) => _format(date, format);
 
+  getDaysInMonth = (year: number, month: number) =>
+    32 - new Date(year, month, 32).getDate();
+
   normalize = (date: Date) =>
     new Date(date.getTime() - date.getTimezoneOffset() * -60000);
 

@@ -12,7 +12,7 @@ export default () => {
             key={key}
             path={route.path}
             render={props => (
-              <route.layout routeComponentProps={props}>
+              <route.layout>
                 <route.component {...props} />
               </route.layout>
             )}
