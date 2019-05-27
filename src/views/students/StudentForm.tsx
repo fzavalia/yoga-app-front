@@ -1,6 +1,6 @@
 import { History } from "history";
 import { SubmittableStudent } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder";
+import FormBuilder, { FormErrors } from "../../components/FormBuilder/FormBuilder";
 
 export default (props: {
   history: History;

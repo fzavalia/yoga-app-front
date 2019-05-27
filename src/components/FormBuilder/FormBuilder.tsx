@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import Button from "./Button";
-import helpers from "../helpers";
+import React from "react";
+import Button from "../Button";
+import helpers from "../../helpers";
 import { Formik, FormikProps } from "formik";
+import MultiSelect from "./MultiSelect";
+import Select, { SelectOption } from "./Select";
+import Checkbox from "./Checkbox";
+import Input from "./Input";
 
 export type FormErrors = {
   [error: string]: string;
@@ -32,10 +36,7 @@ export default class FormBuilder<T> {
 
   withInput = (props: { name: string; type?: string; label: string }) => {
     this.components.push(formikProps => {
-      const isInvalid = Boolean(
-        (formikProps.touched as any)[props.name] &&
-          (formikProps.errors as FormErrors)[props.name]
-      );
+      const isInvalid = this.isInvalid(formikProps, props);
       return (
         <InputContainer>
           <InputName>{props.label}</InputName>
@@ -44,9 +45,7 @@ export default class FormBuilder<T> {
             name={props.name}
             type={props.type || "text"}
             invalid={isInvalid}
-            onChange={e =>
-              formikProps.setFieldValue(props.name, e.target.value)
-            }
+            onChange={formikProps.setFieldValue}
           />
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
@@ -63,18 +62,13 @@ export default class FormBuilder<T> {
     options: SelectOption[];
   }) => {
     this.components.push(formikProps => {
-      const isInvalid = Boolean(
-        (formikProps.touched as any)[props.name] &&
-          (formikProps.errors as FormErrors)[props.name]
-      );
+      const isInvalid = this.isInvalid(formikProps, props);
       return (
         <InputContainer>
           <InputName>{props.label}</InputName>
           <Select
             name={props.name}
-            onChange={e =>
-              formikProps.setFieldValue(props.name, e.target.value)
-            }
+            onChange={formikProps.setFieldValue}
             invalid={isInvalid}
             options={props.options}
             value={(formikProps.values as any)[props.name]}
@@ -94,10 +88,7 @@ export default class FormBuilder<T> {
     options: SelectOption[];
   }) => {
     this.components.push(formikProps => {
-      const isInvalid = Boolean(
-        (formikProps.touched as any)[props.name] &&
-          (formikProps.errors as FormErrors)[props.name]
-      );
+      const isInvalid = this.isInvalid(formikProps, props);
       return (
         <InputContainer>
           <InputName>{props.label}</InputName>
@@ -119,10 +110,7 @@ export default class FormBuilder<T> {
 
   withCheckbox = (props: { name: string; label: string }) => {
     this.components.push(formikProps => {
-      const isInvalid = Boolean(
-        (formikProps.touched as any)[props.name] &&
-          (formikProps.errors as FormErrors)[props.name]
-      );
+      const isInvalid = this.isInvalid(formikProps, props);
       return (
         <>
           <InputContainer horizontal>
@@ -183,6 +171,12 @@ export default class FormBuilder<T> {
       </Formik>
     );
   };
+
+  private isInvalid = (formikProps: FormikProps<T>, props: { name: string }) =>
+    Boolean(
+      (formikProps.touched as any)[props.name] &&
+        (formikProps.errors as FormErrors)[props.name]
+    );
 }
 
 const FormTitle = (props: { children: any }) => (
@@ -220,189 +214,4 @@ const InputError = (props: { show: boolean; children: any }) => {
     style.display = "inline-block";
   }
   return <label style={style}>{props.children}</label>;
-};
-
-const Input = (props: {
-  name: string;
-  type: string;
-  value: any;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  invalid?: boolean;
-}) => {
-  const [focused, setFocused] = useState(false);
-
-  let style: React.CSSProperties = makeSharedStyle({
-    focused,
-    invalid: props.invalid
-  });
-
-  return (
-    <input
-      type={props.type}
-      style={style}
-      onChange={props.onChange}
-      value={props.value}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-    />
-  );
-};
-
-const Checkbox = (props: {
-  name: string;
-  value: boolean;
-  onChange: (name: string, value: boolean) => void;
-  invalid?: boolean;
-}) => {
-  return (
-    <input
-      type="checkbox"
-      checked={props.value}
-      onChange={e => props.onChange(props.name, e.target.checked)}
-    />
-  );
-};
-
-type SelectOption = { value: any; label: string };
-
-const Select = (props: {
-  name: string;
-  value: any;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: SelectOption[];
-  invalid?: boolean;
-}) => {
-  const [focused, setFocused] = useState(false);
-
-  let style: React.CSSProperties = makeSharedStyle({
-    focused: focused,
-    invalid: props.invalid
-  });
-  style.backgroundColor = "unset";
-
-  return (
-    <select
-      name={props.name}
-      value={props.value}
-      style={style}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-      onChange={props.onChange}
-    >
-      <option value="" disabled selected>
-        -
-      </option>
-      {props.options.map((o, k) => {
-        return (
-          <option key={k} value={o.value}>
-            {o.label}
-          </option>
-        );
-      })}
-    </select>
-  );
-};
-
-const MultiSelect = (props: {
-  name: string;
-  values: any[];
-  onChange: (name: string, value: any[]) => void;
-  options: SelectOption[];
-  invalid?: boolean;
-}) => {
-  const [focused, setFocused] = useState(false);
-
-  let style: React.CSSProperties = makeSharedStyle({
-    focused: focused,
-    invalid: props.invalid
-  });
-  style.backgroundColor = "unset";
-
-  const selectableOptions = props.options.filter(
-    option => !props.values.includes(option.value)
-  );
-
-  return (
-    <>
-      {props.values.map((value, key) => {
-        const match = helpers.array.findOrFail<SelectOption>(
-          props.options,
-          o => o.value === value
-        );
-        return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              margin: "0.5rem"
-            }}
-            key={key}
-          >
-            <div style={{ fontSize: "0.9rem" }}>{match.label}</div>
-            <Button
-              size="xs"
-              colors={{ main: helpers.color.danger }}
-              onClick={() =>
-                props.onChange(
-                  props.name,
-                  props.values.filter(otherValue => otherValue !== value)
-                )
-              }
-            >
-              X
-            </Button>
-          </div>
-        );
-      })}
-      <select
-        name={props.name}
-        style={style}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onChange={e => {
-          if (!e.target.value) {
-            return;
-          }
-          props.onChange(
-            props.name,
-            props.values.concat([parseInt(e.target.value)])
-          );
-          e.currentTarget.value = "";
-        }}
-      >
-        <option value="" disabled selected>
-          -
-        </option>
-        {selectableOptions.map((o, k) => {
-          return (
-            <option key={k} value={o.value}>
-              {o.label}
-            </option>
-          );
-        })}
-      </select>
-    </>
-  );
-};
-
-const makeSharedStyle = (props: { focused: boolean; invalid?: boolean }) => {
-  let style: React.CSSProperties = {
-    width: "100%",
-    border: "unset",
-    fontSize: "1rem",
-    height: "2rem",
-    borderBottom: "solid 1px " + helpers.color.secondary,
-    transition: "border-bottom-color 500ms"
-  };
-
-  if (props.focused) {
-    style.outline = "unset";
-    style.borderBottomColor = helpers.color.secondaryLight;
-  }
-
-  if (props.invalid) {
-    style.borderBottomColor = helpers.color.danger;
-  }
-  return style;
 };

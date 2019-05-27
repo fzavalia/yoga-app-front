@@ -3,7 +3,7 @@ import {
   SubmittablePayment,
   PaymentType
 } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder";
+import FormBuilder, { FormErrors } from "../../components/FormBuilder/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import helpers from "../../helpers";
