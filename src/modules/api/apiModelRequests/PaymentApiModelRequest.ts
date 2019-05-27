@@ -17,11 +17,11 @@ export interface Payment {
 }
 
 export interface SubmittablePayment {
-  amount: number;
-  payedAt: Date;
-  type: PaymentType;
-  studentId: number;
-  invoiced: boolean;
+  amount?: number;
+  payedAt?: Date;
+  type?: PaymentType;
+  studentId?: number;
+  invoiced?: boolean;
 }
 
 export default class PaymentApiModelRequest extends ApiModelRequest<
@@ -48,7 +48,7 @@ export default class PaymentApiModelRequest extends ApiModelRequest<
     res.payed_at = model.payedAt;
     res.student_id = model.studentId;
     res.type = model.type;
-    res.invoiced = model.invoiced ? 0 : 1;
+    res.invoiced = model.invoiced ? 1 : 0;
     return res;
   };
 }

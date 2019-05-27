@@ -117,6 +117,32 @@ export default class FormBuilder<T> {
     return this;
   };
 
+  withCheckbox = (props: { name: string; label: string }) => {
+    this.components.push(formikProps => {
+      const isInvalid = Boolean(
+        (formikProps.touched as any)[props.name] &&
+          (formikProps.errors as FormErrors)[props.name]
+      );
+      return (
+        <>
+          <InputContainer horizontal>
+            <InputName>{props.label}</InputName>
+            <Checkbox
+              name={props.name}
+              onChange={formikProps.setFieldValue}
+              value={(formikProps.values as any)[props.name]}
+              invalid={isInvalid}
+            />
+          </InputContainer>
+          <InputError show={isInvalid}>
+            {(formikProps.errors as any)[props.name]}
+          </InputError>
+        </>
+      );
+    });
+    return this;
+  };
+
   build = () => {
     return (
       <Formik
@@ -163,9 +189,17 @@ const FormTitle = (props: { children: any }) => (
   <h1 style={{ textAlign: "center" }}>{props.children}</h1>
 );
 
-const InputContainer = (props: { children: any }) => (
-  <div style={{ marginBottom: "1rem" }}>{props.children}</div>
-);
+const InputContainer = (props: { children: any; horizontal?: boolean }) => {
+  const style: React.CSSProperties = {
+    marginBottom: "1rem"
+  };
+  if (props.horizontal) {
+    style.display = "flex";
+    style.justifyContent = "space-between";
+    style.alignItems = "center";
+  }
+  return <div style={style}>{props.children}</div>;
+};
 
 const InputName = (props: { children: any }) => (
   <div style={{ color: helpers.color.secondary, fontSize: "0.8rem" }}>
@@ -175,6 +209,7 @@ const InputName = (props: { children: any }) => (
 
 const InputError = (props: { show: boolean; children: any }) => {
   let style: React.CSSProperties = {
+    display: "none",
     opacity: 0,
     fontSize: "0.8rem",
     color: helpers.color.danger,
@@ -182,6 +217,7 @@ const InputError = (props: { show: boolean; children: any }) => {
   };
   if (props.show) {
     style.opacity = 1;
+    style.display = "inline-block";
   }
   return <label style={style}>{props.children}</label>;
 };
@@ -208,6 +244,21 @@ const Input = (props: {
       value={props.value}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
+    />
+  );
+};
+
+const Checkbox = (props: {
+  name: string;
+  value: boolean;
+  onChange: (name: string, value: boolean) => void;
+  invalid?: boolean;
+}) => {
+  return (
+    <input
+      type="checkbox"
+      checked={props.value}
+      onChange={e => props.onChange(props.name, e.target.checked)}
     />
   );
 };

@@ -13,6 +13,7 @@ import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 interface PaymentFormValues {
   amount: number;
   payedAt: string;
+  invoiced: boolean;
   type?: PaymentType;
   studentId?: number;
 }
@@ -42,7 +43,8 @@ export default (props: PaymentFormProps) => {
     amount: 0,
     payedAt: helpers.date.formatForInput(new Date()),
     studentId: undefined,
-    type: undefined
+    type: undefined,
+    invoiced: false
   };
 
   const submit = (values: PaymentFormValues) => {
@@ -51,7 +53,7 @@ export default (props: PaymentFormProps) => {
       payedAt: new Date(values.payedAt),
       studentId: values.studentId || -1,
       type: values.type || PaymentType.CASH,
-      invoiced: false
+      invoiced: values.invoiced
     };
     return props.submit(mapped);
   };
@@ -95,5 +97,6 @@ export default (props: PaymentFormProps) => {
         { value: PaymentType.CASH, label: "Efectivo" }
       ]
     })
+    .withCheckbox({ name: "invoiced", label: "Facturado" })
     .build();
 };

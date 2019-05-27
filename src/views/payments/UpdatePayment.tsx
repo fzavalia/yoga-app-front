@@ -25,7 +25,8 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
         amount: payment.amount,
         payedAt: helpers.date.normalizeAndFormatForInput(payment.payedAt),
         studentId: payment.studentId,
-        type: payment.type
+        type: payment.type,
+        invoiced: payment.invoiced
       }}
       submit={values => api.payment.update(payment.id, values)}
     />
