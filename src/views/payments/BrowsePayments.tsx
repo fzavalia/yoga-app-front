@@ -39,6 +39,18 @@ export default (props: { history: History }) => {
             label: "Forma de Pago",
             value:
               payment.type === PaymentType.CREDIT_CARD ? "Tarjeta" : "Efectivo"
+          },
+          {
+            label: "Facturado",
+            value: (
+              <input
+                type="checkbox"
+                defaultChecked={payment.invoiced}
+                onChange={e =>
+                  api.payment.update(payment.id, { invoiced: e.target.checked })
+                }
+              />
+            )
           }
         ]
       })}
