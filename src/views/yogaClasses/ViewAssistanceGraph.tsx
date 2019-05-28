@@ -53,11 +53,13 @@ const AssistanceGraphTable = (props: {
 
   const columns: Column[] = [];
 
+  // Student Names
   columns.push({
     Header: <div style={{ textAlign: "left" }}>Alumno</div>,
     accessor: "name"
   });
 
+  // Days
   daysInMonth.forEach(d => {
     columns.push({
       id: d.toString(),
@@ -69,10 +71,12 @@ const AssistanceGraphTable = (props: {
           ? "X"
           : " ",
       Cell: v => <div style={{ textAlign: "center" }}>{v.value}</div>,
-      maxWidth: 40
+      maxWidth: 50,
+      resizable: false
     });
   });
 
+  // Total Payed
   columns.push({
     id: "amount",
     Header: <div style={{ textAlign: "right" }}>Pagado</div>,
@@ -81,14 +85,17 @@ const AssistanceGraphTable = (props: {
         .filter(p => p.studentId === v.id)
         .map(p => p.amount)
         .reduce((sum, amount) => sum + amount, 0),
-    Cell: v => <div style={{ textAlign: "right" }}>{v.value}</div>
+    Cell: v => <div style={{ textAlign: "right" }}>${v.value}</div>,
+    resizable: false,
   });
 
   return (
     <ReactTable
+      style={{ color: helpers.color.secondary }}
       data={props.data.students}
       columns={columns}
       showPagination={false}
+      className='-striped -highlight'
     />
   );
 };
