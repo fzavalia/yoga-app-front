@@ -15,7 +15,7 @@ export interface SubmittableStudent {
   dni: string;
 }
 
-export default class StudentApiModelRequest extends ApiModelRequest<
+export default class StudentRequest extends ApiModelRequest<
   Student,
   SubmittableStudent
 > {
@@ -27,7 +27,7 @@ export default class StudentApiModelRequest extends ApiModelRequest<
     phoneNumber: model.phone_number
   });
 
-  protected mapModelFromApi = StudentApiModelRequest.mapModelFromApi;
+  protected mapModelFromApi = StudentRequest.mapModelFromApi;
 
   protected mapSubmittableForApi = (model: SubmittableStudent) => {
     const res: any = {};

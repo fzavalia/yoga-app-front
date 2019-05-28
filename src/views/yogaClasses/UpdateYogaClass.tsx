@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { History } from "history";
 import api from "../../modules/api";
 import YogaClassForm from "./YogaClassForm";
-import { YogaClass } from "../../modules/api/apiModelRequests/YogaClassApiModelRequest";
+import { YogaClass } from "../../modules/api/requests/YogaClassRequest";
 import { match } from "react-router";
 import helpers from "../../helpers";
 

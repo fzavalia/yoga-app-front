@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
 import BrowseView from "../../components/BrowseView";
-import { YogaClass } from "../../modules/api/apiModelRequests/YogaClassApiModelRequest";
+import { YogaClass } from "../../modules/api/requests/YogaClassRequest";
 import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import Button from "../../components/Button";

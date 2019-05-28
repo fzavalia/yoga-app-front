@@ -1,5 +1,5 @@
-import HttpClient, { Method, BodyType } from "../core/HttpClient";
-import QueryStringBuilder, {
+import { Method, BodyType } from "../core/HttpClient";
+import {
   Where,
   Order,
   Pagination,
@@ -7,6 +7,7 @@ import QueryStringBuilder, {
   WhereRelation,
   WhereRelationBetween
 } from "../core/QueryStringBuilder";
+import Request from "../core/Request";
 
 export interface ListOptions {
   where?: Where;
@@ -22,13 +23,10 @@ export interface ShowOptions {
   include?: string[];
 }
 
-export default abstract class ApiModelRequest<Model, Submittable> {
-  constructor(
-    protected basePath: string,
-    protected httpClient: HttpClient,
-    protected queryStringBuilder: (path: string) => QueryStringBuilder
-  ) {}
-
+export default abstract class ApiModelRequest<
+  Model,
+  Submittable
+> extends Request {
   list: (options?: ListOptions) => Promise<Model[]> = (options = {}) => {
     const path = this.queryStringBuilder(this.basePath)
       .withInclude(options.include)

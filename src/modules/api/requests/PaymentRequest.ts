@@ -1,5 +1,5 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
-import StudentApiModelRequest, { Student } from "./StudentApiModelRequest";
+import StudentRequest, { Student } from "./StudentRequest";
 
 export enum PaymentType {
   CREDIT_CARD = "credit_card",
@@ -24,7 +24,7 @@ export interface SubmittablePayment {
   invoiced?: boolean;
 }
 
-export default class PaymentApiModelRequest extends ApiModelRequest<
+export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
@@ -34,7 +34,7 @@ export default class PaymentApiModelRequest extends ApiModelRequest<
       id: model.id,
       payedAt: new Date(model.payed_at),
       student: model.student
-        ? StudentApiModelRequest.mapModelFromApi(model.student)
+        ? StudentRequest.mapModelFromApi(model.student)
         : undefined,
       studentId: model.student_id,
       invoiced: model.invoiced,

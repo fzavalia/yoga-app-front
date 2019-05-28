@@ -1,5 +1,5 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
-import StudentApiModelRequest, { Student } from "./StudentApiModelRequest";
+import StudentRequest, { Student } from "./StudentRequest";
 
 export interface YogaClass {
   id: number;
@@ -20,7 +20,7 @@ export default class YogaClassApiModelRequest extends ApiModelRequest<
     id: model.id,
     date: new Date(model.date),
     students: model.students
-      ? model.students.map(StudentApiModelRequest.mapModelFromApi)
+      ? model.students.map(StudentRequest.mapModelFromApi)
       : undefined
   });
 

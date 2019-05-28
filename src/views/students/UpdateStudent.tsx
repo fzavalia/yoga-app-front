@@ -3,7 +3,7 @@ import StudentForm from "./StudentForm";
 import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
-import { Student } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
+import { Student } from "../../modules/api/requests/StudentRequest";
 
 export default (props: { history: History; match: match<{ id: string }> }) => {
   const [student, setStudent] = useState<Student>();

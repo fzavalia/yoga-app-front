@@ -6,6 +6,14 @@ export default class DateHelpers {
   getDaysInMonth = (year: number, month: number) =>
     32 - new Date(year, month, 32).getDate();
 
+  getMonthRange = (dateInMonth: Date) => {
+    const d1 = new Date(dateInMonth);
+    const d2 = new Date(d1);
+    d1.setDate(1);
+    d2.setDate(this.getDaysInMonth(d1.getFullYear(), d1.getMonth()));
+    return [this.format(d1, "YYYY-MM-DD"), this.format(d2, "YYYY-MM-DD")];
+  };
+
   normalize = (date: Date) =>
     new Date(date.getTime() - date.getTimezoneOffset() * -60000);
 

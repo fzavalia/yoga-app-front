@@ -2,7 +2,7 @@ import { History } from "history";
 import {
   SubmittablePayment,
   PaymentType
-} from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
+} from "../../modules/api/requests/PaymentRequest";
 import FormBuilder, { FormErrors } from "../../components/FormBuilder/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";

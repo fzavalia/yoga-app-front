@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import { Student } from "../../modules/api/apiModelRequests/StudentApiModelRequest";
+import { Student } from "../../modules/api/requests/StudentRequest";
 import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 

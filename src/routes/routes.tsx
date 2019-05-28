@@ -1,5 +1,6 @@
 import Layout from "../layouts/Layout";
 import Admin from "../layouts/Admin";
+import Blank from "../layouts/Blank";
 import BrowseStudents from "../views/students/BrowseStudents";
 import CreateStudent from "../views/students/CreateStudent";
 import UpdateStudent from "../views/students/UpdateStudent";
@@ -9,8 +10,7 @@ import UpdatePayments from "../views/payments/UpdatePayment";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
-import AssistanceGraph from "../views/yogaClasses/AssistanceGraph";
-import Blank from "../layouts/Blank";
+import ViewAssistanceGraph from "../views/yogaClasses/ViewAssistanceGraph";
 
 export interface Route {
   path: string;
@@ -86,7 +86,7 @@ const routes: Route[] = [
   },
   {
     path: "/yoga_classes/assistance_graph",
-    component: AssistanceGraph,
+    component: ViewAssistanceGraph,
     name: "Grafico de Asistencias",
     isModuleEntrypoint: false,
     layout: Blank

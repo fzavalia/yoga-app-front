@@ -3,7 +3,7 @@ import Form from "./PaymentForm";
 import { History } from "history";
 import api from "../../modules/api";
 import { match } from "react-router";
-import { Payment } from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
+import { Payment } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
 
 export default (props: { history: History; match: match<{ id: string }> }) => {

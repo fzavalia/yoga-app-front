@@ -4,7 +4,7 @@ import { History } from "history";
 import {
   Payment,
   PaymentType
-} from "../../modules/api/apiModelRequests/PaymentApiModelRequest";
+} from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
 import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
