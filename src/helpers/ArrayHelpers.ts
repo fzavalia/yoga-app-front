@@ -6,4 +6,7 @@ export default class ArrayHelpers {
     }
     return match;
   };
+
+  incremental = (length: number, offset: number = 0) =>
+    new Array(length).fill(null).map((_, i) => i + offset);
 }

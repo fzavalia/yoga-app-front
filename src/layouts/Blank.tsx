@@ -1,7 +1,8 @@
+import React from "react";
 import Layout from "./Layout";
 
 const Blank: Layout = (props: { children: any }) => {
-  return props.children;
+  return <section style={{ padding: "1rem" }}>{props.children}</section>;
 };
 
 export default Blank;
