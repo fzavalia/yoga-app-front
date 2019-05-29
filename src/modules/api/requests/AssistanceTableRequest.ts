@@ -31,12 +31,12 @@ class AssistanceTableRequest extends Request {
       )
       .then(this.mapApiResponse);
 
-  updateAssistance: (
-    studentIds: number[],
-    date: Date
-  ) => Promise<YogaClass> = (studentIds, date) =>
+  updateAssistance: (studentIds: number[], date: Date) => Promise<YogaClass> = (
+    studentIds,
+    date
+  ) =>
     this.httpClient.fetch(
-      `${this.basePath}/yoga_classes/${helpers.date.normalizeAndFormat(
+      `${this.basePath}/yoga_classes/${helpers.date.format(
         date,
         "YYYY-MM-DD"
       )}`,
