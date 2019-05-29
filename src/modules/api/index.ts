@@ -20,7 +20,7 @@ export default {
     queryStringBuilder
   ),
   assistanceTable: new AssistanceTableRequest(
-    "/assistance_graphs",
+    "/assistance_tables",
     httpClient,
     queryStringBuilder
   )
