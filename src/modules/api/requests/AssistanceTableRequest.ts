@@ -1,6 +1,7 @@
 import Request from "../core/Request";
 import helpers from "../../../helpers";
-import { Method } from "../core/HttpClient";
+import { Method, BodyType } from "../core/HttpClient";
+import { YogaClass } from "./YogaClassRequest";
 
 export interface AssistanceTableData {
   yogaClasses: {
@@ -29,6 +30,21 @@ class AssistanceTableRequest extends Request {
         Method.GET
       )
       .then(this.mapApiResponse);
+
+  updateAssistance: (
+    studentIds: number[],
+    date: Date
+  ) => Promise<YogaClass> = (studentIds, date) =>
+    this.httpClient.fetch(
+      `${this.basePath}/yoga_classes/${helpers.date.normalizeAndFormat(
+        date,
+        "YYYY-MM-DD"
+      )}`,
+      Method.PUT,
+      {
+        body: { type: BodyType.JSON, args: { student_ids: studentIds } }
+      }
+    );
 
   private mapApiResponse = (res: any) => ({
     payments: this.mapPaymentsFromApi(res.payments),

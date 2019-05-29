@@ -12,14 +12,24 @@ const ViewAssistanceTable = () => {
 
   const [tableData, setTableData] = useState<AssistanceTableData | undefined>();
 
-  useEffect(() => {
+  const fetchDataForMonth = () => {
     api.assistanceTable.getDataForMonth(date).then(setTableData);
+  };
+
+  useEffect(() => {
+    fetchDataForMonth();
   }, [date]);
 
   return (
     <>
       <RepresentedMonthInput value={date} onChange={setDate} />
-      {tableData && <AssistanceTable date={date} data={tableData} />}
+      {tableData && (
+        <AssistanceTable
+          date={date}
+          data={tableData}
+          onStudentAssistanceChanged={fetchDataForMonth}
+        />
+      )}
     </>
   );
 };
@@ -43,7 +53,11 @@ const RepresentedMonthInput = (props: {
   );
 };
 
-const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
+const AssistanceTable = (props: {
+  date: Date;
+  data: AssistanceTableData;
+  onStudentAssistanceChanged: () => void;
+}) => {
   const today = helpers.date.normalize(new Date());
 
   const dateOfToday = today.getDate();
@@ -55,6 +69,34 @@ const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
     helpers.date.getDaysInMonth(props.date),
     1
   );
+
+  const updateAssistance = (
+    dayInMonth: number,
+    student: any,
+    studentAssisted: boolean
+  ) => {
+    const date = new Date(props.date);
+
+    date.setDate(dayInMonth);
+
+    const yogaClass = props.data.yogaClasses.find(
+      yc => yc.date.getDate() === dayInMonth
+    );
+
+    const studentIds: number[] = yogaClass ? yogaClass.studentIds : [];
+
+    const request = studentAssisted
+      ? api.assistanceTable.updateAssistance(
+          studentIds.filter(sid => sid !== student.id),
+          date
+        )
+      : api.assistanceTable.updateAssistance(
+          studentIds.concat([student.id]),
+          date
+        );
+
+    request.then(props.onStudentAssistanceChanged);
+  };
 
   const columns: Column[] = [];
 
@@ -81,10 +123,20 @@ const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
       accessor: v =>
         props.data.yogaClasses
           .filter(yc => yc.date.getDate() === dayInMonth)
-          .some(yc => yc.studentIds.includes(v.id))
-          ? "X"
-          : " ",
-      Cell: v => <div style={{ textAlign: "center" }}>{v.value}</div>,
+          .some(yc => yc.studentIds.includes(v.id)),
+      Cell: v => (
+        <div
+          style={{
+            textAlign: "center",
+            width: "100%",
+            height: "100%",
+            cursor: "pointer"
+          }}
+          onClick={() => updateAssistance(dayInMonth, v.original, v.value)}
+        >
+          {v.value ? "X" : " "}
+        </div>
+      ),
       maxWidth: 50,
       resizable: false
     });
