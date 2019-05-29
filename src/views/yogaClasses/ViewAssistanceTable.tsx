@@ -16,31 +16,41 @@ const ViewAssistanceTable = () => {
     api.assistanceTable.getDataForMonth(date).then(setTableData);
   }, [date]);
 
-  let assistanceTable = null;
-
-  if (tableData) {
-    assistanceTable = <AssistanceTable date={date} data={tableData} />;
-  }
-
   return (
     <>
-      <div style={{ maxWidth: 200, marginBottom: "1rem" }}>
-        <InputName>Més del Grafico</InputName>
-        <Input
-          type="month"
-          name="date"
-          onChange={(_, value) =>
-            setDate(helpers.date.normalize(new Date(value)))
-          }
-          value={helpers.date.format(date, "YYYY-MM")}
-        />
-      </div>
-      {assistanceTable}
+      <RepresentedMonthInput value={date} onChange={setDate} />
+      {tableData && <AssistanceTable date={date} data={tableData} />}
     </>
   );
 };
 
+const RepresentedMonthInput = (props: {
+  value: Date;
+  onChange: (date: Date) => void;
+}) => {
+  return (
+    <div style={{ maxWidth: 200, marginBottom: "1rem" }}>
+      <InputName>Més Representado</InputName>
+      <Input
+        type="month"
+        name="date"
+        onChange={(_, value) =>
+          props.onChange(helpers.date.normalize(new Date(value)))
+        }
+        value={helpers.date.format(props.value, "YYYY-MM")}
+      />
+    </div>
+  );
+};
+
 const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
+  const today = helpers.date.normalize(new Date());
+
+  const dateOfToday = today.getDate();
+
+  const providedMonthIsEqualToTodayMonth =
+    today.getMonth() === props.date.getMonth();
+
   const daysInMonth = helpers.array.incremental(
     helpers.date.getDaysInMonth(props.date),
     1
@@ -55,13 +65,22 @@ const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
   });
 
   // Days
-  daysInMonth.forEach(d => {
+  daysInMonth.forEach(dayInMonth => {
     columns.push({
-      id: d.toString(),
-      Header: d,
+      id: dayInMonth.toString(),
+      headerStyle: (() => {
+        const style: React.CSSProperties = {};
+        if (providedMonthIsEqualToTodayMonth && dateOfToday === dayInMonth) {
+          style.backgroundColor = helpers.color.secondary;
+          style.color = helpers.color.primaryLight;
+          style.fontWeight = "bold";
+        }
+        return style;
+      })(),
+      Header: dayInMonth,
       accessor: v =>
         props.data.yogaClasses
-          .filter(yc => yc.date.getDate() === d)
+          .filter(yc => yc.date.getDate() === dayInMonth)
           .some(yc => yc.studentIds.includes(v.id))
           ? "X"
           : " ",
