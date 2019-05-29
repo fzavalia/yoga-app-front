@@ -5,7 +5,7 @@ import QueryStringBuilder from "./core/QueryStringBuilder";
 import StudentRequest from "./requests/StudentRequest";
 import PaymentRequest from "./requests/PaymentRequest";
 import YogaClassApiModelRequest from "./requests/YogaClassRequest";
-import AssistanceGraphRequest from "./requests/AssistanceGraphRequest";
+import AssistanceTableRequest from "./requests/AssistanceTableRequest";
 
 const httpClient: HttpClient = new FetchHttpClient("http://localhost:8000");
 const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
@@ -19,7 +19,7 @@ export default {
     httpClient,
     queryStringBuilder
   ),
-  assistanceGraph: new AssistanceGraphRequest(
+  assistanceTable: new AssistanceTableRequest(
     "/assistance_graphs",
     httpClient,
     queryStringBuilder

@@ -10,7 +10,7 @@ import UpdatePayments from "../views/payments/UpdatePayment";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
-import ViewAssistanceGraph from "../views/yogaClasses/ViewAssistanceGraph";
+import ViewAssistanceTable from "../views/yogaClasses/ViewAssistanceTable";
 
 export interface Route {
   path: string;
@@ -86,7 +86,7 @@ const routes: Route[] = [
   },
   {
     path: "/yoga_classes/assistance_graph",
-    component: ViewAssistanceGraph,
+    component: ViewAssistanceTable,
     name: "Grafico de Asistencias",
     isModuleEntrypoint: false,
     layout: Blank

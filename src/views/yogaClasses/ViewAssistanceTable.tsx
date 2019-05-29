@@ -3,25 +3,23 @@ import Input from "../../components/FormBuilder/Input";
 import { InputName } from "../../components/FormBuilder/FormBuilder";
 import helpers from "../../helpers";
 import api from "../../modules/api";
-import { AssistanceGraphData } from "../../modules/api/requests/AssistanceGraphRequest";
+import { AssistanceTableData } from "../../modules/api/requests/AssistanceTableRequest";
 import ReactTable, { Column } from "react-table";
 import "react-table/react-table.css";
 
-const ViewAssistanceGraph = () => {
+const ViewAssistanceTable = () => {
   const [date, setDate] = useState(helpers.date.normalize(new Date()));
 
-  const [graphData, setGraphData] = useState<AssistanceGraphData | undefined>();
+  const [tableData, setTableData] = useState<AssistanceTableData | undefined>();
 
   useEffect(() => {
-    api.assistanceGraph.getDataForMonth(date).then(setGraphData);
+    api.assistanceTable.getDataForMonth(date).then(setTableData);
   }, [date]);
 
-  let assistanceGraphTable = null;
+  let assistanceTable = null;
 
-  if (graphData) {
-    assistanceGraphTable = (
-      <AssistanceGraphTable date={date} data={graphData} />
-    );
+  if (tableData) {
+    assistanceTable = <AssistanceTable date={date} data={tableData} />;
   }
 
   return (
@@ -37,15 +35,12 @@ const ViewAssistanceGraph = () => {
           value={helpers.date.format(date, "YYYY-MM")}
         />
       </div>
-      {assistanceGraphTable}
+      {assistanceTable}
     </>
   );
 };
 
-const AssistanceGraphTable = (props: {
-  date: Date;
-  data: AssistanceGraphData;
-}) => {
+const AssistanceTable = (props: { date: Date; data: AssistanceTableData }) => {
   const daysInMonth = helpers.array.incremental(
     helpers.date.getDaysInMonth(props.date),
     1
@@ -86,7 +81,7 @@ const AssistanceGraphTable = (props: {
         .map(p => p.amount)
         .reduce((sum, amount) => sum + amount, 0),
     Cell: v => <div style={{ textAlign: "right" }}>${v.value}</div>,
-    resizable: false,
+    resizable: false
   });
 
   return (
@@ -95,9 +90,9 @@ const AssistanceGraphTable = (props: {
       data={props.data.students}
       columns={columns}
       showPagination={false}
-      className='-striped -highlight'
+      className="-striped -highlight"
     />
   );
 };
 
-export default ViewAssistanceGraph;
+export default ViewAssistanceTable;

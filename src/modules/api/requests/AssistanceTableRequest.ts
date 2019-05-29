@@ -2,7 +2,7 @@ import Request from "../core/Request";
 import helpers from "../../../helpers";
 import { Method } from "../core/HttpClient";
 
-export interface AssistanceGraphData {
+export interface AssistanceTableData {
   yogaClasses: {
     id: number;
     date: Date;
@@ -19,10 +19,10 @@ export interface AssistanceGraphData {
   }[];
 }
 
-class AssistanceGraphRequest extends Request {
+class AssistanceTableRequest extends Request {
   getDataForMonth: (
     dateInMonth: Date
-  ) => Promise<AssistanceGraphData> = dateInMonth =>
+  ) => Promise<AssistanceTableData> = dateInMonth =>
     this.httpClient
       .fetch(
         this.basePath + "/" + helpers.date.format(dateInMonth, "YYYY-MM-DD"),
@@ -57,4 +57,4 @@ class AssistanceGraphRequest extends Request {
     }));
 }
 
-export default AssistanceGraphRequest;
+export default AssistanceTableRequest;
