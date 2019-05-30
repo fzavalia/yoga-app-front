@@ -8,7 +8,7 @@ import ReactTable, { Column } from "react-table";
 import "react-table/react-table.css";
 
 const ViewAssistanceTable = () => {
-  const [date, setDate] = useState(helpers.date.normalize(new Date()));
+  const [date, setDate] = useState(new Date());
 
   const [tableData, setTableData] = useState<AssistanceTableData | undefined>();
 
@@ -45,7 +45,7 @@ const RepresentedMonthInput = (props: {
         type="month"
         name="date"
         onChange={(_, value) =>
-          props.onChange(helpers.date.normalize(new Date(value)))
+          props.onChange(new Date(value))
         }
         value={helpers.date.format(props.value, "YYYY-MM")}
       />
@@ -58,7 +58,7 @@ const AssistanceTable = (props: {
   data: AssistanceTableData;
   onStudentAssistanceChanged: () => void;
 }) => {
-  const today = helpers.date.normalize(new Date());
+  const today = new Date();
 
   const dateOfToday = today.getDate();
 
