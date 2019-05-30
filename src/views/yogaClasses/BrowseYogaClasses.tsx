@@ -24,7 +24,7 @@ export default (props: { history: History }) => {
 
   return (
     <>
-      <TopButton
+      <ViewAssistanceTableButton
         onClick={() => props.history.push("/yoga_classes/assistance_graph")}
       />
       <BrowseView
@@ -51,7 +51,7 @@ export default (props: { history: History }) => {
   );
 };
 
-const TopButton = (props: { onClick: () => void }) => {
+const ViewAssistanceTableButton = (props: { onClick: () => void }) => {
   return (
     <div
       style={{
