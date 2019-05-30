@@ -65,7 +65,7 @@ const TopButton = (props: { onClick: () => void }) => {
         size="sm"
         onClick={props.onClick}
       >
-        Ver Grafico de Asistencias
+        Ver Tabla de Asistencias
       </Button>
     </div>
   );
