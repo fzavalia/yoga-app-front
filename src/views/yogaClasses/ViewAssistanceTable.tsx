@@ -12,6 +12,8 @@ const ViewAssistanceTable = () => {
 
   const [tableData, setTableData] = useState<AssistanceTableData | undefined>();
 
+  const [studentNameFilter, setStudentNameFilter] = useState("");
+
   const fetchDataForMonth = () => {
     api.assistanceTable.getDataForMonth(date).then(setTableData);
   };
@@ -22,11 +24,24 @@ const ViewAssistanceTable = () => {
 
   return (
     <>
-      <RepresentedMonthInput value={date} onChange={setDate} />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <FilterbyStudentName
+          value={studentNameFilter}
+          onChange={setStudentNameFilter}
+        />
+
+        <SelectMonth value={date} onChange={setDate} />
+      </div>
+
       {tableData && (
         <AssistanceTable
           date={date}
-          data={tableData}
+          data={{
+            ...tableData,
+            students: tableData.students.filter(x =>
+              x.name.toLowerCase().includes(studentNameFilter.toLowerCase())
+            )
+          }}
           onStudentAssistanceChanged={fetchDataForMonth}
         />
       )}
@@ -34,7 +49,7 @@ const ViewAssistanceTable = () => {
   );
 };
 
-const RepresentedMonthInput = (props: {
+const SelectMonth = (props: {
   value: Date;
   onChange: (date: Date) => void;
 }) => {
@@ -44,14 +59,27 @@ const RepresentedMonthInput = (props: {
       <Input
         type="month"
         name="date"
-        onChange={(_, value) =>
-          props.onChange(new Date(value))
-        }
+        onChange={(_, value) => props.onChange(new Date(value))}
         value={helpers.date.format(props.value, "YYYY-MM")}
       />
     </div>
   );
 };
+
+const FilterbyStudentName = (props: {
+  value: string;
+  onChange: (value: string) => void;
+}) => (
+  <div style={{ maxWidth: 200, marginBottom: "1rem" }}>
+    <InputName>Filtrar por nombre de Alumno</InputName>
+    <Input
+      type="text"
+      name="studentName"
+      onChange={(_, value) => props.onChange(value)}
+      value={props.value}
+    />
+  </div>
+);
 
 const AssistanceTable = (props: {
   date: Date;
