@@ -64,6 +64,7 @@ const HeaderLinksContainer = (props: { children: any }) => (
 
 const ContentContainer = (props: { children: any }) => (
   <section
+    id="admin-content-container"
     style={{
       height: "calc(100vh - 90px)",
       overflowY: "auto",

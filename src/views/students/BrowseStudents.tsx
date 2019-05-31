@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import { Student } from "../../modules/api/requests/StudentRequest";
 import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 export default (props: { history: History }) => {
-  const [students, setStudents] = useState<Student[]>([]);
-
-  useEffect(() => {
-    api.student
-      .paginatedList(1, {
-        order: { by: "name", type: OrderType.ASC }
-      })
-      .then(res => setStudents(res.data));
-  }, []);
-
   return (
     <BrowseView
-      items={students}
       mapItem={student => ({
         title: student.name,
         props: [
@@ -27,17 +15,16 @@ export default (props: { history: History }) => {
           { label: "DNI", value: student.dni }
         ]
       })}
-      onUpdateClick={student =>
-        props.history.push(`/students/update/${student.id}`)
+      loadMore={page =>
+        api.student.paginatedList(page, {
+          order: { by: "name", type: OrderType.ASC }
+        })
       }
-      onDeleteClick={student => {
-        if (window.confirm("Eliminar Alumno " + student.name)) {
-          api.student
-            .delete(student.id)
-            .then(() => setStudents(students.filter(x => x.id !== student.id)));
-        }
-      }}
-      onCreateClick={() => props.history.push(`/students/create`)}
+      history={props.history}
+      createItemPath={`/students/create`}
+      updateItemPath={student => `/students/update/${student.id}`}
+      deletePromise={student => api.student.delete(student.id)}
+      deleteMessage={student => "Eliminar Alumno" + student.name}
     />
   );
 };

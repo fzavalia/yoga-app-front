@@ -1,47 +1,87 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import InfiniteScroll from "react-infinite-scroller";
 import helpers from "../helpers";
 import Button from "./Button";
+import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
+import { History } from "history";
 
 export default (props: {
-  items: any[];
+  history: History;
+  createItemPath: string;
   mapItem: (
     item: any
   ) => { title: string; props: { label: string; value: any }[] };
-  onCreateClick: () => void;
-  onUpdateClick: (item: any) => void;
-  onDeleteClick: (item: any) => void;
-}) => (
-  <>
-    <CreateButton onClick={props.onCreateClick} />
-    <ul>
-      {props.items.map((item, key) => {
-        const mapped = props.mapItem(item);
-        return (
-          <Item key={key}>
-            <h3>{mapped.title}</h3>
-            <section>
-              {mapped.props.map((prop, key) => (
-                <ItemValue key={key}>
-                  <span>{prop.label}: </span>
-                  <span>{prop.value}</span>
-                </ItemValue>
-              ))}
-            </section>
-            <br />
-            <ItemButtonsContainer>
-              <ItemButton onClick={() => props.onUpdateClick(item)}>
-                Editar
-              </ItemButton>
-              <ItemButton onClick={() => props.onDeleteClick(item)}>
-                Borrar
-              </ItemButton>
-            </ItemButtonsContainer>
-          </Item>
-        );
-      })}
-    </ul>
-  </>
-);
+  loadMore: (page: number) => Promise<PaginatedResult<any>>;
+  updateItemPath: (item: any) => string;
+  deletePromise: (item: any) => Promise<void>;
+  deleteMessage: (item: any) => string;
+}) => {
+  const [items, setItems] = useState<any[]>([]);
+
+  const [hasMore, setHasMore] = useState(true);
+
+  return (
+    <>
+      <CreateButton onClick={() => props.history.push(props.createItemPath)} />
+      <ul>
+        <InfiniteScroll
+          pageStart={0}
+          hasMore={hasMore}
+          useWindow={false}
+          getScrollParent={() => document.getElementById('admin-content-container')}
+          loadMore={async page => {
+            const res = await props.loadMore(page);
+            if (res.data.length === 0) {
+              setHasMore(false);
+            } else {
+              setItems(items.concat(res.data));
+            }
+          }}
+        >
+          {items.map((item, key) => {
+            const mapped = props.mapItem(item);
+            return (
+              <Item key={key}>
+                <h3>{mapped.title}</h3>
+                <section>
+                  {mapped.props.map((prop, key) => (
+                    <ItemValue key={key}>
+                      <span>{prop.label}: </span>
+                      <span>{prop.value}</span>
+                    </ItemValue>
+                  ))}
+                </section>
+                <br />
+                <ItemButtonsContainer>
+                  <ItemButton
+                    onClick={() =>
+                      props.history.push(props.updateItemPath(item))
+                    }
+                  >
+                    Editar
+                  </ItemButton>
+                  <ItemButton
+                    onClick={() => {
+                      if (window.confirm(props.deleteMessage(item))) {
+                        props
+                          .deletePromise(item)
+                          .then(() =>
+                            setItems(items.filter(_item => item !== _item))
+                          );
+                      }
+                    }}
+                  >
+                    Borrar
+                  </ItemButton>
+                </ItemButtonsContainer>
+              </Item>
+            );
+          })}
+        </InfiniteScroll>
+      </ul>
+    </>
+  );
+};
 
 const CreateButton = (props: { onClick: () => void }) => (
   <Button

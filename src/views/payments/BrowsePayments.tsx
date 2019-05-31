@@ -10,20 +10,8 @@ import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 export default (props: { history: History }) => {
-  const [payments, setPayments] = useState<Payment[]>([]);
-
-  useEffect(() => {
-    api.payment
-      .list({
-        include: ["student"],
-        order: { by: "payed_at", type: OrderType.DESC }
-      })
-      .then(setPayments);
-  }, []);
-
   return (
     <BrowseView
-      items={payments}
       mapItem={payment => ({
         title: payment.student.name,
         props: [
@@ -54,21 +42,17 @@ export default (props: { history: History }) => {
           }
         ]
       })}
-      onUpdateClick={payment =>
-        props.history.push(`/payments/update/${payment.id}`)
+      loadMore={page =>
+        api.payment.paginatedList(page, {
+          include: ["student"],
+          order: { by: "payed_at", type: OrderType.DESC }
+        })
       }
-      onDeleteClick={payment => {
-        if (
-          window.confirm(
-            "Eliminar Pago de " + (payment.student ? payment.student.name : "")
-          )
-        ) {
-          api.payment
-            .delete(payment.id)
-            .then(() => setPayments(payments.filter(x => x.id !== payment.id)));
-        }
-      }}
-      onCreateClick={() => props.history.push(`/payments/create`)}
+      history={props.history}
+      createItemPath={`/payments/create`}
+      updateItemPath={payment => `/payments/update/${payment.id}`}
+      deletePromise={payment => api.payment.delete(payment.id)}
+      deleteMessage={payment => "Eliminar Pago" + payment.student.name}
     />
   );
 };

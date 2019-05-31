@@ -8,17 +8,6 @@ import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
-  const [yogaClasses, setYogaClasses] = useState<YogaClass[]>([]);
-
-  useEffect(() => {
-    api.yogaClass
-      .list({
-        include: ["students"],
-        order: { by: "date", type: OrderType.DESC }
-      })
-      .then(setYogaClasses);
-  }, []);
-
   const date = (yogaClass: YogaClass) =>
     helpers.date.normalizeAndFormatForView(yogaClass.date);
 
@@ -28,24 +17,21 @@ export default (props: { history: History }) => {
         onClick={() => props.history.push("/yoga_classes/assistance_graph")}
       />
       <BrowseView
-        items={yogaClasses}
         mapItem={yogaClass => ({
           title: date(yogaClass),
           props: [{ label: "Asistencias", value: yogaClass.students.length }]
         })}
-        onUpdateClick={yogaClass =>
-          props.history.push(`/yoga_classes/update/${yogaClass.id}`)
+        loadMore={page =>
+          api.yogaClass.paginatedList(page, {
+            include: ["students"],
+            order: { by: "date", type: OrderType.DESC }
+          })
         }
-        onDeleteClick={yogaClass => {
-          if (window.confirm("Eliminar Clase " + date(yogaClass))) {
-            api.yogaClass
-              .delete(yogaClass.id)
-              .then(() =>
-                setYogaClasses(yogaClasses.filter(x => x.id !== yogaClass.id))
-              );
-          }
-        }}
-        onCreateClick={() => props.history.push(`/yoga_classes/create`)}
+        history={props.history}
+        createItemPath={`/yoga_classes/create`}
+        updateItemPath={yogaClass => `/yoga_classes/update/${yogaClass.id}`}
+        deletePromise={yogaClass => api.payment.delete(yogaClass.id)}
+        deleteMessage={yogaClass => "Eliminar Clase" + date(yogaClass)}
       />
     </>
   );
