@@ -28,6 +28,7 @@ export interface ShowOptions {
 
 export interface PaginatedResult<Model> {
   data: Model[];
+  total: number
 }
 
 export default abstract class ApiModelRequest<
@@ -59,7 +60,8 @@ export default abstract class ApiModelRequest<
     return this.httpClient
       .fetch(pathWithQueryParameters, Method.GET)
       .then(paginatedResult => ({
-        data: paginatedResult.data.map(this.mapModelFromApi)
+        data: paginatedResult.data.map(this.mapModelFromApi),
+        total: paginatedResult.total
       }));
   };
 
