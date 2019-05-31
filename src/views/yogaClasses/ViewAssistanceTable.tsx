@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Input from "../../components/FormBuilder/Input";
 import { InputName } from "../../components/FormBuilder/FormBuilder";
 import helpers from "../../helpers";
@@ -14,13 +14,13 @@ const ViewAssistanceTable = () => {
 
   const [studentNameFilter, setStudentNameFilter] = useState("");
 
-  const fetchDataForMonth = () => {
+  const fetchDataForMonth = useCallback(() => {
     api.assistanceTable.getDataForMonth(date).then(setTableData);
-  };
+  }, [date]);
 
   useEffect(() => {
     fetchDataForMonth();
-  }, [date]);
+  }, [date, fetchDataForMonth]);
 
   return (
     <>
