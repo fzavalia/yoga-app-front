@@ -28,14 +28,18 @@ export default (props: {
           pageStart={0}
           hasMore={hasMore}
           useWindow={false}
-          getScrollParent={() => document.getElementById('admin-content-container')}
+          getScrollParent={() =>
+            document.getElementById("admin-content-container")
+          }
           loadMore={async page => {
             const res = await props.loadMore(page);
-            if (res.data.length === 0) {
+            if (
+              res.data.length === 0 ||
+              res.total <= res.data.length + items.length
+            ) {
               setHasMore(false);
-            } else {
-              setItems(items.concat(res.data));
             }
+            setItems(items.concat(res.data));
           }}
         >
           {items.map((item, key) => {
