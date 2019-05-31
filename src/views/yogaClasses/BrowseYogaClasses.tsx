@@ -30,7 +30,7 @@ export default (props: { history: History }) => {
         history={props.history}
         createItemPath={`/yoga_classes/create`}
         updateItemPath={yogaClass => `/yoga_classes/update/${yogaClass.id}`}
-        deletePromise={yogaClass => api.payment.delete(yogaClass.id)}
+        deletePromise={yogaClass => api.yogaClass.delete(yogaClass.id)}
         deleteMessage={yogaClass => "Eliminar Clase" + date(yogaClass)}
       />
     </>
