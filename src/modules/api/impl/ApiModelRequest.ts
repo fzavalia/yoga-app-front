@@ -1,5 +1,5 @@
 import { Method, BodyType } from "../core/HttpClient";
-import {
+import QueryStringBuilder, {
   Where,
   Order,
   Pagination,
@@ -16,11 +16,18 @@ export interface ListOptions {
   whereRelationBetween?: WhereRelationBetween;
   include?: string[];
   order?: Order;
-  pagination?: Pagination;
+}
+
+export interface PaginatedListOptions extends ListOptions {
+  limit?: number;
 }
 
 export interface ShowOptions {
   include?: string[];
+}
+
+export interface PaginatedResult<Model> {
+  data: Model[];
 }
 
 export default abstract class ApiModelRequest<
@@ -28,20 +35,32 @@ export default abstract class ApiModelRequest<
   Submittable
 > extends Request {
   list: (options?: ListOptions) => Promise<Model[]> = (options = {}) => {
-    const path = this.queryStringBuilder(this.basePath)
-      .withInclude(options.include)
-      .withOrder(options.order)
-      .withPagination(options.pagination)
-      .withWhere(options.where)
-      .withWhereRelation(options.whereRelation)
-      .withWhereBetween(options.whereBetween)
-      .withWhereRelationBetween(options.whereRelationBetween)
-      .withWhere(options.where)
+    const pathWithQueryParameters = this.prepareQueryStringBuilderWithListOptions(
+      this.queryStringBuilder(this.basePath),
+      options
+    ).build();
+
+    return this.httpClient
+      .fetch(pathWithQueryParameters, Method.GET)
+      .then(models => models.map(this.mapModelFromApi));
+  };
+
+  paginatedList: (
+    page: number,
+    options?: PaginatedListOptions
+  ) => Promise<PaginatedResult<Model>> = (page, options = {}) => {
+    const pathWithQueryParameters = this.prepareQueryStringBuilderWithListOptions(
+      this.queryStringBuilder(this.basePath),
+      options
+    )
+      .withPagination({ page, limit: options.limit })
       .build();
 
     return this.httpClient
-      .fetch(path, Method.GET)
-      .then(models => models.map(this.mapModelFromApi));
+      .fetch(pathWithQueryParameters, Method.GET)
+      .then(paginatedResult => ({
+        data: paginatedResult.data.map(this.mapModelFromApi)
+      }));
   };
 
   show: (id: number, options?: ShowOptions) => Promise<Model> = (
@@ -75,4 +94,18 @@ export default abstract class ApiModelRequest<
   protected abstract mapModelFromApi: (model: any) => Model;
 
   protected abstract mapSubmittableForApi: (model: Submittable) => any;
+
+  private prepareQueryStringBuilderWithListOptions = (
+    qsb: QueryStringBuilder,
+    options: ListOptions
+  ) => {
+    return qsb
+      .withInclude(options.include)
+      .withOrder(options.order)
+      .withWhere(options.where)
+      .withWhereRelation(options.whereRelation)
+      .withWhereBetween(options.whereBetween)
+      .withWhereRelationBetween(options.whereRelationBetween)
+      .withWhere(options.where);
+  };
 }
