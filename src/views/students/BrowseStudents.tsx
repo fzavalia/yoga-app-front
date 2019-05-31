@@ -10,8 +10,10 @@ export default (props: { history: History }) => {
 
   useEffect(() => {
     api.student
-      .list({ order: { by: "name", type: OrderType.ASC } })
-      .then(setStudents);
+      .paginatedList(1, {
+        order: { by: "name", type: OrderType.ASC }
+      })
+      .then(res => setStudents(res.data));
   }, []);
 
   return (
