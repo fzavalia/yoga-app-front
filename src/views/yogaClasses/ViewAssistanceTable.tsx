@@ -59,7 +59,9 @@ const SelectMonth = (props: {
       <Input
         type="month"
         name="date"
-        onChange={(_, value) => props.onChange(new Date(value))}
+        onChange={(_, value) =>
+          props.onChange(helpers.date.normalize(new Date(value)))
+        }
         value={helpers.date.format(props.value, "YYYY-MM")}
       />
     </div>
