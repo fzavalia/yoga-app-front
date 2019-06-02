@@ -8,13 +8,17 @@ import HttpClient, {
   RequestError
 } from "../core/HttpClient";
 
+const defaultHeaders = {
+  Accept: "application/json"
+};
+
 export default class FetchHttpClient implements HttpClient {
   constructor(private host: string) {}
 
   fetch = async (path: string, method: Method, options?: Options) => {
     const body =
       options && options.body ? this.mapBody(options.body) : undefined;
-    const headers = options ? this.mapHeaders(options) : {};
+    const headers = options ? this.mapHeaders(options) : defaultHeaders;
     const res = await fetch(`${this.host}${path}`, {
       method: this.mapMethod(method),
       body,
@@ -43,11 +47,13 @@ export default class FetchHttpClient implements HttpClient {
   };
 
   private mapHeaders = (options: Options) => {
-    const headers: Headers = options.headers ? { ...options.headers } : {};
+    let headers: Headers = defaultHeaders;
+    if (options.headers) {
+      headers = { ...options.headers };
+    }
     if (options.body && options.body.type === BodyType.JSON) {
       headers["Content-Type"] = "application/json";
     }
-    headers["Accept"] = "application/json";
     return headers;
   };
 
