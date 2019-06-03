@@ -26,8 +26,10 @@ export interface Options {
   headers?: Map<string, string>;
 }
 
-export class RequestError {
-  constructor(private status: number, private message: string) {}
+export class RequestError extends Error {
+  constructor(status: number, message: string) {
+    super(JSON.stringify({ status, message }));
+  }
 }
 
 export default interface HttpClient {
