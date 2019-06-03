@@ -186,7 +186,9 @@ export default class FormBuilder<T> {
 }
 
 const FormTitle = (props: { children: any }) => (
-  <h1 style={{ textAlign: "center" }}>{props.children}</h1>
+  <h1 style={{ textAlign: "center", color: helpers.color.secondaryDark }}>
+    {props.children}
+  </h1>
 );
 
 export const InputContainer = (props: {

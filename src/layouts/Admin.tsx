@@ -4,6 +4,7 @@ import routes from "../routes/routes";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
+import bgImg from "../assets/img/appBg.jpg";
 
 const Admin: Layout = (props: { children: any }) => (
   <>
@@ -26,9 +27,7 @@ const Admin: Layout = (props: { children: any }) => (
           ))}
       </HeaderLinksContainer>
     </Header>
-    <ContentContainer>
-      <Content>{props.children}</Content>
-    </ContentContainer>
+    <Container>{props.children}</Container>
   </>
 );
 
@@ -36,12 +35,13 @@ const Header = (props: { children: any }) => (
   <header
     style={{
       width: "100%",
-      backgroundColor: helpers.color.secondary,
+      backgroundColor: helpers.color.secondaryDark,
       height: 90,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      boxShadow: "0 0 5px black"
+      boxShadow: `0 0 2px ${helpers.color.secondary}`,
+      position: "relative"
     }}
   >
     {props.children}
@@ -52,9 +52,9 @@ const HeaderLinksContainer = (props: { children: any }) => (
   <div
     style={{
       display: "flex",
-      justifyContent: "space-between",
+      justifyContent: "space-around",
       width: "100%",
-      maxWidth: "500px",
+      maxWidth: 800,
       margin: "0 1rem"
     }}
   >
@@ -62,30 +62,38 @@ const HeaderLinksContainer = (props: { children: any }) => (
   </div>
 );
 
-const ContentContainer = (props: { children: any }) => (
+const Container = (props: { children: any }) => (
   <section
     id="admin-content-container"
     style={{
       height: "calc(100vh - 90px)",
       overflowY: "auto",
       display: "flex",
-      justifyContent: "center"
+      justifyContent: "center",
+      backgroundImage: `url(${bgImg})`,
+      backgroundSize: "cover"
     }}
   >
-    {props.children}
+    <div
+      style={{
+        width: "100%",
+        maxWidth: 800,
+        margin: "1rem"
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "rgba(255,255,255,.8)",
+          padding: "1rem",
+          borderRadius: 10,
+          boxShadow: `0 0 3px 0 ${helpers.color.secondary}`,
+          marginBottom: "1rem"
+        }}
+      >
+        {props.children}
+      </div>
+    </div>
   </section>
-);
-
-const Content = (props: { children: any }) => (
-  <div
-    style={{
-      width: "100%",
-      maxWidth: "500px",
-      margin: "1rem"
-    }}
-  >
-    {props.children}
-  </div>
 );
 
 export default Admin;

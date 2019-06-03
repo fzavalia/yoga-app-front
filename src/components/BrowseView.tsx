@@ -101,7 +101,7 @@ const CreateButton = (props: { onClick: () => void }) => (
 );
 
 const Item = (props: { children: any }) => (
-  <li style={{ padding: `0 0 1rem`, borderBottom: "solid 1px" }}>
+  <li style={{ padding: `0 0 1rem`, borderBottom: "solid 1px", color: helpers.color.secondaryDark }}>
     {props.children}
   </li>
 );

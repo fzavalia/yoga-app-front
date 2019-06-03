@@ -41,7 +41,8 @@ export const makeInputStyle = (props: {
     fontSize: "1rem",
     height: "2rem",
     borderBottom: "solid 1px " + helpers.color.secondary,
-    transition: "border-bottom-color 500ms"
+    transition: "border-bottom-color 500ms",
+    backgroundColor: 'unset'
   };
 
   if (props.focused) {
