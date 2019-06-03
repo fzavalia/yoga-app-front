@@ -10,9 +10,7 @@ import api from "../../modules/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const loginButtonRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -41,7 +39,7 @@ const Login = () => {
               type="text"
               onChange={(_, value) => setEmail(value)}
               value={email}
-              autoComplete='username'
+              autoComplete="username"
             />
           </InputContainer>
           <InputContainer>
@@ -51,7 +49,7 @@ const Login = () => {
               type="password"
               onChange={(_, value) => setPassword(value)}
               value={password}
-              autoComplete='current-password'
+              autoComplete="current-password"
             />
           </InputContainer>
           <Button
