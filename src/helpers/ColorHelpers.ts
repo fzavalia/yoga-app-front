@@ -3,6 +3,6 @@ export default class ColorHelpers {
   primaryLight = '#d1bdef'
   secondaryLight = '#6738af';
   secondary = "#422371";
-  secondaryDark = '#170c27';
+  secondaryDark = '#211138';
   danger = 'red';
 }
