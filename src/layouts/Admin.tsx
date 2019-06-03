@@ -9,25 +9,23 @@ import bgImg from "../assets/img/appBg.jpg";
 const Admin: Layout = (props: { children: any }) => (
   <>
     <Header>
-      <HeaderLinksContainer>
-        {routes
-          .filter(route => route.isModuleEntrypoint)
-          .map((route, key) => (
-            <Link key={key} to={route.path}>
-              <Button
-                colors={{
-                  main: helpers.color.primary,
-                  selected: helpers.color.primaryLight
-                }}
-                selected={window.location.pathname.startsWith(route.path)}
-              >
-                {route.name}
-              </Button>
-            </Link>
-          ))}
-      </HeaderLinksContainer>
+      {routes
+        .filter(route => route.isModuleEntrypoint)
+        .map((route, key) => (
+          <Link key={key} to={route.path}>
+            <Button
+              colors={{
+                main: helpers.color.primary,
+                selected: helpers.color.primaryLight
+              }}
+              selected={window.location.pathname.startsWith(route.path)}
+            >
+              {route.name}
+            </Button>
+          </Link>
+        ))}
     </Header>
-    <Container>{props.children}</Container>
+    <Content>{props.children}</Content>
   </>
 );
 
@@ -44,25 +42,21 @@ const Header = (props: { children: any }) => (
       position: "relative"
     }}
   >
-    {props.children}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        width: "100%",
+        maxWidth: 800,
+        margin: "0 1rem"
+      }}
+    >
+      {props.children}
+    </div>
   </header>
 );
 
-const HeaderLinksContainer = (props: { children: any }) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-around",
-      width: "100%",
-      maxWidth: 800,
-      margin: "0 1rem"
-    }}
-  >
-    {props.children}
-  </div>
-);
-
-const Container = (props: { children: any }) => (
+const Content = (props: { children: any }) => (
   <section
     id="admin-content-container"
     style={{
