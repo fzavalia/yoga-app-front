@@ -8,17 +8,13 @@ import HttpClient, {
   RequestError
 } from "../core/HttpClient";
 
-const defaultHeaders = {
-  Accept: "application/json"
-};
-
 export default class FetchHttpClient implements HttpClient {
   constructor(private host: string) {}
 
   fetch = async (path: string, method: Method, options?: Options) => {
-    const body =
-      options && options.body ? this.mapBody(options.body) : undefined;
-    const headers = options ? this.mapHeaders(options) : defaultHeaders;
+    const body = this.getBodyFromOptions(options);
+    const headers = this.getHeadersFromOptions(options);
+
     const res = await fetch(`${this.host}${path}`, {
       method: this.mapMethod(method),
       body,
@@ -46,23 +42,38 @@ export default class FetchHttpClient implements HttpClient {
     }
   };
 
-  private mapHeaders = (options: Options) => {
-    let headers: Headers = defaultHeaders;
-    if (options.headers) {
-      headers = { ...options.headers };
+  private getHeadersFromOptions = (options?: Options) => {
+    let headers: Headers = {
+      Accept: "application/json"
+    };
+
+    if (!options) {
+      return headers;
     }
+
+    if (options.headers) {
+      headers = Object.assign(headers, options.headers);
+    }
+
     if (options.body && options.body.type === BodyType.JSON) {
       headers["Content-Type"] = "application/json";
     }
+
     return headers;
   };
 
-  private mapBody = (body: Body) => {
+  private getBodyFromOptions = (options?: Options) => {
+    if (!options || !options.body) {
+      return undefined;
+    }
+
+    const body = options.body;
+
     switch (body.type) {
-      case BodyType.JSON:
-        return this.mapBodyArgsToJSON(body.args);
       case BodyType.FORM:
         return this.mapBodyArgsToForm(body.args);
+      default:
+        return this.mapBodyArgsToJSON(body.args);
     }
   };
 

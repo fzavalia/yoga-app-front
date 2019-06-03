@@ -17,7 +17,7 @@ export interface BodyArgs {
 export type Headers = BodyArgs
 
 export interface Body {
-  type: BodyType,
+  type?: BodyType,
   args: { [props: string]: any }
 }
 
