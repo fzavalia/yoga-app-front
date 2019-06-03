@@ -5,8 +5,9 @@ import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
 import bgImg from "../assets/img/appBg.jpg";
+import Paper from "../components/Paper";
 
-const Admin: Layout = (props: { children: any }) => (
+const Admin: Layout = (props: { children: React.ReactNode }) => (
   <>
     <Header>
       {routes
@@ -29,7 +30,7 @@ const Admin: Layout = (props: { children: any }) => (
   </>
 );
 
-const Header = (props: { children: any }) => (
+const Header = (props: { children: React.ReactNode }) => (
   <header
     style={{
       width: "100%",
@@ -56,7 +57,7 @@ const Header = (props: { children: any }) => (
   </header>
 );
 
-const Content = (props: { children: any }) => (
+const Content = (props: { children: React.ReactNode }) => (
   <section
     id="admin-content-container"
     style={{
@@ -75,17 +76,7 @@ const Content = (props: { children: any }) => (
         margin: "1rem"
       }}
     >
-      <div
-        style={{
-          backgroundColor: "rgba(255,255,255,.8)",
-          padding: "1rem",
-          borderRadius: 10,
-          boxShadow: `0 0 3px 0 ${helpers.color.secondary}`,
-          marginBottom: "1rem"
-        }}
-      >
-        {props.children}
-      </div>
+      <Paper>{props.children}</Paper>
     </div>
   </section>
 );
