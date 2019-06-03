@@ -52,7 +52,7 @@ const makeStyle = (props: ButtonProps, isHover: boolean) => {
       break;
   }
 
-  style = Object.assign(style, props.style || {});
+  style = Object.assign(style, props.style);
 
   return style;
 };

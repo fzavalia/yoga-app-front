@@ -1,6 +1,7 @@
 import Layout from "../layouts/Layout";
 import Admin from "../layouts/Admin";
 import Blank from "../layouts/Blank";
+import Auth from "../layouts/Auth";
 import BrowseStudents from "../views/students/BrowseStudents";
 import CreateStudent from "../views/students/CreateStudent";
 import UpdateStudent from "../views/students/UpdateStudent";
@@ -97,7 +98,7 @@ const routes: Route[] = [
     component: Login,
     name: "Login",
     isModuleEntrypoint: false,
-    layout: Blank
+    layout: Auth
   }
 ];
 

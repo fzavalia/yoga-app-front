@@ -1,5 +1,5 @@
 type Layout = (props: {
-  children: any;
+  children: React.ReactNode;
 }) => JSX.Element;
 
 export default Layout;
