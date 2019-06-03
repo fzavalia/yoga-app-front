@@ -4,7 +4,7 @@ import routes from "../routes/routes";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
-import bgImg from "../assets/img/appBg.jpg";
+import bgImg from "../assets/img/appBgLQ.jpg";
 import Paper from "../components/Paper";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
