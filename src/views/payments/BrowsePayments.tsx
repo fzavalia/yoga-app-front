@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import {
-  Payment,
-  PaymentType
-} from "../../modules/api/requests/PaymentRequest";
+import { PaymentType } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
 import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";

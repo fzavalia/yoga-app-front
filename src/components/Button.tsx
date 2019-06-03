@@ -9,10 +9,11 @@ type ButtonProps = {
   onClick?: () => void;
 };
 
-export default (props: ButtonProps) => {
+export default React.forwardRef<HTMLDivElement, ButtonProps>((props, ref) => {
   const [isHover, setIsHover] = useState(false);
   return (
     <div
+      ref={ref}
       onClick={props.onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
@@ -21,7 +22,7 @@ export default (props: ButtonProps) => {
       {props.children}
     </div>
   );
-};
+});
 
 const makeStyle = (props: ButtonProps, isHover: boolean) => {
   let style: React.CSSProperties = {
@@ -51,7 +52,7 @@ const makeStyle = (props: ButtonProps, isHover: boolean) => {
       break;
   }
 
-  style = { ...style, ...(props.style || {}) };
+  style = Object.assign(style, props.style || {});
 
   return style;
 };

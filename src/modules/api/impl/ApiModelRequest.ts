@@ -2,7 +2,6 @@ import { Method, BodyType } from "../core/HttpClient";
 import QueryStringBuilder, {
   Where,
   Order,
-  Pagination,
   WhereBetween,
   WhereRelation,
   WhereRelationBetween

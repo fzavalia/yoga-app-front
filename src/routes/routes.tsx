@@ -11,6 +11,7 @@ import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
 import ViewAssistanceTable from "../views/yogaClasses/ViewAssistanceTable";
+import Login from "../views/auth/Login";
 
 export interface Route {
   path: string;
@@ -88,6 +89,13 @@ const routes: Route[] = [
     path: "/yoga_classes/assistance_graph",
     component: ViewAssistanceTable,
     name: "Grafico de Asistencias",
+    isModuleEntrypoint: false,
+    layout: Blank
+  },
+  {
+    path: "/auth/login",
+    component: Login,
+    name: "Login",
     isModuleEntrypoint: false,
     layout: Blank
   }

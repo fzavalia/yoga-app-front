@@ -6,12 +6,14 @@ import StudentRequest from "./requests/StudentRequest";
 import PaymentRequest from "./requests/PaymentRequest";
 import YogaClassApiModelRequest from "./requests/YogaClassRequest";
 import AssistanceTableRequest from "./requests/AssistanceTableRequest";
+import AuthRequest from "./requests/AuthRequest";
 
 const httpClient: HttpClient = new FetchHttpClient("http://localhost:8000");
 const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
   new ApiQueryStringBuilder(path);
 
 export default {
+  auth: new AuthRequest("/auth", httpClient, queryStringBuilder),
   student: new StudentRequest("/students", httpClient, queryStringBuilder),
   payment: new PaymentRequest("/payments", httpClient, queryStringBuilder),
   yogaClass: new YogaClassApiModelRequest(

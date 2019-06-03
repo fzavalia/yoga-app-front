@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import helpers from "../helpers";
 import Button from "./Button";

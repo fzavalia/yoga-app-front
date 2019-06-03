@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import helpers from "../../helpers";
 
-const Input = (props: {
+type InputProps = {
   name: string;
   type: string;
   value: any;
   onChange: (name: string, value: any) => void;
   invalid?: boolean;
-}) => {
+  autoComplete?: string;
+};
+
+const Input = (props: InputProps) => {
   const [focused, setFocused] = useState(false);
 
   let style: React.CSSProperties = makeInputStyle({
@@ -23,6 +26,7 @@ const Input = (props: {
       value={props.value}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
+      autoComplete={props.autoComplete}
     />
   );
 };

@@ -1,7 +1,6 @@
 import HttpClient, {
   Method,
   Options,
-  Body,
   BodyType,
   BodyArgs,
   Headers,
