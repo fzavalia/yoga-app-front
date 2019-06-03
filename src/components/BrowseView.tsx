@@ -42,6 +42,7 @@ export default (props: {
             setItems(items.concat(res.data));
           }}
         >
+          {items.length === 0 && <p>No hay elementos para mostrar.</p>}
           {items.map((item, key) => {
             const mapped = props.mapItem(item);
             return (
