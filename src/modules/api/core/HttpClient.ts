@@ -11,19 +11,19 @@ export enum BodyType {
 }
 
 export interface BodyArgs {
-  [props: string]: any
+  [props: string]: any;
 }
 
-export type Headers = BodyArgs
+export type Headers = BodyArgs;
 
 export interface Body {
-  type?: BodyType,
-  args: { [props: string]: any }
+  type: BodyType;
+  args: { [props: string]: any };
 }
 
 export interface Options {
-  body?: Body,
-  headers?: Map<string, string>
+  body?: Body;
+  headers?: Map<string, string>;
 }
 
 export class RequestError {
@@ -31,5 +31,5 @@ export class RequestError {
 }
 
 export default interface HttpClient {
-  fetch: (path: string, method: Method, options?: Options) => Promise<any>
+  fetch: (path: string, method: Method, options?: Options) => Promise<any>;
 }
