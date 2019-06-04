@@ -27,7 +27,7 @@ export interface ShowOptions {
 
 export interface PaginatedResult<Model> {
   data: Model[];
-  total: number
+  total: number;
 }
 
 export default abstract class ApiModelRequest<
@@ -41,7 +41,7 @@ export default abstract class ApiModelRequest<
     ).build();
 
     return this.httpClient
-      .fetch(pathWithQueryParameters, Method.GET)
+      .fetch(pathWithQueryParameters, Method.GET, { withCredentials: true })
       .then(models => models.map(this.mapModelFromApi));
   };
 
@@ -57,7 +57,7 @@ export default abstract class ApiModelRequest<
       .build();
 
     return this.httpClient
-      .fetch(pathWithQueryParameters, Method.GET)
+      .fetch(pathWithQueryParameters, Method.GET, { withCredentials: true })
       .then(paginatedResult => ({
         data: paginatedResult.data.map(this.mapModelFromApi),
         total: paginatedResult.total
@@ -75,22 +75,26 @@ export default abstract class ApiModelRequest<
       .build();
 
     return this.httpClient
-      .fetch(pathWithQueryString, Method.GET)
+      .fetch(pathWithQueryString, Method.GET, { withCredentials: true })
       .then(this.mapModelFromApi);
   };
 
   create = (student: Submittable) =>
     this.httpClient.fetch(this.basePath, Method.POST, {
-      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) }
+      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) },
+      withCredentials: true
     });
 
   update = (id: number, student: Submittable) =>
     this.httpClient.fetch(`${this.basePath}/${id}`, Method.PUT, {
-      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) }
+      body: { type: BodyType.JSON, args: this.mapSubmittableForApi(student) },
+      withCredentials: true
     });
 
   delete = (id: number) =>
-    this.httpClient.fetch(`${this.basePath}/${id}`, Method.DELETE);
+    this.httpClient.fetch(`${this.basePath}/${id}`, Method.DELETE, {
+      withCredentials: true
+    });
 
   protected abstract mapModelFromApi: (model: any) => Model;
 

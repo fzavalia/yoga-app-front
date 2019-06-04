@@ -8,7 +8,13 @@ import HttpClient, {
 } from "../core/HttpClient";
 
 export default class FetchHttpClient implements HttpClient {
+  private getAccessToken = () => "";
+
   constructor(private host: string) {}
+
+  setAccessTokenFactory = (func: () => string) => {
+    this.getAccessToken = func;
+  };
 
   fetch = async (path: string, method: Method, options: Options = {}) => {
     const body = this.getBodyFromOptions(options);
@@ -53,6 +59,12 @@ export default class FetchHttpClient implements HttpClient {
     if (options.body && options.body.type === BodyType.JSON) {
       headers["Content-Type"] = "application/json";
     }
+
+    if (options.withCredentials) {
+      headers["Authorization"] = "Bearer " + this.getAccessToken();
+    }
+
+    console.log(headers)
 
     return headers;
   };

@@ -13,14 +13,21 @@ const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
   new ApiQueryStringBuilder(path);
 
 export default {
+  setAccessTokenFactory: (func: () => string) =>
+    httpClient.setAccessTokenFactory(func),
+
   auth: new AuthRequest("/auth", httpClient, queryStringBuilder),
+
   student: new StudentRequest("/students", httpClient, queryStringBuilder),
+
   payment: new PaymentRequest("/payments", httpClient, queryStringBuilder),
+
   yogaClass: new YogaClassApiModelRequest(
     "/yoga_classes",
     httpClient,
     queryStringBuilder
   ),
+
   assistanceTable: new AssistanceTableRequest(
     "/assistance_tables",
     httpClient,

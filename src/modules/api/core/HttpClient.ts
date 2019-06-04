@@ -24,6 +24,7 @@ export interface Body {
 export interface Options {
   body?: Body;
   headers?: Map<string, string>;
+  withCredentials?: boolean;
 }
 
 export class RequestError extends Error {
@@ -34,4 +35,5 @@ export class RequestError extends Error {
 
 export default interface HttpClient {
   fetch: (path: string, method: Method, options?: Options) => Promise<any>;
+  setAccessTokenFactory: (func: () => string) => void;
 }

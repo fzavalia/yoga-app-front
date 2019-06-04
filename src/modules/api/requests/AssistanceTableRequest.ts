@@ -27,7 +27,8 @@ class AssistanceTableRequest extends Request {
     this.httpClient
       .fetch(
         this.basePath + "/" + helpers.date.format(dateInMonth, "YYYY-MM-DD"),
-        Method.GET
+        Method.GET,
+        { withCredentials: true }
       )
       .then(this.mapApiResponse);
 
@@ -42,7 +43,8 @@ class AssistanceTableRequest extends Request {
       )}`,
       Method.PUT,
       {
-        body: { type: BodyType.JSON, args: { student_ids: studentIds } }
+        body: { type: BodyType.JSON, args: { student_ids: studentIds } },
+        withCredentials: true
       }
     );
 
