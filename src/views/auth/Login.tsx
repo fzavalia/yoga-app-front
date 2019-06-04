@@ -11,9 +11,11 @@ import Paper from "../../components/Paper";
 import { login, LoginAction } from "../../redux/actions";
 import { connect } from "react-redux";
 
-class Login extends Component<{
+interface LoginProps {
   login: (user: any, accessToken: string) => LoginAction;
-}> {
+}
+
+class Login extends Component<LoginProps> {
   state = {
     email: "",
     password: ""
