@@ -4,7 +4,6 @@ import { Route } from "../routes/routes";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
-import bgImg from "../assets/img/appBgLQ.jpg";
 import Paper from "../components/Paper";
 import { connect } from "react-redux";
 import { AppState } from "../redux/reducers";
@@ -47,7 +46,7 @@ const Header = (props: { children: React.ReactNode }) => (
   <header
     style={{
       width: "100%",
-      backgroundColor: helpers.color.secondaryDark,
+      backgroundColor: helpers.color.secondary,
       height: 90,
       display: "flex",
       justifyContent: "center",
@@ -77,9 +76,7 @@ const Content = (props: { children: React.ReactNode }) => (
       height: "calc(100vh - 90px)",
       overflowY: "auto",
       display: "flex",
-      justifyContent: "center",
-      backgroundImage: `url(${bgImg})`,
-      backgroundSize: "cover"
+      justifyContent: "center"
     }}
   >
     <div

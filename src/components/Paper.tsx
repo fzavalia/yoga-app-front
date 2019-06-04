@@ -14,7 +14,7 @@ const Paper = (
         backgroundColor: "rgba(255,255,255,.8)",
         padding: "1rem",
         borderRadius: 10,
-        boxShadow: `0 0 3px 0 ${helpers.color.secondary}`,
+        boxShadow: `0px 0px 15px -10px ${helpers.color.secondaryDark}`,
         marginBottom: "1rem"
       },
       props.style

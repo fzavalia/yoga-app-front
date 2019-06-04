@@ -149,7 +149,7 @@ const AssistanceTable = (props: {
         }
         return style;
       })(),
-      Header: dayInMonth,
+      Header: dayInMonth.toString(),
       accessor: v =>
         props.data.yogaClasses
           .filter(yc => yc.date.getDate() === dayInMonth)
