@@ -64,8 +64,6 @@ export default class FetchHttpClient implements HttpClient {
       headers["Authorization"] = "Bearer " + this.getAccessToken();
     }
 
-    console.log(headers)
-
     return headers;
   };
 

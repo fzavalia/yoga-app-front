@@ -154,7 +154,7 @@ export default class FormBuilder<T> {
             <>
               <FormTitle>{this.title}</FormTitle>
               <form onSubmit={e => e.preventDefault()}>
-                {this.components.map(c => c(formikProps))}
+                {this.components.map((c, i) => <div key={i}>{c(formikProps)}</div>)}
                 <Button
                   size="sm"
                   colors={{ main: helpers.color.secondary }}
