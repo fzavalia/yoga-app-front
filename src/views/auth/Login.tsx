@@ -12,7 +12,7 @@ import { login, LoginAction } from "../../redux/actions";
 import { connect } from "react-redux";
 
 interface LoginProps {
-  login: (user: any, accessToken: string) => LoginAction;
+  login: (accessToken: string) => LoginAction;
 }
 
 class Login extends Component<LoginProps> {
@@ -61,7 +61,7 @@ class Login extends Component<LoginProps> {
             onClick={() => {
               api.auth
                 .login(this.state.email, this.state.password)
-                .then(x => this.props.login(x.user, x.accessToken));
+                .then(x => this.props.login(x.accessToken));
             }}
           >
             Ingresar
@@ -75,7 +75,6 @@ class Login extends Component<LoginProps> {
 export default connect(
   null,
   dispatch => ({
-    login: (user: any, accessToken: string) =>
-      dispatch(login(user, accessToken))
+    login: (accessToken: string) => dispatch(login(accessToken))
   })
 )(Login);

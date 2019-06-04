@@ -11,21 +11,27 @@ export interface AuthState {
   routes: Route[];
 }
 
+const persistedAccessToken = localStorage.getItem("at") || undefined;
+
+const hasPersistedAccessToken = Boolean(persistedAccessToken);
+
 const initialState: AuthState = {
-  isLoggedIn: false,
-  routes: preLoginRoutes
+  isLoggedIn: hasPersistedAccessToken,
+  routes: hasPersistedAccessToken ? postLoginRoutes : preLoginRoutes,
+  accessToken: persistedAccessToken
 };
 
 function authReducer(state = initialState, action: AuthActionTypes): AuthState {
   switch (action.type) {
     case "LOGIN":
+      localStorage.setItem("at", action.accessToken);
       return {
         isLoggedIn: true,
-        user: action.user,
         accessToken: action.accessToken,
         routes: postLoginRoutes
       };
     case "LOGOUT":
+      localStorage.removeItem("at");
       return {
         isLoggedIn: false,
         routes: preLoginRoutes

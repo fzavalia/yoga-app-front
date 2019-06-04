@@ -3,7 +3,6 @@ export const LOGOUT = "LOGOUT";
 
 export interface LoginAction {
   type: typeof LOGIN;
-  user: any;
   accessToken: string;
 }
 
@@ -13,10 +12,9 @@ export interface LogoutAction {
 
 export type AuthActionTypes = LoginAction | LogoutAction;
 
-export function login(user: any, accessToken: string): LoginAction {
+export function login(accessToken: string): LoginAction {
   return {
     type: LOGIN,
-    user,
     accessToken
   };
 }
