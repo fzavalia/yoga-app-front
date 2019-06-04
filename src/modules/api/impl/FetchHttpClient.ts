@@ -10,7 +10,7 @@ import HttpClient, {
 export default class FetchHttpClient implements HttpClient {
   constructor(private host: string) {}
 
-  fetch = async (path: string, method: Method, options?: Options) => {
+  fetch = async (path: string, method: Method, options: Options = {}) => {
     const body = this.getBodyFromOptions(options);
     const headers = this.getHeadersFromOptions(options);
 
@@ -41,14 +41,10 @@ export default class FetchHttpClient implements HttpClient {
     }
   };
 
-  private getHeadersFromOptions = (options?: Options) => {
+  private getHeadersFromOptions = (options: Options) => {
     let headers: Headers = {
       Accept: "application/json"
     };
-
-    if (!options) {
-      return headers;
-    }
 
     if (options.headers) {
       headers = Object.assign(headers, options.headers);
@@ -61,8 +57,8 @@ export default class FetchHttpClient implements HttpClient {
     return headers;
   };
 
-  private getBodyFromOptions = (options?: Options) => {
-    if (!options || !options.body) {
+  private getBodyFromOptions = (options: Options) => {
+    if (!options.body) {
       return undefined;
     }
 
