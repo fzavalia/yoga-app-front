@@ -1,16 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import routes from "../routes/routes";
+import { Route } from "../routes/routes";
 import Layout from "./Layout";
 import Button from "../components/Button";
 import helpers from "../helpers";
 import bgImg from "../assets/img/appBgLQ.jpg";
 import Paper from "../components/Paper";
+import { connect } from "react-redux";
+import { AppState } from "../redux/reducers";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
+  <ConnectedAdminContainer>{props.children}</ConnectedAdminContainer>
+);
+
+const AdminContainer = (props: {
+  children: React.ReactNode;
+  routes: Route[];
+}) => (
   <>
     <Header>
-      {routes
+      {props.routes
         .filter(route => route.isModuleEntrypoint)
         .map((route, key) => (
           <Link key={key} to={route.path}>
@@ -29,6 +38,10 @@ const Admin: Layout = (props: { children: React.ReactNode }) => (
     <Content>{props.children}</Content>
   </>
 );
+
+const ConnectedAdminContainer = connect((state: AppState) => ({
+  routes: state.auth.routes
+}))(AdminContainer);
 
 const Header = (props: { children: React.ReactNode }) => (
   <header

@@ -22,84 +22,84 @@ export interface Route {
   isModuleEntrypoint: boolean;
 }
 
-const routes: Route[] = [
-  {
+const routes = {
+  browseStudents: {
     path: "/students",
     component: BrowseStudents,
     name: "Alumnos",
     isModuleEntrypoint: true,
     layout: Admin
   },
-  {
+  createStudent: {
     path: "/students/create",
     component: CreateStudent,
     name: "Crear Alumno",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  updateStudent: {
     path: "/students/update/:id",
     component: UpdateStudent,
     name: "Actualizar Alumno",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  browsePayments: {
     path: "/payments",
     component: BrowsePayments,
     name: "Pagos",
     isModuleEntrypoint: true,
     layout: Admin
   },
-  {
+  createPayment: {
     path: "/payments/create",
     component: CreatePayments,
     name: "Crear Pago",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  updatePayment: {
     path: "/payments/update/:id",
     component: UpdatePayments,
     name: "Editar Pago",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  browseClasses: {
     path: "/yoga_classes",
     component: BrowseYogaClasses,
     name: "Clases",
     isModuleEntrypoint: true,
     layout: Admin
   },
-  {
+  createClass: {
     path: "/yoga_classes/create",
     component: CreateYogaClass,
     name: "Crear Clase",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  updateClass: {
     path: "/yoga_classes/update/:id",
     component: UpdateYogaClass,
     name: "Actualizar Clase",
     isModuleEntrypoint: false,
     layout: Admin
   },
-  {
+  viewAssistanceTable: {
     path: "/yoga_classes/assistance_graph",
     component: ViewAssistanceTable,
     name: "Grafico de Asistencias",
     isModuleEntrypoint: false,
     layout: Blank
   },
-  {
+  login: {
     path: "/auth/login",
     component: Login,
     name: "Login",
     isModuleEntrypoint: false,
     layout: Auth
   }
-];
+};
 
 export default routes;

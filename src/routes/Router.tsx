@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import routes from "../routes/routes";
+import { connect } from "react-redux";
+import { AppState } from "../redux/reducers";
+import { Route as AppRoute } from "./routes";
 
-export default () => {
+function Router(props: { routes: AppRoute[] }) {
   return (
     <BrowserRouter>
       <Switch>
-        {routes.map((route, key) => (
+        {props.routes.map((route, key) => (
           <Route
             exact
             key={key}
@@ -18,8 +20,12 @@ export default () => {
             )}
           />
         ))}
-        <Redirect from="/" to={routes[0].path} />
+        <Redirect from="/" to={props.routes[0].path} />
       </Switch>
     </BrowserRouter>
   );
-};
+}
+
+export default connect((state: AppState) => ({
+  routes: state.auth.routes
+}))(Router);
