@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { AuthActionTypes } from "../actions";
-import { Route } from "../../routes/routes";
-import preLoginRoutes from "../../routes/preLoginRoutes";
-import postLoginRoutes from "../../routes/postLoginRoutes";
+import { Route } from "../../../routes/routes";
+import preLoginRoutes from "../../../routes/preLoginRoutes";
+import postLoginRoutes from "../../../routes/postLoginRoutes";
 
 export interface AuthState {
   isLoggedIn: boolean;

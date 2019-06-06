@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { AppState } from "../redux/reducers";
+import { AppState } from "../modules/redux/reducers";
 import { Route as AppRoute } from "./routes";
 
 function Router(props: { routes: AppRoute[] }) {

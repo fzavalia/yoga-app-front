@@ -2,9 +2,9 @@ import React from "react";
 import Router from "./routes/Router";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import reducers from "./redux/reducers";
+import reducers from "./modules/redux/reducers";
 import api from "./modules/api";
-import { logout } from "./redux/actions";
+import { logout } from "./modules/redux/actions";
 import ToastContainer, { toast } from "./components/ToastContainer";
 
 const store = createStore(reducers);

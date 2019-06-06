@@ -8,7 +8,8 @@ import YogaClassApiModelRequest from "./requests/YogaClassRequest";
 import AssistanceTableRequest from "./requests/AssistanceTableRequest";
 import AuthRequest from "./requests/AuthRequest";
 
-const httpClient: HttpClient = new FetchHttpClient("http://localhost:8000");
+const apiHost = process.env.REAC_APP_API_HOST || "http://localhost:8000";
+const httpClient: HttpClient = new FetchHttpClient(apiHost);
 const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
   new ApiQueryStringBuilder(path);
 

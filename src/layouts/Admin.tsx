@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import helpers from "../helpers";
 import Paper from "../components/Paper";
 import { connect } from "react-redux";
-import { AppState } from "../redux/reducers";
+import { AppState } from "../modules/redux/reducers";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
   <ConnectedAdminContainer>{props.children}</ConnectedAdminContainer>

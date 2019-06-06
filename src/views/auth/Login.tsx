@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import helpers from "../../helpers";
 import api from "../../modules/api";
 import Paper from "../../components/Paper";
-import { login, LoginAction } from "../../redux/actions";
+import { login, LoginAction } from "../../modules/redux/actions";
 import { connect } from "react-redux";
 
 interface LoginProps {
