@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export enum Method {
   GET,
   POST,
@@ -27,13 +29,8 @@ export interface Options {
   withCredentials?: boolean;
 }
 
-export class RequestError extends Error {
-  constructor(status: number, message: string) {
-    super(JSON.stringify({ status, message }));
-  }
-}
-
 export default interface HttpClient {
   fetch: (path: string, method: Method, options?: Options) => Promise<any>;
   setAccessTokenFactory: (func: () => string) => void;
+  errorStream: Observable<number>;
 }

@@ -3,14 +3,20 @@ import HttpClient, {
   Options,
   BodyType,
   BodyArgs,
-  Headers,
-  RequestError
+  Headers
 } from "../core/HttpClient";
+import { Observable, Subject } from "rxjs";
 
 export default class FetchHttpClient implements HttpClient {
+  errorStream: Observable<number>;
+
   private getAccessToken = () => "";
 
-  constructor(private host: string) {}
+  private errorEmitter = new Subject<number>();
+
+  constructor(private host: string) {
+    this.errorStream = this.errorEmitter;
+  }
 
   setAccessTokenFactory = (func: () => string) => {
     this.getAccessToken = func;
@@ -28,7 +34,8 @@ export default class FetchHttpClient implements HttpClient {
 
     if (res.status >= 300) {
       const error = await res.text();
-      throw new RequestError(res.status, error);
+      this.errorEmitter.next(res.status);
+      throw new Error(JSON.stringify(error));
     }
 
     return await res.json();

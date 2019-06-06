@@ -13,6 +13,8 @@ const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
   new ApiQueryStringBuilder(path);
 
 export default {
+  errorStream: httpClient.errorStream,
+
   setAccessTokenFactory: (func: () => string) =>
     httpClient.setAccessTokenFactory(func),
 
