@@ -5,8 +5,7 @@ import { createStore } from "redux";
 import reducers from "./redux/reducers";
 import api from "./modules/api";
 import { logout } from "./redux/actions";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import ToastContainer, { toast } from "./components/ToastContainer";
 
 const store = createStore(reducers);
 
