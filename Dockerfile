@@ -1,11 +1,8 @@
-FROM node:10-alpine
-
-ARG REACT_APP_API_HOST
+FROM node:10-alpine as build
 
 WORKDIR /app
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package.json package-lock.json ./
 
 RUN npm install
 
@@ -13,11 +10,14 @@ COPY public public
 COPY src src
 COPY tsconfig.json tsconfig.json
 
-RUN REACT_APP_API_HOST=${REACT_APP_API_HOST} \
-    npm run build
+ARG APP_ENV
 
-RUN npm install -g serve
+COPY .env.${APP_ENV} .env
 
-EXPOSE 5000
+RUN npm run build
 
-CMD serve -s build
+FROM nginx:1.17-alpine
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build /app/build /usr/share/nginx/html
