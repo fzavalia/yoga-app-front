@@ -8,11 +8,7 @@ RUN npm install
 
 COPY public public
 COPY src src
-COPY tsconfig.json tsconfig.json
-
-ARG APP_ENV
-
-COPY .env.${APP_ENV} .env
+COPY tsconfig.json .env ./
 
 RUN npm run build
 
