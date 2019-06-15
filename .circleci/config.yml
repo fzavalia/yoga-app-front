@@ -1,16 +1,36 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: debian:stretch
-
+    machine: true
     steps:
       - checkout
 
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Prepare
+          command: |
+            cp .env.production .env
 
       - run:
-          name: Print the Current Time
-          command: date
+          name: Docker Login
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      - run:
+          name: Docker Build
+          command: |
+            docker build -t $DOCKER_IMAGE
+
+      - run:
+          name: Docker Tag
+          command: |
+            docker tag $DOCKER_IMAGE $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+
+      - run:
+          name: Docker push
+          command: |
+            docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+
+      - run:
+          name: Deploy
+          command: |
+            echo deploy
