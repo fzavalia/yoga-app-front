@@ -33,4 +33,4 @@ jobs:
       - run:
           name: Deploy
           command: |
-            echo deploy
+            ssh $REMOTE_HOST "./scripts/deploy-front.sh"
