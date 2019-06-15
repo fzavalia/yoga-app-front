@@ -26,7 +26,7 @@ const routes = {
   browseStudents: {
     path: "/students",
     component: BrowseStudents,
-    name: "Alumnos",
+    name: "Alumnos TEST",
     isModuleEntrypoint: true,
     layout: Admin
   },
@@ -40,7 +40,7 @@ const routes = {
   updateStudent: {
     path: "/students/update/:id",
     component: UpdateStudent,
-    name: "Actualizar Alumno (AUX 2)",
+    name: "Actualizar Alumno",
     isModuleEntrypoint: false,
     layout: Admin
   },
