@@ -26,7 +26,7 @@ const routes = {
   browseStudents: {
     path: "/students",
     component: BrowseStudents,
-    name: "Alumnos TEST",
+    name: "Alumnos",
     isModuleEntrypoint: true,
     layout: Admin
   },
