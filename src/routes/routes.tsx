@@ -40,7 +40,7 @@ const routes = {
   updateStudent: {
     path: "/students/update/:id",
     component: UpdateStudent,
-    name: "Actualizar Alumno",
+    name: "Actualizar Alumno (AUX)",
     isModuleEntrypoint: false,
     layout: Admin
   },
