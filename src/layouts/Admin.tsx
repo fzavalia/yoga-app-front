@@ -7,6 +7,9 @@ import helpers from "../helpers";
 import Paper from "../components/Paper";
 import { connect } from "react-redux";
 import { AppState } from "../modules/redux/reducers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { logout, LogoutAction } from "../modules/redux/actions";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
   <ConnectedAdminContainer>{props.children}</ConnectedAdminContainer>
@@ -15,29 +18,54 @@ const Admin: Layout = (props: { children: React.ReactNode }) => (
 const AdminContainer = (props: {
   children: React.ReactNode;
   routes: Route[];
-}) => (
-  <>
-    <Header />
-    <Sidebar routes={props.routes} open={false} />
-    <Content>{props.children}</Content>
-  </>
-);
+}) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  return (
+    <>
+      <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
+      <ConnectedSidebar
+        routes={props.routes}
+        open={isSidebarOpen}
+        onCloseSidebar={() => setIsSidebarOpen(false)}
+      />
+      <Content>{props.children}</Content>
+    </>
+  );
+};
 
 const ConnectedAdminContainer = connect((state: AppState) => ({
   routes: state.auth.routes
 }))(AdminContainer);
 
-const Header = () => (
+const Header = (props: { onOpenSidebar: () => void }) => (
   <header
     style={{
       backgroundColor: helpers.color.secondary,
       height: 50,
-      boxShadow: `0 0 2px ${helpers.color.secondary}`
+      boxShadow: `0 0 2px ${helpers.color.secondary}`,
+      display: "flex",
+      alignItems: "center"
     }}
   >
-    
-    {/** Open Sidebar Button */}
+    <ToggleSidebarButton onClick={props.onOpenSidebar} />
   </header>
+);
+
+const ToggleSidebarButton = (props: { onClick: () => void }) => (
+  <div
+    style={{
+      cursor: "pointer",
+      width: "3rem",
+      height: "3rem",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    }}
+    onClick={props.onClick}
+  >
+    <FontAwesomeIcon color={helpers.color.primaryLight} icon={faBars} />
+  </div>
 );
 
 const Content = (props: { children: React.ReactNode }) => (
@@ -62,7 +90,12 @@ const Content = (props: { children: React.ReactNode }) => (
   </section>
 );
 
-const Sidebar = (props: { routes: Route[]; open: Boolean }) => {
+const Sidebar = (props: {
+  routes: Route[];
+  open: Boolean;
+  onCloseSidebar: () => void;
+  logout: () => LogoutAction;
+}) => {
   if (!props.open) {
     return null;
   }
@@ -77,16 +110,23 @@ const Sidebar = (props: { routes: Route[]; open: Boolean }) => {
         width: "100%"
       }}
     >
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "1rem"
+        }}
+      >
+        <ToggleSidebarButton onClick={props.onCloseSidebar} />
         <Button
-          colors={{
-            main: helpers.color.primary,
-            selected: helpers.color.primaryLight
+          onClick={() => {
+            const res = window.confirm(
+              "¿Desea salir de la plataforma? Deberá ingresar su email y contraseña para volver a ingresar."
+            );
+            if (res) {
+              props.logout();
+            }
           }}
-        >
-          Close
-        </Button>
-        <Button
           colors={{
             main: helpers.color.primary,
             selected: helpers.color.primaryLight
@@ -126,5 +166,12 @@ const Sidebar = (props: { routes: Route[]; open: Boolean }) => {
     </section>
   );
 };
+
+const ConnectedSidebar = connect(
+  null,
+  dispatch => ({
+    logout: () => dispatch(logout())
+  })
+)(Sidebar);
 
 export default Admin;
