@@ -125,10 +125,6 @@ const Sidebar = (props: {
   open: Boolean;
   onCloseSidebar: () => void;
 }) => {
-  if (!props.open) {
-    return null;
-  }
-
   return (
     <section
       style={{
@@ -136,9 +132,11 @@ const Sidebar = (props: {
         top: 0,
         backgroundColor: helpers.color.secondary,
         height: "100vh",
-        width: "100%",
+        width: props.open ? "100%" : 0,
         maxWidth: 300,
-        boxShadow: `0 0 5px ${helpers.color.secondary}`
+        boxShadow: `0 0 5px ${helpers.color.secondary}`,
+        transition: "width 200ms",
+        overflow: 'hidden'
       }}
     >
       <div
