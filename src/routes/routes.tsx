@@ -89,8 +89,8 @@ const routes = {
   viewAssistanceTable: {
     path: "/yoga_classes/assistance_graph",
     component: ViewAssistanceTable,
-    name: "Grafico de Asistencias",
-    isModuleEntrypoint: false,
+    name: "Tabla de Asistencias",
+    isModuleEntrypoint: true,
     layout: Blank
   },
   login: {
