@@ -8,7 +8,7 @@ import Paper from "../components/Paper";
 import { connect } from "react-redux";
 import { AppState } from "../modules/redux/reducers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { logout, LogoutAction } from "../modules/redux/actions";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
@@ -24,7 +24,7 @@ const AdminContainer = (props: {
   return (
     <>
       <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
-      <ConnectedSidebar
+      <Sidebar
         routes={props.routes}
         open={isSidebarOpen}
         onCloseSidebar={() => setIsSidebarOpen(false)}
@@ -45,10 +45,12 @@ const Header = (props: { onOpenSidebar: () => void }) => (
       height: 50,
       boxShadow: `0 0 2px ${helpers.color.secondary}`,
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+      justifyContent: 'space-between'
     }}
   >
     <ToggleSidebarButton onClick={props.onOpenSidebar} />
+    <ConnectedLogoutButton />
   </header>
 );
 
@@ -67,6 +69,34 @@ const ToggleSidebarButton = (props: { onClick: () => void }) => (
     <FontAwesomeIcon color={helpers.color.primaryLight} icon={faBars} />
   </div>
 );
+
+const LogoutButton = (props: { onClick: () => void }) => (
+  <div
+    style={{
+      cursor: "pointer",
+      width: "3rem",
+      height: "3rem",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    }}
+    onClick={() => {
+      const shouldLogout = window.confirm(
+        "¿Desea salir de la plataforma? Debera volver a ingresar su email y contraseña para volver a entrar."
+      );
+      if (shouldLogout) {
+        props.onClick();
+      }
+    }}
+  >
+    <FontAwesomeIcon color={helpers.color.primaryLight} icon={faSignOutAlt} />
+  </div>
+);
+
+const ConnectedLogoutButton = connect(
+  null,
+  dispatch => ({ onClick: () => dispatch(logout()) })
+)(LogoutButton);
 
 const Content = (props: { children: React.ReactNode }) => (
   <section
@@ -94,7 +124,6 @@ const Sidebar = (props: {
   routes: Route[];
   open: Boolean;
   onCloseSidebar: () => void;
-  logout: () => LogoutAction;
 }) => {
   if (!props.open) {
     return null;
@@ -105,35 +134,20 @@ const Sidebar = (props: {
       style={{
         position: "fixed",
         top: 0,
-        backgroundColor: helpers.color.secondaryDark,
+        backgroundColor: helpers.color.secondary,
         height: "100vh",
-        width: "100%"
+        width: "100%",
+        maxWidth: 300
       }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: "1rem"
+          marginBottom: "2rem"
         }}
       >
         <ToggleSidebarButton onClick={props.onCloseSidebar} />
-        <Button
-          onClick={() => {
-            const res = window.confirm(
-              "¿Desea salir de la plataforma? Deberá ingresar su email y contraseña para volver a ingresar."
-            );
-            if (res) {
-              props.logout();
-            }
-          }}
-          colors={{
-            main: helpers.color.primary,
-            selected: helpers.color.primaryLight
-          }}
-        >
-          Logout
-        </Button>
       </div>
       <div
         style={{
@@ -166,12 +180,5 @@ const Sidebar = (props: {
     </section>
   );
 };
-
-const ConnectedSidebar = connect(
-  null,
-  dispatch => ({
-    logout: () => dispatch(logout())
-  })
-)(Sidebar);
 
 export default Admin;
