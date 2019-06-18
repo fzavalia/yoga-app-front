@@ -9,6 +9,7 @@ import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 export default (props: { history: History }) => {
   return (
     <BrowseView
+      title="Pagos"
       mapItem={payment => ({
         title: payment.student.name,
         props: [

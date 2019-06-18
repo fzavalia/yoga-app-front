@@ -6,6 +6,7 @@ import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
 import { History } from "history";
 
 export default (props: {
+  title: String;
   history: History;
   createItemPath: string;
   mapItem: (
@@ -22,6 +23,9 @@ export default (props: {
 
   return (
     <>
+      <h1 style={{ textAlign: "center", color: helpers.color.secondaryDark }}>
+        {props.title}
+      </h1>
       <CreateButton onClick={() => props.history.push(props.createItemPath)} />
       <ul>
         <InfiniteScroll
@@ -102,7 +106,13 @@ const CreateButton = (props: { onClick: () => void }) => (
 );
 
 const Item = (props: { children: any }) => (
-  <li style={{ padding: `0 0 1rem`, borderBottom: "solid 1px", color: helpers.color.secondaryDark }}>
+  <li
+    style={{
+      padding: `0 0 1rem`,
+      borderBottom: "solid 1px",
+      color: helpers.color.secondaryDark
+    }}
+  >
     {props.children}
   </li>
 );
