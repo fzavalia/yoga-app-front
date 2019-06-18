@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Route } from "../routes/routes";
 import Layout from "./Layout";
@@ -17,23 +17,8 @@ const AdminContainer = (props: {
   routes: Route[];
 }) => (
   <>
-    <Header>
-      {props.routes
-        .filter(route => route.isModuleEntrypoint)
-        .map((route, key) => (
-          <Link key={key} to={route.path}>
-            <Button
-              colors={{
-                main: helpers.color.primary,
-                selected: helpers.color.primaryLight
-              }}
-              selected={window.location.pathname.startsWith(route.path)}
-            >
-              {route.name}
-            </Button>
-          </Link>
-        ))}
-    </Header>
+    <Header />
+    <Sidebar routes={props.routes} open={false} />
     <Content>{props.children}</Content>
   </>
 );
@@ -42,30 +27,16 @@ const ConnectedAdminContainer = connect((state: AppState) => ({
   routes: state.auth.routes
 }))(AdminContainer);
 
-const Header = (props: { children: React.ReactNode }) => (
+const Header = () => (
   <header
     style={{
-      width: "100%",
       backgroundColor: helpers.color.secondary,
-      height: 90,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      boxShadow: `0 0 2px ${helpers.color.secondary}`,
-      position: "relative"
+      height: 50,
+      boxShadow: `0 0 2px ${helpers.color.secondary}`
     }}
   >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        width: "100%",
-        maxWidth: 800,
-        margin: "0 1rem"
-      }}
-    >
-      {props.children}
-    </div>
+    
+    {/** Open Sidebar Button */}
   </header>
 );
 
@@ -90,5 +61,70 @@ const Content = (props: { children: React.ReactNode }) => (
     </div>
   </section>
 );
+
+const Sidebar = (props: { routes: Route[]; open: Boolean }) => {
+  if (!props.open) {
+    return null;
+  }
+
+  return (
+    <section
+      style={{
+        position: "fixed",
+        top: 0,
+        backgroundColor: helpers.color.secondaryDark,
+        height: "100vh",
+        width: "100%"
+      }}
+    >
+      <div>
+        <Button
+          colors={{
+            main: helpers.color.primary,
+            selected: helpers.color.primaryLight
+          }}
+        >
+          Close
+        </Button>
+        <Button
+          colors={{
+            main: helpers.color.primary,
+            selected: helpers.color.primaryLight
+          }}
+        >
+          Logout
+        </Button>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        {props.routes
+          .filter(route => route.isModuleEntrypoint)
+          .map((route, key) => (
+            <Link
+              key={key}
+              to={route.path}
+              style={{ width: "100%", maxWidth: 200 }}
+            >
+              <Button
+                style={{ display: "block", marginBottom: "1rem" }}
+                colors={{
+                  main: helpers.color.primary,
+                  selected: helpers.color.primaryLight
+                }}
+                selected={window.location.pathname.startsWith(route.path)}
+              >
+                {route.name}
+              </Button>
+            </Link>
+          ))}
+      </div>
+    </section>
+  );
+};
 
 export default Admin;
