@@ -43,10 +43,10 @@ const Header = (props: { onOpenSidebar: () => void }) => (
     style={{
       backgroundColor: helpers.color.secondary,
       height: 50,
-      boxShadow: `0 0 2px ${helpers.color.secondary}`,
+      boxShadow: `0 0 5px ${helpers.color.secondary}`,
       display: "flex",
       alignItems: "center",
-      justifyContent: 'space-between'
+      justifyContent: "space-between"
     }}
   >
     <ToggleSidebarButton onClick={props.onOpenSidebar} />
@@ -137,7 +137,8 @@ const Sidebar = (props: {
         backgroundColor: helpers.color.secondary,
         height: "100vh",
         width: "100%",
-        maxWidth: 300
+        maxWidth: 300,
+        boxShadow: `0 0 5px ${helpers.color.secondary}`
       }}
     >
       <div
