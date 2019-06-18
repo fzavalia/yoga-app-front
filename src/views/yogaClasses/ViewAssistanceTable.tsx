@@ -42,6 +42,7 @@ const ViewAssistanceTable = () => {
               x.name.toLowerCase().includes(studentNameFilter.toLowerCase())
             )
           }}
+          onStudentAssistanceChanged={fetchDataForMonth}
         />
       )}
     </>
@@ -85,6 +86,7 @@ const FilterbyStudentName = (props: {
 const AssistanceTable = (props: {
   date: Date;
   data: AssistanceTableData;
+  onStudentAssistanceChanged: () => void;
 }) => {
   const today = new Date();
 
@@ -123,7 +125,7 @@ const AssistanceTable = (props: {
           date
         );
 
-    return request;
+    request.then(props.onStudentAssistanceChanged);
   };
 
   const columns: Column[] = [];
@@ -153,12 +155,17 @@ const AssistanceTable = (props: {
           .filter(yc => yc.date.getDate() === dayInMonth)
           .some(yc => yc.studentIds.includes(v.id)),
       Cell: v => (
-        <AssistanceCell
-          assisted={v.value}
-          updateAssistance={() =>
-            updateAssistance(dayInMonth, v.original, v.value)
-          }
-        />
+        <div
+          style={{
+            textAlign: "center",
+            width: "100%",
+            height: "100%",
+            cursor: "pointer"
+          }}
+          onClick={() => updateAssistance(dayInMonth, v.original, v.value)}
+        >
+          {v.value ? "X" : " "}
+        </div>
       ),
       maxWidth: 50,
       resizable: false
@@ -186,34 +193,6 @@ const AssistanceTable = (props: {
       showPagination={false}
       className="-striped -highlight"
     />
-  );
-};
-
-const AssistanceCell = (props: {
-  assisted: Boolean;
-  updateAssistance: (assisted: Boolean) => Promise<any>;
-}) => {
-  const [assisted, setAssisted] = useState(props.assisted);
-
-  return (
-    <div
-      style={{
-        textAlign: "center",
-        width: "100%",
-        height: "100%",
-        cursor: "pointer"
-      }}
-      onClick={async () => {
-        setAssisted(!assisted);
-        try {
-          await props.updateAssistance(!assisted);
-        } catch (e) {
-          setAssisted(assisted);
-        }
-      }}
-    >
-      {assisted ? "X" : " "}
-    </div>
   );
 };
 
