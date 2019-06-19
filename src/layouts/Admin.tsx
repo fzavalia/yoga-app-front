@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { AppState } from "../modules/redux/reducers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { logout, LogoutAction } from "../modules/redux/actions";
+import { logout } from "../modules/redux/actions";
 
 const Admin: Layout = (props: { children: React.ReactNode }) => (
   <ConnectedAdminContainer>{props.children}</ConnectedAdminContainer>

@@ -5,7 +5,6 @@ import BrowseView from "../../components/BrowseView";
 import { YogaClass } from "../../modules/api/requests/YogaClassRequest";
 import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
-import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
   const date = (yogaClass: YogaClass) =>
