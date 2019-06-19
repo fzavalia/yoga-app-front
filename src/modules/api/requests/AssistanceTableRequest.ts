@@ -37,13 +37,26 @@ class AssistanceTableRequest extends Request {
     date
   ) =>
     this.httpClient.fetch(
-      `${this.basePath}/yoga_classes/${helpers.date.format(
-        date,
-        "YYYY-MM-DD"
-      )}`,
+      `${this.basePath}/yoga_classes/${this.mapDateForApi(date)}`,
       Method.PUT,
       {
         body: { type: BodyType.JSON, args: { student_ids: studentIds } },
+        withCredentials: true
+      }
+    );
+
+  updateStudentAssistance: (
+    studentId: number,
+    date: Date,
+    assisted: boolean
+  ) => Promise<YogaClass> = (studentId, date, assisted) =>
+    this.httpClient.fetch(
+      `${this.basePath}/yoga_classes/${this.mapDateForApi(
+        date
+      )}/students/${studentId}`,
+      Method.PUT,
+      {
+        body: { type: BodyType.JSON, args: { assisted: assisted } },
         withCredentials: true
       }
     );
@@ -73,6 +86,9 @@ class AssistanceTableRequest extends Request {
       id: yc.id,
       studentIds: yc.students.map((s: any) => s.id)
     }));
+
+  private mapDateForApi = (date: Date) =>
+    helpers.date.format(date, "YYYY-MM-DD");
 }
 
 export default AssistanceTableRequest;
