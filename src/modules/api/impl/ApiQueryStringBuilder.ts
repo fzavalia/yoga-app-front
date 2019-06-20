@@ -41,61 +41,63 @@ export default class ApiQueryStringBuilder implements QueryStringBuilder {
     return this;
   };
 
-  withWhere = (where?: Where) => {
-    if (where) {
-      const filters = Object.keys(where).filter(x => where[x].length > 0);
-      if (filters.length > 0) {
-        this.path +=
-          this.getPathPrefix() +
-          "where=" +
-          Object.keys(where)
-            .map(x => `${x}:${where[x]}`)
-            .join(",");
-      }
-    }
-    return this;
-  };
+  withWhere = (where?: Where) =>
+    this.whereBase<Where>(
+      (where, filter) => where[filter].length > 0,
+      "where",
+      (where, filter) => `${filter}:${where[filter]}`,
+      where
+    );
 
-  withWhereRelation = (where?: WhereRelation) => {
-    if (where) {
-      const filters = Object.keys(where).filter(x => where[x].value.length > 0);
-      if (filters.length > 0) {
-        this.path +=
-          this.getPathPrefix() +
-          "where_relation=" +
-          Object.keys(where)
-            .map(x => `${where[x].relation}.${x}:${where[x].value}`)
-            .join(",");
-      }
-    }
-    return this;
-  };
+  withWhereRelation = (where?: WhereRelation) =>
+    this.whereBase<WhereRelation>(
+      (where, filter) => where[filter].value.length > 0,
+      "where_relation",
+      (where, filter) =>
+        `${where[filter].relation}.${filter}:${where[filter].value}`,
+      where
+    );
 
-  withWhereBetween = (where?: WhereBetween) => {
-    if (where && Object.keys(where).length > 0) {
-      this.path +=
-        this.getPathPrefix() +
-        "where_between=" +
-        Object.keys(where)
-          .map(x => `${x}:${where[x].min}:${where[x].max}`)
-          .join(",");
-    }
-    return this;
-  };
+  withWhereBetween = (where?: WhereBetween) =>
+    this.whereBase<WhereBetween>(
+      (_, __) => true,
+      "where_between",
+      (where, filter) => `${filter}:${where[filter].min}:${where[filter].max}`,
+      where
+    );
 
-  withWhereRelationBetween = (where?: WhereRelationBetween) => {
-    if (where && Object.keys(where).length > 0) {
-      this.path +=
-        this.getPathPrefix() +
-        "where_relation_between=" +
-        Object.keys(where)
-          .map(x => `${where[x].relation}.${x}:${where[x].min}:${where[x].max}`)
-          .join(",");
-    }
-    return this;
-  };
+  withWhereRelationBetween = (where?: WhereRelationBetween) =>
+    this.whereBase<WhereRelationBetween>(
+      (_, __) => true,
+      "where_relation_between",
+      (where, filter) =>
+        `${where[filter].relation}.${filter}:${where[filter].min}:${
+          where[filter].max
+        }`,
+      where
+    );
 
   build = () => this.path;
 
   private getPathPrefix = () => (this.path.includes("?") ? "&" : "?");
+
+  private whereBase = <T>(
+    filterNotEmpty: (where: T, filter: any) => boolean,
+    whereQueryName: string,
+    mapFilterToQueryParam: (where: T, filter: any) => string,
+    where?: T
+  ) => {
+    if (where) {
+      const filters = Object.keys(where).filter(x => filterNotEmpty(where, x));
+      if (filters.length > 0) {
+        this.path +=
+          this.getPathPrefix() +
+          `${whereQueryName}=` +
+          Object.keys(where)
+            .map(x => mapFilterToQueryParam(where, x))
+            .join(",");
+      }
+    }
+    return this;
+  };
 }
