@@ -190,6 +190,7 @@ const AssistanceTable = (props: {
       style={{ color: helpers.color.secondary }}
       data={props.data.students}
       columns={columns}
+      pageSize={props.data.students.length}
       showPagination={false}
       className="-striped -highlight"
     />
