@@ -38,7 +38,13 @@ export default class FetchHttpClient implements HttpClient {
       throw new Error(JSON.stringify(error));
     }
 
-    return await res.json();
+    // Return the response as a JSON or an empty response if it is not parsable
+
+    try {
+      return await res.json();
+    } catch (e) {
+      return {};
+    }
   };
 
   private mapMethod = (method: Method) => {
