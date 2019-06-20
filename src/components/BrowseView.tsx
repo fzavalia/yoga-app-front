@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import helpers from "../helpers";
 import Button from "./Button";
@@ -43,9 +43,6 @@ export default (props: BrowseViewProps) => {
     { [filterName: string]: string } | undefined
   >(filtersFromProps);
 
-  // Reference the infinite scroller to clear the current items when a filter changes
-  const infiniteScrollerRef = useRef<any>(null);
-
   // Render Filter inputs depending on the ones provided via props,
   const renderFilters = () => {
     if (!props.filters || !filters) {
@@ -62,11 +59,8 @@ export default (props: BrowseViewProps) => {
               type="text"
               onChange={(_, v) => {
                 // Reset the infinite scroller loaded page so a new search can be done without an offset
-                if (infiniteScrollerRef.current) {
-                  infiniteScrollerRef.current.pageLoaded = 0;
-                  setHasMore(true);
-                  setItems([]);
-                }
+                setHasMore(true);
+                setItems([]);
                 // Update the filters object with a new one containing the same values except for the modified one
                 setFilters({ ...filters, [filter.name]: v });
               }}
@@ -88,7 +82,10 @@ export default (props: BrowseViewProps) => {
       {/** Elements */}
       <ul>
         <InfiniteScroll
-          ref={infiniteScrollerRef}
+          // Due to the statefull nature of this component, in order to reset the loaded page to 0
+          // the key needs to be different, As I only want to reset the page when a filter changes, I
+          // can use the filter object as key.
+          key={JSON.stringify(filters)}
           pageStart={0}
           hasMore={hasMore}
           useWindow={false}
