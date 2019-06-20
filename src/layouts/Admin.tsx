@@ -102,7 +102,7 @@ const Content = (props: { children: React.ReactNode }) => (
   <section
     id="admin-content-container"
     style={{
-      height: "calc(100vh - 90px)",
+      height: "calc(100vh - 50px)",
       overflowY: "auto",
       display: "flex",
       justifyContent: "center"
