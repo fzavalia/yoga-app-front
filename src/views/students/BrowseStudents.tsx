@@ -3,29 +3,35 @@ import api from "../../modules/api";
 import { History } from "history";
 import BrowseView from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
+import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 
-export default (props: { history: History }) => {
-  return (
-    <BrowseView
-      title="Alumnos"
-      mapItem={student => ({
-        title: student.name,
-        props: [
-          { label: "Email", value: student.email },
-          { label: "Teléfono", value: student.phoneNumber },
-          { label: "DNI", value: student.dni }
-        ]
-      })}
-      loadMore={page =>
-        api.student.paginatedList(page, {
-          order: { by: "name", type: OrderType.ASC }
-        })
+export default (props: { history: History }) => (
+  <BrowseView
+    title="Alumnos"
+    mapItem={student => ({
+      title: student.name,
+      props: [
+        { label: "Email", value: student.email },
+        { label: "Teléfono", value: student.phoneNumber },
+        { label: "DNI", value: student.dni }
+      ]
+    })}
+    loadMore={(page, filters) => {
+      const options: PaginatedListOptions = {
+        order: { by: "name", type: OrderType.ASC }
+      };
+      if (filters) {
+        options.where = {
+          name: filters.name
+        };
       }
-      history={props.history}
-      createItemPath={`/students/create`}
-      updateItemPath={student => `/students/update/${student.id}`}
-      deletePromise={student => api.student.delete(student.id)}
-      deleteMessage={student => "Eliminar Alumno" + student.name}
-    />
-  );
-};
+      return api.student.paginatedList(page, options);
+    }}
+    history={props.history}
+    createItemPath={`/students/create`}
+    updateItemPath={student => `/students/update/${student.id}`}
+    deletePromise={student => api.student.delete(student.id)}
+    deleteMessage={student => "Eliminar Alumno" + student.name}
+    filters={[{ name: "name", label: "Buscar por nombre" }]}
+  />
+);

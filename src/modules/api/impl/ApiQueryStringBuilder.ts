@@ -42,25 +42,31 @@ export default class ApiQueryStringBuilder implements QueryStringBuilder {
   };
 
   withWhere = (where?: Where) => {
-    if (where && Object.keys(where).length > 0) {
-      this.path +=
-        this.getPathPrefix() +
-        "where=" +
-        Object.keys(where)
-          .map(x => `${x}:${where[x]}`)
-          .join(",");
+    if (where) {
+      const filters = Object.keys(where).filter(x => where[x].length > 0);
+      if (filters.length > 0) {
+        this.path +=
+          this.getPathPrefix() +
+          "where=" +
+          Object.keys(where)
+            .map(x => `${x}:${where[x]}`)
+            .join(",");
+      }
     }
     return this;
   };
 
   withWhereRelation = (where?: WhereRelation) => {
-    if (where && Object.keys(where).length > 0) {
-      this.path +=
-        this.getPathPrefix() +
-        "where_relation=" +
-        Object.keys(where)
-          .map(x => `${where[x].relation}.${x}:${where[x].value}`)
-          .join(",");
+    if (where) {
+      const filters = Object.keys(where).filter(x => where[x].value.length > 0);
+      if (filters.length > 0) {
+        this.path +=
+          this.getPathPrefix() +
+          "where_relation=" +
+          Object.keys(where)
+            .map(x => `${where[x].relation}.${x}:${where[x].value}`)
+            .join(",");
+      }
     }
     return this;
   };

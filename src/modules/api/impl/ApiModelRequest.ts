@@ -110,7 +110,6 @@ export default abstract class ApiModelRequest<
       .withWhere(options.where)
       .withWhereRelation(options.whereRelation)
       .withWhereBetween(options.whereBetween)
-      .withWhereRelationBetween(options.whereRelationBetween)
-      .withWhere(options.where);
+      .withWhereRelationBetween(options.whereRelationBetween);
   };
 }

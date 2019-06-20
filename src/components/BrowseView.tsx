@@ -1,34 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import helpers from "../helpers";
 import Button from "./Button";
 import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
 import { History } from "history";
+import { InputContainer, InputName } from "./FormBuilder/FormBuilder";
+import Input from "./FormBuilder/Input";
 
-export default (props: {
+interface BrowseViewProps {
   title: String;
   history: History;
   createItemPath: string;
   mapItem: (
     item: any
   ) => { title: string; props: { label: string; value: any }[] };
-  loadMore: (page: number) => Promise<PaginatedResult<any>>;
+  loadMore: (
+    page: number,
+    filters?: { [name: string]: string }
+  ) => Promise<PaginatedResult<any>>;
   updateItemPath: (item: any) => string;
   deletePromise: (item: any) => Promise<void>;
   deleteMessage: (item: any) => string;
-}) => {
-  const [items, setItems] = useState<any[]>([]);
+  filters?: { name: string; label: string }[];
+}
 
+export default (props: BrowseViewProps) => {
+  // Used to handle the state of the filters values
+  const filtersFromProps = props.filters
+    ? props.filters.reduce(
+        (filters, next) => {
+          filters[next.name] = "";
+          return filters;
+        },
+        {} as any
+      )
+    : undefined;
+
+  // State
+  const [items, setItems] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [filters, setFilters] = useState<
+    { [filterName: string]: string } | undefined
+  >(filtersFromProps);
+
+  // Reference the infinite scroller to clear the current items when a filter changes
+  const infiniteScrollerRef = useRef<any>(null);
+
+  // Render Filter inputs depending on the ones provided via props,
+  const renderFilters = () => {
+    if (!props.filters || !filters) {
+      return null;
+    }
+    return (
+      <section className="browse-view-filters" style={{ margin: "1rem 0" }}>
+        {props.filters.map((filter, key) => (
+          <InputContainer key={key}>
+            <InputName>{filter.label}</InputName>
+            <Input
+              name={filter.name}
+              value={filters[filter.name]}
+              type="text"
+              onChange={(_, v) => {
+                // Reset the infinite scroller loaded page so a new search can be done without an offset
+                if (infiniteScrollerRef.current) {
+                  infiniteScrollerRef.current.pageLoaded = 0;
+                  setHasMore(true);
+                  setItems([]);
+                }
+                // Update the filters object with a new one containing the same values except for the modified one
+                setFilters({ ...filters, [filter.name]: v });
+              }}
+            />
+          </InputContainer>
+        ))}
+      </section>
+    );
+  };
 
   return (
     <>
+      {/** Title */}
       <h1 style={{ textAlign: "center", color: helpers.color.secondaryDark }}>
         {props.title}
       </h1>
       <CreateButton onClick={() => props.history.push(props.createItemPath)} />
+      {renderFilters()}
+      {/** Elements */}
       <ul>
         <InfiniteScroll
+          ref={infiniteScrollerRef}
           pageStart={0}
           hasMore={hasMore}
           useWindow={false}
@@ -36,7 +96,7 @@ export default (props: {
             document.getElementById("admin-content-container")
           }
           loadMore={async page => {
-            const res = await props.loadMore(page);
+            const res = await props.loadMore(page, filters);
             if (
               res.data.length === 0 ||
               res.total <= res.data.length + items.length
