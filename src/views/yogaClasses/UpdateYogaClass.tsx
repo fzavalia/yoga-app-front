@@ -24,7 +24,7 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
       title="Actualizar Clase"
       history={props.history}
       initialValues={{
-        date: helpers.date.normalizeAndFormatForInput(yogaClass.date),
+        date: yogaClass.date,
         selectedStudentIds: yogaClass.students
           ? yogaClass.students.map(s => s.id)
           : []

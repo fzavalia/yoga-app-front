@@ -1,12 +1,14 @@
 import { History } from "history";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder/FormBuilder";
+import FormBuilder, {
+  FormErrors
+} from "../../components/FormBuilder/FormBuilder";
 import helpers from "../../helpers";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface YogaClassFormValues {
-  date: string;
+  date: Date;
   selectedStudentIds: number[];
 }
 
@@ -32,7 +34,7 @@ export default (props: {
   }
 
   const defaultInitialValues: YogaClassFormValues = {
-    date: helpers.date.formatForInput(new Date()),
+    date: new Date(),
     selectedStudentIds: []
   };
 
@@ -51,7 +53,7 @@ export default (props: {
     title: props.title,
     validate
   })
-    .withInput({ name: "date", type: "date", label: "Fecha" })
+    .withDatePicker({ name: "date", label: "Fecha" })
     .withMultiSelect({
       name: "selectedStudentIds",
       label: "Alumnos",
