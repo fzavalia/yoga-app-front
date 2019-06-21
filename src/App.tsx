@@ -1,20 +1,27 @@
 import React from "react";
-import Router from "./routes/Router";
-import { Provider } from "react-redux";
 import { createStore } from "redux";
+import { Provider } from "react-redux";
+import Router from "./routes/Router";
 import reducers from "./modules/redux/reducers";
 import api from "./modules/api";
 import { logout } from "./modules/redux/actions";
 import ToastContainer, { toast } from "./components/ToastContainer";
 
+// Date Picker styles
+import "react-datepicker/dist/react-datepicker.css";
+
+// Redux store
 const store = createStore(reducers);
 
+// Api obtains the access token from the redux store
 api.setAccessTokenFactory(() => store.getState().auth.accessToken || "");
 
+// When any request to api fails, display a toast with a message according to the response status
 api.errorStream.subscribe(code => {
   switch (code) {
     case 401:
       toast("Credenciales Invalidas", { type: "error" });
+      // This code is returned also when the access token is invalid. In that case, logout the user to return to the login screen
       store.dispatch(logout());
       break;
     case 422:
