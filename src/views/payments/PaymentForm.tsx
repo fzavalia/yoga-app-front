@@ -3,7 +3,9 @@ import {
   SubmittablePayment,
   PaymentType
 } from "../../modules/api/requests/PaymentRequest";
-import FormBuilder, { FormErrors } from "../../components/FormBuilder/FormBuilder";
+import FormBuilder, {
+  FormErrors
+} from "../../components/FormBuilder/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
 import helpers from "../../helpers";
@@ -11,7 +13,7 @@ import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface PaymentFormValues {
   amount: number;
-  payedAt: string;
+  payedAt: Date;
   invoiced: boolean;
   type?: PaymentType;
   studentId?: number;
@@ -40,7 +42,7 @@ export default (props: PaymentFormProps) => {
 
   const defaultInitialValues: PaymentFormValues = {
     amount: 0,
-    payedAt: helpers.date.formatForInput(new Date()),
+    payedAt: new Date(),
     studentId: undefined,
     type: undefined,
     invoiced: false
@@ -49,7 +51,7 @@ export default (props: PaymentFormProps) => {
   const submit = (values: PaymentFormValues) => {
     const mapped: SubmittablePayment = {
       amount: values.amount,
-      payedAt: new Date(values.payedAt),
+      payedAt: values.payedAt,
       studentId: values.studentId || -1,
       type: values.type || PaymentType.CASH,
       invoiced: values.invoiced
@@ -82,7 +84,7 @@ export default (props: PaymentFormProps) => {
     validate
   })
     .withInput({ name: "amount", type: "number", label: "Cantidad" })
-    .withInput({ name: "payedAt", type: "date", label: "Fecha del Pago" })
+    .withDatePicker({ name: "payedAt", label: "Fecha del Pago (Dia/Mes/Año)" })
     .withSelect({
       name: "studentId",
       label: "Alumno",

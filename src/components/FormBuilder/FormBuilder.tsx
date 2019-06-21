@@ -5,7 +5,9 @@ import { Formik, FormikProps } from "formik";
 import MultiSelect from "./MultiSelect";
 import Select, { SelectOption } from "./Select";
 import Checkbox from "./Checkbox";
-import Input from "./Input";
+import Input, { makeInputStyle } from "./Input";
+import DatePicker from "react-datepicker";
+import { any } from "prop-types";
 
 export type FormErrors = {
   [error: string]: string;
@@ -46,6 +48,27 @@ export default class FormBuilder<T> {
             type={props.type || "text"}
             invalid={isInvalid}
             onChange={formikProps.setFieldValue}
+          />
+          <InputError show={isInvalid}>
+            {(formikProps.errors as any)[props.name]}
+          </InputError>
+        </InputContainer>
+      );
+    });
+    return this;
+  };
+
+  withDatePicker = (props: { name: string; label: string }) => {
+    this.components.push(formikProps => {
+      const isInvalid = this.isInvalid(formikProps, props);
+      return (
+        <InputContainer>
+          <InputName>{props.label}</InputName>
+          <DatePicker
+            selected={(formikProps.values as any)[props.name]}
+            onChange={date => formikProps.setFieldValue(props.name, date)}
+            customInput={<DatePickerInput />}
+            dateFormat='dd/MM/yyyy'
           />
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
@@ -154,7 +177,9 @@ export default class FormBuilder<T> {
             <>
               <FormTitle>{this.title}</FormTitle>
               <form onSubmit={e => e.preventDefault()}>
-                {this.components.map((c, i) => <div key={i}>{c(formikProps)}</div>)}
+                {this.components.map((c, i) => (
+                  <div key={i}>{c(formikProps)}</div>
+                ))}
                 <Button
                   size="sm"
                   colors={{ main: helpers.color.secondary }}
@@ -223,4 +248,16 @@ export const InputError = (props: { show: boolean; children: any }) => {
     style.display = "inline-block";
   }
   return <label style={style}>{props.children}</label>;
+};
+
+const DatePickerInput = (props: any) => {
+  return (
+    <Button
+      onClick={props.onClick}
+      colors={{ main: helpers.color.secondary, selected: helpers.color.secondaryLight }}
+      style={{marginTop: 10}}
+    >
+      {props.value}
+    </Button>
+  );
 };

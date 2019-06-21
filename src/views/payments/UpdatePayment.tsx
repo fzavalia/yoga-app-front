@@ -23,7 +23,7 @@ export default (props: { history: History; match: match<{ id: string }> }) => {
       history={props.history}
       initialValues={{
         amount: payment.amount,
-        payedAt: helpers.date.normalizeAndFormatForInput(payment.payedAt),
+        payedAt: helpers.date.normalize(payment.payedAt),
         studentId: payment.studentId,
         type: payment.type,
         invoiced: payment.invoiced
