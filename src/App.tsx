@@ -10,6 +10,9 @@ import ToastContainer, { toast } from "./components/ToastContainer";
 // Date Picker styles
 import "react-datepicker/dist/react-datepicker.css";
 
+// React Table styles
+import "react-table/react-table.css";
+
 // Redux store
 const store = createStore(reducers);
 
