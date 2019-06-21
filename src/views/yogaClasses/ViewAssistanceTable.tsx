@@ -5,7 +5,7 @@ import helpers from "../../helpers";
 import api from "../../modules/api";
 import { AssistanceTableData } from "../../modules/api/requests/AssistanceTableRequest";
 import ReactTable, { Column } from "react-table";
-import "react-table/react-table.css";
+import DatePicker from "react-datepicker";
 
 const ViewAssistanceTable = () => {
   const [date, setDate] = useState(new Date());
@@ -24,7 +24,7 @@ const ViewAssistanceTable = () => {
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ display: "flex" }}>
         <FilterbyStudentName
           value={studentNameFilter}
           onChange={setStudentNameFilter}
@@ -56,13 +56,11 @@ const SelectMonth = (props: {
   return (
     <div style={{ maxWidth: 200, marginBottom: "1rem" }}>
       <InputName>Més Representado</InputName>
-      <Input
-        type="month"
-        name="date"
-        onChange={(_, value) =>
-          props.onChange(helpers.date.normalize(new Date(value)))
-        }
-        value={helpers.date.format(props.value, "YYYY-MM")}
+      <DatePicker
+        showMonthYearPicker
+        selected={props.value}
+        onChange={date => props.onChange(date || props.value)}
+        dateFormat='MM/yyyy'
       />
     </div>
   );
@@ -72,7 +70,7 @@ const FilterbyStudentName = (props: {
   value: string;
   onChange: (value: string) => void;
 }) => (
-  <div style={{ maxWidth: 200, marginBottom: "1rem" }}>
+  <div style={{ maxWidth: 200, marginBottom: "1rem", marginRight: "1rem" }}>
     <InputName>Filtrar por nombre de Alumno</InputName>
     <Input
       type="text"
