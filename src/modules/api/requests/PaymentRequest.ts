@@ -1,5 +1,6 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentRequest, { Student } from "./StudentRequest";
+import helpers from "../../../helpers";
 
 export enum PaymentType {
   CREDIT_CARD = "credit_card",
@@ -42,10 +43,14 @@ export default class PaymentRequest extends ApiModelRequest<
     };
   };
 
-  protected mapSubmittableForApi: (model: SubmittablePayment) => any = model => {
+  protected mapSubmittableForApi: (
+    model: SubmittablePayment
+  ) => any = model => {
     const res: any = {};
     res.amount = model.amount;
-    res.payed_at = model.payedAt;
+    res.payed_at = model.payedAt
+      ? helpers.date.format(model.payedAt, "YYYY-MM-DD")
+      : undefined;
     res.student_id = model.studentId;
     res.type = model.type;
     res.invoiced = model.invoiced ? 1 : 0;
