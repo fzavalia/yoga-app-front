@@ -68,7 +68,7 @@ export default class FormBuilder<T> {
             selected={(formikProps.values as any)[props.name]}
             onChange={date => formikProps.setFieldValue(props.name, date)}
             customInput={<DatePickerInput />}
-            dateFormat='dd/MM/yyyy'
+            dateFormat="dd/MM/yyyy"
           />
           <InputError show={isInvalid}>
             {(formikProps.errors as any)[props.name]}
@@ -191,7 +191,11 @@ export default class FormBuilder<T> {
                   size="sm"
                   style={{ float: "right" }}
                   colors={{ main: helpers.color.secondary }}
-                  onClick={formikProps.handleSubmit}
+                  onClick={() => {
+                    if (!formikProps.isSubmitting) {
+                      formikProps.handleSubmit();
+                    }
+                  }}
                 >
                   Enviar
                 </Button>
@@ -254,8 +258,11 @@ const DatePickerInput = (props: any) => {
   return (
     <Button
       onClick={props.onClick}
-      colors={{ main: helpers.color.secondary, selected: helpers.color.secondaryLight }}
-      style={{marginTop: 10}}
+      colors={{
+        main: helpers.color.secondary,
+        selected: helpers.color.secondaryLight
+      }}
+      style={{ marginTop: 10 }}
     >
       {props.value}
     </Button>
