@@ -1,5 +1,6 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentRequest, { Student } from "./StudentRequest";
+import helpers from "../../../helpers";
 
 export interface YogaClass {
   id: number;
@@ -26,7 +27,7 @@ export default class YogaClassApiModelRequest extends ApiModelRequest<
 
   protected mapSubmittableForApi = (model: SubmittableYogaClass) => {
     const res: any = {};
-    res.date = model.date;
+    res.date = helpers.date.format(model.date, "YYYY-MM-DD");
     res.student_ids = model.studentIds;
     return res;
   };
