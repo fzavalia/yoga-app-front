@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import Router from "./routes/Router";
 import reducers from "./modules/redux/reducers";
 import api from "./modules/api";
-import { logout } from "./modules/redux/actions";
+import { logout, startLoading, stopLoading } from "./modules/redux/actions";
 import ToastContainer, { toast } from "./components/ToastContainer";
 
 // Date Picker styles
@@ -42,6 +42,12 @@ api.errorStream.subscribe(code => {
       break;
   }
 });
+
+// Show loading component when requests are made
+
+api.requestStartedStream.subscribe(() => store.dispatch(startLoading()))
+
+api.requestEndedStream.subscribe(() => store.dispatch(stopLoading()))
 
 const App: React.FC = () => {
   return (

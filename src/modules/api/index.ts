@@ -17,6 +17,8 @@ const queryStringBuilder: (path: string) => QueryStringBuilder = path =>
 
 export default {
   errorStream: httpClient.errorStream,
+  requestStartedStream: httpClient.requestStarted,
+  requestEndedStream: httpClient.requestEnded,
 
   setAccessTokenFactory: (func: () => string) =>
     httpClient.setAccessTokenFactory(func),

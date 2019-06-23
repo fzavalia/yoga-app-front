@@ -33,4 +33,6 @@ export default interface HttpClient {
   fetch: (path: string, method: Method, options?: Options) => Promise<any>;
   setAccessTokenFactory: (func: () => string) => void;
   errorStream: Observable<number>;
+  requestStarted: Observable<void>;
+  requestEnded: Observable<void>;
 }

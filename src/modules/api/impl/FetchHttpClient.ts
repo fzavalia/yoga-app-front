@@ -9,13 +9,19 @@ import { Observable, Subject } from "rxjs";
 
 export default class FetchHttpClient implements HttpClient {
   errorStream: Observable<number>;
+  requestStarted: Observable<void>;
+  requestEnded: Observable<void>;
 
   private getAccessToken = () => "";
 
   private errorEmitter = new Subject<number>();
+  private requestStartedEmitter = new Subject<void>();
+  private requestEndedEmitter = new Subject<void>();
 
   constructor(private host: string) {
     this.errorStream = this.errorEmitter;
+    this.requestStarted = this.requestStartedEmitter;
+    this.requestEnded = this.requestEndedEmitter;
   }
 
   setAccessTokenFactory = (func: () => string) => {
@@ -25,6 +31,8 @@ export default class FetchHttpClient implements HttpClient {
   fetch = async (path: string, method: Method, options: Options = {}) => {
     const body = this.getBodyFromOptions(options);
     const headers = this.getHeadersFromOptions(options);
+
+    this.requestStartedEmitter.next();
 
     const res = await fetch(`${this.host}${path}`, {
       method: this.mapMethod(method),
@@ -37,6 +45,8 @@ export default class FetchHttpClient implements HttpClient {
       this.errorEmitter.next(res.status);
       throw new Error(JSON.stringify(error));
     }
+
+    this.requestEndedEmitter.next();
 
     // Return the response as a JSON or an empty response if it is not parsable
 
