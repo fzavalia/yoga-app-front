@@ -5,16 +5,18 @@ import "./Loading.css";
 import { AppState } from "../modules/redux/reducers";
 
 const Loading = () => {
-
   const show = useSelector((state: AppState) => state.loading.isLoading);
 
-  if (!show) {
-    return null;
-  }
+  // if (!show) {
+  //   return null;
+  // }
 
   return (
     <section className="loading">
-      <img className="loading-logo" src={logo} />
+      <div className="loading-container">
+        <img className="loading-logo" src={logo} />
+        <h3 className="loading-text">Cargando...</h3>
+      </div>
     </section>
   );
 };
