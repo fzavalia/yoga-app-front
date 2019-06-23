@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // React Table styles
 import "react-table/react-table.css";
+import Loading from "./components/Loading";
 
 // Redux store
 const store = createStore(reducers);
@@ -46,6 +47,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <Router />
+      <Loading show />
       <ToastContainer />
     </Provider>
   );

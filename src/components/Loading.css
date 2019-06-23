@@ -1,0 +1,20 @@
+.loading {
+  position: fixed;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(202, 202, 202, 0.57);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-logo {
+  box-shadow: 0 0 5px 0 #8a8a8a;
+  border-radius: 50%;
+  animation-name: spin;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
