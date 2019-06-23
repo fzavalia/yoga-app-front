@@ -47,7 +47,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <Router />
-      <Loading show />
+      <Loading />
       <ToastContainer />
     </Provider>
   );
