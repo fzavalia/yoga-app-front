@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Button from "../Button";
 import helpers from "../../helpers";
 import { Formik, FormikProps } from "formik";
@@ -254,25 +254,31 @@ export const InputError = (props: { show: boolean; children: any }) => {
   return <label style={style}>{props.children}</label>;
 };
 
-/**
- * Use this component for the react-datepicker customInput prop
- */
-
-export const CustomDatePickerInput = (props: {
+interface CustomDatePickerInputProps {
   onClick?: () => void;
   value?: any;
   emptyLabel?: string;
-}) => {
-  return (
-    <Button
-      onClick={props.onClick}
-      colors={{
-        main: helpers.color.secondary,
-        selected: helpers.color.secondaryLight
-      }}
-      style={{ marginTop: 10 }}
-    >
-      {props.value || props.emptyLabel || "Seleccione una Fecha"}
-    </Button>
-  );
-};
+}
+
+/**
+ * Use this component for the react-datepicker customInput prop
+ * Must be a class due to the nature of react-datepicker
+ */
+export class CustomDatePickerInput extends Component<
+  CustomDatePickerInputProps
+> {
+  render = () => {
+    return (
+      <Button
+        onClick={this.props.onClick}
+        colors={{
+          main: helpers.color.secondary,
+          selected: helpers.color.secondaryLight
+        }}
+        style={{ marginTop: 10 }}
+      >
+        {this.props.value || this.props.emptyLabel || "Seleccione una Fecha"}
+      </Button>
+    );
+  };
+}
