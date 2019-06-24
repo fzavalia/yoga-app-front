@@ -30,7 +30,7 @@ export default (props: { history: History }) => {
         };
         // Filter by Month
         if (filters && filters.month) {
-          const dateRange = helpers.date.getMonthRange(filters.month);
+          const dateRange = helpers.date.getFormatedMonthRange(filters.month);
           options.whereBetween = {
             date: { min: dateRange.start, max: dateRange.end }
           };

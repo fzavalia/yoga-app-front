@@ -58,7 +58,7 @@ export default (props: { history: History }) => {
           };
           // Filter by month
           if (filters.month) {
-            const dateRange = helpers.date.getMonthRange(filters.month);
+            const dateRange = helpers.date.getFormatedMonthRange(filters.month);
             options.whereBetween = {
               payed_at: { min: dateRange.start, max: dateRange.end }
             };
@@ -70,7 +70,12 @@ export default (props: { history: History }) => {
         { name: "name", label: "Buscar por nombre del pagador" },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
-      extras={<div>foo</div>}
+      extras={
+        <section>
+          <div>Total: $12350</div>
+          <div>Total del Mes: $12350</div>
+        </section>
+      }
     />
   );
 };
