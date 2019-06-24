@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { History } from "history";
 import DatePicker from "react-datepicker";
@@ -42,6 +42,12 @@ interface BrowseViewProps {
 
 type FiltersState = { [filterName: string]: any } | undefined;
 
+interface BrowseViewState {
+  items: any[];
+  hasMore: boolean;
+  filters: FiltersState;
+}
+
 export default (props: BrowseViewProps) => {
   // Used to handle the state of the filters values
   const filtersFromProps = props.filters
@@ -55,9 +61,13 @@ export default (props: BrowseViewProps) => {
     : undefined;
 
   // State
-  const [items, setItems] = useState<any[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [filters, setFilters] = useState<FiltersState>(filtersFromProps);
+  const [state, setState] = useState<BrowseViewState>({
+    items: [],
+    hasMore: true,
+    filters: filtersFromProps
+  });
+
+  const { items, hasMore, filters } = state;
 
   // Render Filter inputs depending on the ones provided via props,
   const renderFilters = () => {
@@ -70,14 +80,17 @@ export default (props: BrowseViewProps) => {
           <Filter
             key={key}
             filter={filter}
-            onChange={newFilterValue => {
-              // Clean items
-              setItems([]);
-              // Update the filters object with a new one containing the same values except for the modified one
-              setFilters({ ...filters, [filter.name]: newFilterValue });
-              // Reset the infinite scroller loaded page so a new search can be done without an offset
-              setHasMore(true);
-            }}
+            onChange={newFilterValue =>
+              setState({
+                ...state,
+                // Clean items
+                items: [],
+                // Reset the infinite scroller loaded page so a new search can be done without an offset
+                hasMore: true,
+                // Update the filters object with a new one containing the same values except for the modified one
+                filters: { ...filters, [filter.name]: newFilterValue }
+              })
+            }
           />
         ))}
       </section>
@@ -107,8 +120,12 @@ export default (props: BrowseViewProps) => {
           }
           loadMore={async page => {
             const res = await props.loadMore(page, filters);
-            setHasMore(res.hasMore);
-            setItems(items.concat(res.data));
+            console.log(res.hasMore);
+            setState({
+              ...state,
+              hasMore: res.hasMore,
+              items: items.concat(res.data)
+            });
           }}
         >
           {items.length === 0 && <p>No hay elementos para mostrar.</p>}
@@ -137,11 +154,12 @@ export default (props: BrowseViewProps) => {
                   <ItemButton
                     onClick={() => {
                       if (window.confirm(props.deleteMessage(item))) {
-                        props
-                          .deletePromise(item)
-                          .then(() =>
-                            setItems(items.filter(_item => item !== _item))
-                          );
+                        props.deletePromise(item).then(() =>
+                          setState({
+                            ...state,
+                            items: items.filter(_item => item !== _item)
+                          })
+                        );
                       }
                     }}
                   >
