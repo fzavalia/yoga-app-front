@@ -70,6 +70,7 @@ export default (props: { history: History }) => {
         { name: "name", label: "Buscar por nombre del pagador" },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
+      extras={<div>foo</div>}
     />
   );
 };

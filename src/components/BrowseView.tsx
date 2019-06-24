@@ -38,6 +38,7 @@ interface BrowseViewProps {
   deletePromise: (item: any) => Promise<void>;
   deleteMessage: (item: any) => string;
   filters?: FilterDefinition[];
+  extras?: React.ReactNode;
 }
 
 type FiltersState = { [filterName: string]: any } | undefined;
@@ -105,6 +106,7 @@ export default (props: BrowseViewProps) => {
       </h1>
       <CreateButton onClick={() => props.history.push(props.createItemPath)} />
       {renderFilters()}
+      {props.extras}
       {/** Elements */}
       <ul>
         <InfiniteScroll
