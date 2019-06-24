@@ -5,7 +5,11 @@ import DatePicker from "react-datepicker";
 import helpers from "../helpers";
 import Button from "./Button";
 import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
-import { InputContainer, InputName } from "./FormBuilder/FormBuilder";
+import {
+  InputContainer,
+  InputName,
+  CustomDatePickerInput
+} from "./FormBuilder/FormBuilder";
 import Input from "./FormBuilder/Input";
 
 export enum FilterType {
@@ -231,6 +235,7 @@ const Filter = (props: {
             onChange={date => setCurrentValue(date)}
             showMonthYearPicker
             dateFormat="MM/yyyy"
+            customInput={<CustomDatePickerInput />}
             isClearable
           />
         </InputContainer>

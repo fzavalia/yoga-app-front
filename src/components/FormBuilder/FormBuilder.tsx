@@ -67,7 +67,7 @@ export default class FormBuilder<T> {
           <DatePicker
             selected={(formikProps.values as any)[props.name]}
             onChange={date => formikProps.setFieldValue(props.name, date)}
-            customInput={<DatePickerInput />}
+            customInput={<CustomDatePickerInput />}
             dateFormat="dd/MM/yyyy"
           />
           <InputError show={isInvalid}>
@@ -254,7 +254,7 @@ export const InputError = (props: { show: boolean; children: any }) => {
   return <label style={style}>{props.children}</label>;
 };
 
-const DatePickerInput = (props: any) => {
+export const CustomDatePickerInput = (props: any) => {
   return (
     <Button
       onClick={props.onClick}
@@ -264,7 +264,7 @@ const DatePickerInput = (props: any) => {
       }}
       style={{ marginTop: 10 }}
     >
-      {props.value}
+      {props.value || 'Seleccione una Fecha'}
     </Button>
   );
 };
