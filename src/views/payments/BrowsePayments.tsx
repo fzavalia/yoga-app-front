@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import { PaymentType } from "../../modules/api/requests/PaymentRequest";
+import {
+  PaymentType,
+  Payment
+} from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
 import BrowseView, { FilterType } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
@@ -11,6 +14,7 @@ import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
   const onMonthChangedEmitter = new Subject<Date | undefined>();
+  const onPaymentDeletedEmitter = new Subject<Payment>();
 
   return (
     <BrowseView
@@ -18,7 +22,11 @@ export default (props: { history: History }) => {
       history={props.history}
       createItemPath={`/payments/create`}
       updateItemPath={payment => `/payments/update/${payment.id}`}
-      deletePromise={payment => api.payment.delete(payment.id)}
+      deletePromise={payment =>
+        api.payment
+          .delete(payment.id)
+          .then(() => onPaymentDeletedEmitter.next(payment))
+      }
       deleteMessage={payment => "Eliminar Pago" + payment.student.name}
       mapItem={payment => ({
         title: payment.student.name,
@@ -75,13 +83,19 @@ export default (props: { history: History }) => {
         { name: "name", label: "Buscar por nombre del pagador" },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
-      extras={<Totals onMonthChangedObservable={onMonthChangedEmitter} />}
+      extras={
+        <Totals
+          onMonthChangedObservable={onMonthChangedEmitter}
+          onPaymentDeletedObservable={onPaymentDeletedEmitter}
+        />
+      }
     />
   );
 };
 
 interface TotalsProps {
   onMonthChangedObservable: Observable<Date | undefined>;
+  onPaymentDeletedObservable: Observable<Payment>;
 }
 
 const Totals = (props: TotalsProps) => {
@@ -90,25 +104,46 @@ const Totals = (props: TotalsProps) => {
   const [monthTotal, setMonthTotal] = useState<number | undefined>();
 
   useEffect(() => {
+    // Get Total from all payments since the beginning
     api.payment.total().then(setTotal);
-    const subscription = props.onMonthChangedObservable.subscribe(date => {
-      if (!date) {
-        setMonthTotal(undefined);
-      } else {
-        api.payment.total(date).then(setMonthTotal);
-      }
-    });
-    return () => {
-      subscription.unsubscribe();
-    };
   }, []);
+
+  useEffect(() => {
+    // Get Total for the month when a new month is selected
+    const onMonthChangedSubscription = props.onMonthChangedObservable.subscribe(
+      month => {
+        if (!month) {
+          setMonthTotal(undefined);
+        } else {
+          api.payment.total(month).then(setMonthTotal);
+        }
+      }
+    );
+    // Update totals whenever a payment is deleted
+    const onPaymentDeletedSubscription = props.onPaymentDeletedObservable.subscribe(
+      payment => {
+        setTotal(total - payment.amount);
+        if (monthTotal !== undefined) {
+          setMonthTotal(monthTotal - payment.amount);
+        }
+      }
+    );
+    // Handle Unsubscriptions
+    return () => {
+      onMonthChangedSubscription.unsubscribe();
+      onPaymentDeletedSubscription.unsubscribe();
+    };
+  }, [total, monthTotal]);
 
   if (!show) {
     return (
       <Button
-        colors={{ main: helpers.color.secondary, selected: helpers.color.secondaryLight }}
+        colors={{
+          main: helpers.color.secondary,
+          selected: helpers.color.secondaryLight
+        }}
         onClick={() => setShow(!show)}
-        size='sm'
+        size="sm"
       >
         Mostrar Totales
       </Button>
