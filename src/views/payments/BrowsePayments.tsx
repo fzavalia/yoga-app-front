@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
 import { PaymentType } from "../../modules/api/requests/PaymentRequest";
@@ -6,8 +6,11 @@ import helpers from "../../helpers";
 import BrowseView, { FilterType } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
+import { Observable, Subject } from "rxjs";
 
 export default (props: { history: History }) => {
+  const onMonthChangedEmitter = new Subject<Date | undefined>();
+
   return (
     <BrowseView
       title="Pagos"
@@ -63,6 +66,7 @@ export default (props: { history: History }) => {
               payed_at: { min: dateRange.start, max: dateRange.end }
             };
           }
+          onMonthChangedEmitter.next(filters.month);
         }
         return api.payment.paginatedList(page, options);
       }}
@@ -70,12 +74,43 @@ export default (props: { history: History }) => {
         { name: "name", label: "Buscar por nombre del pagador" },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
-      extras={
-        <section>
-          <div>Total: $12350</div>
-          <div>Total del Mes: $12350</div>
-        </section>
-      }
+      extras={<Totals onMonthChangedObservable={onMonthChangedEmitter} />}
     />
+  );
+};
+
+interface TotalsProps {
+  onMonthChangedObservable: Observable<Date | undefined>;
+}
+
+const Totals = (props: TotalsProps) => {
+  const [total, setTotal] = useState(0);
+  const [monthTotal, setMonthTotal] = useState<number | undefined>();
+
+  useEffect(() => {
+    api.payment.total().then(setTotal);
+    const subscription = props.onMonthChangedObservable.subscribe(date => {
+      if (!date) {
+        setMonthTotal(undefined);
+      } else {
+        api.payment.total(date).then(setMonthTotal);
+      }
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return (
+    <section>
+      <div style={{ marginBottom: "1rem" }}>
+        Total: <b>${total}</b>
+      </div>
+      {monthTotal !== undefined && (
+        <div>
+          Total del Mes: <b>${monthTotal}</b>
+        </div>
+      )}
+    </section>
   );
 };
