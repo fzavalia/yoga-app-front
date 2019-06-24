@@ -40,6 +40,8 @@ interface BrowseViewProps {
   filters?: FilterDefinition[];
 }
 
+type FiltersState = { [filterName: string]: any } | undefined;
+
 export default (props: BrowseViewProps) => {
   // Used to handle the state of the filters values
   const filtersFromProps = props.filters
@@ -55,9 +57,7 @@ export default (props: BrowseViewProps) => {
   // State
   const [items, setItems] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [filters, setFilters] = useState<
-    { [filterName: string]: string } | undefined
-  >(filtersFromProps);
+  const [filters, setFilters] = useState<FiltersState>(filtersFromProps);
 
   // Render Filter inputs depending on the ones provided via props,
   const renderFilters = () => {
@@ -233,9 +233,7 @@ const Filter = (props: {
           onChange={date => setCurrentValue(date)}
           showMonthYearPicker
           dateFormat="MM/yyyy"
-          customInput={
-            <CustomDatePickerInput emptyLabel="Seleccione el Mes" />
-          }
+          customInput={<CustomDatePickerInput emptyLabel="Seleccione el Mes" />}
           isClearable
         />
       );
