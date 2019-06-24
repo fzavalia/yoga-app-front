@@ -40,13 +40,14 @@ export default class FetchHttpClient implements HttpClient {
       headers
     });
 
-    if (res.status >= 300) {
-      const error = await res.text();
-      this.errorEmitter.next(res.status);
-      throw new Error(JSON.stringify(error));
-    }
-
     this.requestEndedEmitter.next();
+
+    if (res.status >= 300) {
+      this.errorEmitter.next(res.status);
+      throw new Error(
+        JSON.stringify({ code: res.status, message: res.statusText })
+      );
+    }
 
     // Return the response as a JSON or an empty response if it is not parsable
 
