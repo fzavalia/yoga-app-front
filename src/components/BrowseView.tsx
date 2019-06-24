@@ -120,7 +120,6 @@ export default (props: BrowseViewProps) => {
           }
           loadMore={async page => {
             const res = await props.loadMore(page, filters);
-            console.log(res.hasMore);
             setState({
               ...state,
               hasMore: res.hasMore,
