@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { History } from "history";
 import DatePicker from "react-datepicker";
