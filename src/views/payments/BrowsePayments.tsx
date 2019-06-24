@@ -7,6 +7,7 @@ import BrowseView, { FilterType } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Observable, Subject } from "rxjs";
+import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
   const onMonthChangedEmitter = new Subject<Date | undefined>();
@@ -84,6 +85,7 @@ interface TotalsProps {
 }
 
 const Totals = (props: TotalsProps) => {
+  const [show, setShow] = useState(false);
   const [total, setTotal] = useState(0);
   const [monthTotal, setMonthTotal] = useState<number | undefined>();
 
@@ -101,8 +103,20 @@ const Totals = (props: TotalsProps) => {
     };
   }, []);
 
+  if (!show) {
+    return (
+      <Button
+        colors={{ main: helpers.color.secondary, selected: helpers.color.secondaryLight }}
+        onClick={() => setShow(!show)}
+        size='sm'
+      >
+        Mostrar Totales
+      </Button>
+    );
+  }
+
   return (
-    <section>
+    <section style={{ marginTop: "1rem" }}>
       <div style={{ marginBottom: "1rem" }}>
         Total: <b>${total}</b>
       </div>
