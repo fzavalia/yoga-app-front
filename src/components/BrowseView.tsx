@@ -234,7 +234,7 @@ const Filter = (props: {
           showMonthYearPicker
           dateFormat="MM/yyyy"
           customInput={
-            <CustomDatePickerInput emptyLabel="Seleccione el Mes por el que desea filtrar" />
+            <CustomDatePickerInput emptyLabel="Seleccione el Mes" />
           }
           isClearable
         />
