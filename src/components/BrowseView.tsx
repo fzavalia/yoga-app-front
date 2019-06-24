@@ -61,7 +61,7 @@ export default (props: BrowseViewProps) => {
 
   // Render Filter inputs depending on the ones provided via props,
   const renderFilters = () => {
-    if (!props.filters || !filters) {
+    if (!props.filters) {
       return null;
     }
     return (
