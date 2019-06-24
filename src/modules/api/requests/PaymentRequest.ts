@@ -1,6 +1,8 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentRequest, { Student } from "./StudentRequest";
 import helpers from "../../../helpers";
+import { Method } from "../core/HttpClient";
+import { WhereBetween } from "../core/QueryStringBuilder";
 
 export enum PaymentType {
   CREDIT_CARD = "credit_card",
@@ -29,6 +31,29 @@ export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
+  total = async (month?: Date) => {
+    const path = this.basePath + "/total";
+
+    let filterByMonth: WhereBetween | undefined;
+
+    if (month) {
+      const range = helpers.date.getFormatedMonthRange(month);
+      filterByMonth = {
+        payed_at: { min: range.start, max: range.end }
+      };
+    }
+
+    const pathWithQueryParams = this.queryStringBuilder(path)
+      .withWhereBetween(filterByMonth)
+      .build();
+
+    const res = await this.httpClient.fetch(pathWithQueryParams, Method.GET, {
+      withCredentials: true
+    });
+
+    return res.total;
+  };
+
   protected mapModelFromApi: (model: any) => Payment = model => {
     return {
       amount: model.amount,
