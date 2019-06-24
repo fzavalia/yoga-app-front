@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import helpers from "../helpers";
 import Button from "./Button";
@@ -6,6 +6,17 @@ import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
 import { History } from "history";
 import { InputContainer, InputName } from "./FormBuilder/FormBuilder";
 import Input from "./FormBuilder/Input";
+
+export enum FilterType {
+  TEXT,
+  MONTH
+}
+
+export interface FilterDefinition {
+  name: string;
+  label: string;
+  type?: FilterType;
+}
 
 interface BrowseViewProps {
   title: String;
@@ -21,7 +32,7 @@ interface BrowseViewProps {
   updateItemPath: (item: any) => string;
   deletePromise: (item: any) => Promise<void>;
   deleteMessage: (item: any) => string;
-  filters?: { name: string; label: string }[];
+  filters?: FilterDefinition[];
 }
 
 export default (props: BrowseViewProps) => {
@@ -51,21 +62,17 @@ export default (props: BrowseViewProps) => {
     return (
       <section className="browse-view-filters" style={{ margin: "1rem 0" }}>
         {props.filters.map((filter, key) => (
-          <InputContainer key={key}>
-            <InputName>{filter.label}</InputName>
-            <Input
-              name={filter.name}
-              value={filters[filter.name]}
-              type="text"
-              onChange={(_, v) => {
-                // Reset the infinite scroller loaded page so a new search can be done without an offset
-                setHasMore(true);
-                setItems([]);
-                // Update the filters object with a new one containing the same values except for the modified one
-                setFilters({ ...filters, [filter.name]: v });
-              }}
-            />
-          </InputContainer>
+          <Filter
+            key={key}
+            filter={filter}
+            onChange={newFilterValue => {
+              // Reset the infinite scroller loaded page so a new search can be done without an offset
+              setHasMore(true);
+              setItems([]);
+              // Update the filters object with a new one containing the same values except for the modified one
+              setFilters({ ...filters, [filter.name]: newFilterValue });
+            }}
+          />
         ))}
       </section>
     );
@@ -194,3 +201,34 @@ const ItemButton = (props: { onClick: () => void; children: any }) => (
     {props.children}
   </Button>
 );
+
+const Filter = (props: {
+  filter: FilterDefinition;
+  onChange: (newFilterValue: any) => void;
+}) => {
+  const { filter, onChange } = props;
+  const [currentValue, setCurrentValue] = useState<any>();
+  
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (currentValue !== undefined) {
+        onChange(currentValue);
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [currentValue]);
+
+  return (
+    <InputContainer>
+      <InputName>{filter.label}</InputName>
+      <Input
+        name={filter.name}
+        value={currentValue}
+        type="text"
+        onChange={(_, v) => setCurrentValue(v)}
+      />
+    </InputContainer>
+  );
+};
