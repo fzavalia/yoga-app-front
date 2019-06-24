@@ -28,6 +28,9 @@ export interface ShowOptions {
 export interface PaginatedResult<Model> {
   data: Model[];
   total: number;
+  currentPage: number;
+  lastPage: number;
+  hasMore: boolean;
 }
 
 export default abstract class ApiModelRequest<
@@ -58,10 +61,16 @@ export default abstract class ApiModelRequest<
 
     return this.httpClient
       .fetch(pathWithQueryParameters, Method.GET, { withCredentials: true })
-      .then(paginatedResult => ({
-        data: paginatedResult.data.map(this.mapModelFromApi),
-        total: paginatedResult.total
-      }));
+      .then(res => {
+        const paginatedResult: PaginatedResult<Model> = {
+          data: res.data.map(this.mapModelFromApi),
+          total: res.total,
+          currentPage: res.current_page,
+          lastPage: res.last_page,
+          hasMore: res.current_page < res.last_page
+        };
+        return paginatedResult;
+      });
   };
 
   show: (id: number, options?: ShowOptions) => Promise<Model> = (

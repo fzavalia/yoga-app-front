@@ -71,11 +71,12 @@ export default (props: BrowseViewProps) => {
             key={key}
             filter={filter}
             onChange={newFilterValue => {
-              // Reset the infinite scroller loaded page so a new search can be done without an offset
-              setHasMore(true);
+              // Clean items
               setItems([]);
               // Update the filters object with a new one containing the same values except for the modified one
               setFilters({ ...filters, [filter.name]: newFilterValue });
+              // Reset the infinite scroller loaded page so a new search can be done without an offset
+              setHasMore(true);
             }}
           />
         ))}
@@ -106,12 +107,7 @@ export default (props: BrowseViewProps) => {
           }
           loadMore={async page => {
             const res = await props.loadMore(page, filters);
-            if (
-              res.data.length === 0 ||
-              res.total <= res.data.length + items.length
-            ) {
-              setHasMore(false);
-            }
+            setHasMore(res.hasMore);
             setItems(items.concat(res.data));
           }}
         >
