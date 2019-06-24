@@ -136,7 +136,8 @@ const Sidebar = (props: {
         maxWidth: 300,
         boxShadow: `0 0 5px ${helpers.color.secondary}`,
         transition: "width 200ms",
-        overflow: 'hidden'
+        overflow: "hidden",
+        zIndex: 1
       }}
     >
       <div
