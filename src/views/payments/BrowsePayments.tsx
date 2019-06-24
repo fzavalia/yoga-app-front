@@ -47,13 +47,15 @@ export default (props: { history: History }) => {
           order: { by: "payed_at", type: OrderType.DESC }
         };
         if (filters) {
+          // Filter by name
           options.whereRelation = {
             name: { relation: "student", value: filters.name }
           };
+          // Filter by month
           if (filters.month) {
-            const range = helpers.date.getMonthRange(filters.month);
+            const dateRange = helpers.date.getMonthRange(filters.month);
             options.whereBetween = {
-              payed_at: { min: range[0], max: range[1] }
+              payed_at: { min: dateRange.start, max: dateRange.end }
             };
           }
         }

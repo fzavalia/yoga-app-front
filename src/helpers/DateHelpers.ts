@@ -11,7 +11,10 @@ export default class DateHelpers {
     const d2 = new Date(d1);
     d1.setDate(1);
     d2.setDate(this.getDaysInMonth(d1));
-    return [this.format(d1, "YYYY-MM-DD"), this.format(d2, "YYYY-MM-DD")];
+    return {
+      start: this.format(d1, "YYYY-MM-DD"),
+      end: this.format(d2, "YYYY-MM-DD")
+    };
   };
 
   normalize = (date: Date) =>
