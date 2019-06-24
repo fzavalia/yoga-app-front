@@ -11,6 +11,11 @@ export default (props: { history: History }) => {
   return (
     <BrowseView
       title="Pagos"
+      history={props.history}
+      createItemPath={`/payments/create`}
+      updateItemPath={payment => `/payments/update/${payment.id}`}
+      deletePromise={payment => api.payment.delete(payment.id)}
+      deleteMessage={payment => "Eliminar Pago" + payment.student.name}
       mapItem={payment => ({
         title: payment.student.name,
         props: [
@@ -61,11 +66,6 @@ export default (props: { history: History }) => {
         }
         return api.payment.paginatedList(page, options);
       }}
-      history={props.history}
-      createItemPath={`/payments/create`}
-      updateItemPath={payment => `/payments/update/${payment.id}`}
-      deletePromise={payment => api.payment.delete(payment.id)}
-      deleteMessage={payment => "Eliminar Pago" + payment.student.name}
       filters={[
         { name: "name", label: "Buscar por nombre del pagador" },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }

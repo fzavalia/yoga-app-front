@@ -28,6 +28,7 @@ export default (props: { history: History }) => {
           include: ["students"],
           order: { by: "date", type: OrderType.DESC }
         };
+        // Filter by Month
         if (filters && filters.month) {
           const dateRange = helpers.date.getMonthRange(filters.month);
           options.whereBetween = {
