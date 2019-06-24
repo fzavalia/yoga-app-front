@@ -254,7 +254,15 @@ export const InputError = (props: { show: boolean; children: any }) => {
   return <label style={style}>{props.children}</label>;
 };
 
-export const CustomDatePickerInput = (props: any) => {
+/**
+ * Use this component for the react-datepicker customInput prop
+ */
+
+export const CustomDatePickerInput = (props: {
+  onClick?: () => void;
+  value?: any;
+  emptyLabel?: string;
+}) => {
   return (
     <Button
       onClick={props.onClick}
@@ -264,7 +272,7 @@ export const CustomDatePickerInput = (props: any) => {
       }}
       style={{ marginTop: 10 }}
     >
-      {props.value || 'Seleccione una Fecha'}
+      {props.value || props.emptyLabel || "Seleccione una Fecha"}
     </Button>
   );
 };

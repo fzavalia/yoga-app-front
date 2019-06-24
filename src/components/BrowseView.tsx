@@ -228,17 +228,16 @@ const Filter = (props: {
   switch (filter.type) {
     case FilterType.MONTH:
       return (
-        <InputContainer>
-          <InputName>{filter.label}</InputName>
-          <DatePicker
-            selected={currentValue}
-            onChange={date => setCurrentValue(date)}
-            showMonthYearPicker
-            dateFormat="MM/yyyy"
-            customInput={<CustomDatePickerInput />}
-            isClearable
-          />
-        </InputContainer>
+        <DatePicker
+          selected={currentValue}
+          onChange={date => setCurrentValue(date)}
+          showMonthYearPicker
+          dateFormat="MM/yyyy"
+          customInput={
+            <CustomDatePickerInput emptyLabel="Seleccione el Mes por el que desea filtrar" />
+          }
+          isClearable
+        />
       );
     default:
       return (

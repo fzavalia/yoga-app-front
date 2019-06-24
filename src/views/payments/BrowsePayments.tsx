@@ -68,7 +68,7 @@ export default (props: { history: History }) => {
       deleteMessage={payment => "Eliminar Pago" + payment.student.name}
       filters={[
         { name: "name", label: "Buscar por nombre del pagador" },
-        { name: "month", label: "Mes", type: FilterType.MONTH }
+        { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
     />
   );
