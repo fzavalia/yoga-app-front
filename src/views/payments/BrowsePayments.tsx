@@ -3,7 +3,7 @@ import api from "../../modules/api";
 import { History } from "history";
 import { PaymentType } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
-import BrowseView from "../../components/BrowseView";
+import BrowseView, { FilterType } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 
@@ -50,6 +50,12 @@ export default (props: { history: History }) => {
           options.whereRelation = {
             name: { relation: "student", value: filters.name }
           };
+          if (filters.month) {
+            const range = helpers.date.getMonthRange(filters.month);
+            options.whereBetween = {
+              payed_at: { min: range[0], max: range[1] }
+            };
+          }
         }
         return api.payment.paginatedList(page, options);
       }}
@@ -58,7 +64,10 @@ export default (props: { history: History }) => {
       updateItemPath={payment => `/payments/update/${payment.id}`}
       deletePromise={payment => api.payment.delete(payment.id)}
       deleteMessage={payment => "Eliminar Pago" + payment.student.name}
-      filters={[{ name: "name", label: "Buscar por nombre del pagador" }]}
+      filters={[
+        { name: "name", label: "Buscar por nombre del pagador" },
+        { name: "month", label: "Mes", type: FilterType.MONTH }
+      ]}
     />
   );
 };

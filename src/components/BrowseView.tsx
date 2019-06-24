@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
+import { History } from "history";
+import DatePicker from "react-datepicker";
 import helpers from "../helpers";
 import Button from "./Button";
 import { PaginatedResult } from "../modules/api/impl/ApiModelRequest";
-import { History } from "history";
 import { InputContainer, InputName } from "./FormBuilder/FormBuilder";
 import Input from "./FormBuilder/Input";
 
@@ -27,7 +28,7 @@ interface BrowseViewProps {
   ) => { title: string; props: { label: string; value: any }[] };
   loadMore: (
     page: number,
-    filters?: { [name: string]: string }
+    filters?: { [name: string]: any }
   ) => Promise<PaginatedResult<any>>;
   updateItemPath: (item: any) => string;
   deletePromise: (item: any) => Promise<void>;
@@ -208,7 +209,7 @@ const Filter = (props: {
 }) => {
   const { filter, onChange } = props;
   const [currentValue, setCurrentValue] = useState<any>();
-  
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (currentValue !== undefined) {
@@ -220,15 +221,31 @@ const Filter = (props: {
     };
   }, [currentValue]);
 
-  return (
-    <InputContainer>
-      <InputName>{filter.label}</InputName>
-      <Input
-        name={filter.name}
-        value={currentValue}
-        type="text"
-        onChange={(_, v) => setCurrentValue(v)}
-      />
-    </InputContainer>
-  );
+  switch (filter.type) {
+    case FilterType.MONTH:
+      return (
+        <InputContainer>
+          <InputName>{filter.label}</InputName>
+          <DatePicker
+            selected={currentValue}
+            onChange={date => setCurrentValue(date)}
+            showMonthYearPicker
+            dateFormat="MM/yyyy"
+            isClearable
+          />
+        </InputContainer>
+      );
+    default:
+      return (
+        <InputContainer>
+          <InputName>{filter.label}</InputName>
+          <Input
+            name={filter.name}
+            value={currentValue}
+            type="text"
+            onChange={(_, v) => setCurrentValue(v)}
+          />
+        </InputContainer>
+      );
+  }
 };
