@@ -12,7 +12,27 @@ import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Observable, Subject } from "rxjs";
 import Button from "../../components/Button";
 
+interface StudentOption {
+  value: any;
+  label: string;
+}
+
+const useStudentOptions = () => {
+  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
+
+  useEffect(() => {
+    api.student
+      .list({ order: { by: "name", type: OrderType.ASC } })
+      .then(res => {
+        setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
+      });
+  }, []);
+
+  return studentOptions;
+};
+
 export default (props: { history: History }) => {
+  const studentOptions = useStudentOptions();
   const onMonthChangedEmitter = new Subject<Date | undefined>();
   const onPaymentDeletedEmitter = new Subject<Payment>();
 
@@ -64,10 +84,12 @@ export default (props: { history: History }) => {
           order: { by: "payed_at", type: OrderType.DESC }
         };
         if (filters) {
-          // Filter by name
-          options.whereRelation = {
-            name: { relation: "student", value: filters.name }
-          };
+          // Filter by student
+          if (filters.student !== undefined) {
+            options.whereRelation = {
+              id: { relation: "student", value: filters.student }
+            };
+          }
           // Filter by month
           if (filters.month) {
             const dateRange = helpers.date.getFormatedMonthRange(filters.month);
@@ -80,7 +102,12 @@ export default (props: { history: History }) => {
         return api.payment.paginatedList(page, options);
       }}
       filters={[
-        { name: "name", label: "Buscar por nombre del pagador" },
+        {
+          name: "student",
+          label: "Filtrar por alumno",
+          type: FilterType.SELECT,
+          options: studentOptions
+        },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
       extras={
