@@ -150,7 +150,7 @@ const Totals = (props: TotalsProps) => {
       onMonthChangedSubscription.unsubscribe();
       onPaymentDeletedSubscription.unsubscribe();
     };
-  }, [total, monthTotal, invoicedMonthTotal]);
+  }, [total, monthTotal, invoicedMonthTotal, props]);
 
   if (!show) {
     return (

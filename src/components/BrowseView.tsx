@@ -245,14 +245,14 @@ const Filter = (props: FilterProps) => {
   const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
 
   useEffect(() => {
-    if (props.filter.type === FilterType.SELECT_STUDENT) {
+    if (filter.type === FilterType.SELECT_STUDENT) {
       api.student
         .list({ order: { by: "name", type: OrderType.ASC } })
         .then(res => {
           setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
         });
     }
-  }, []);
+  }, [filter.type]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -263,7 +263,7 @@ const Filter = (props: FilterProps) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [currentValue]);
+  }, [currentValue, onChange]);
 
   switch (filter.type) {
     case FilterType.MONTH:

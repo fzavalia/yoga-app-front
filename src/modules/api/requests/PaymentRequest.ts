@@ -2,7 +2,7 @@ import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentRequest, { Student } from "./StudentRequest";
 import helpers from "../../../helpers";
 import { Method } from "../core/HttpClient";
-import { WhereBetween, Where } from "../core/QueryStringBuilder";
+import { WhereBetween, Where, WhereRelation } from "../core/QueryStringBuilder";
 
 export enum PaymentType {
   CREDIT_CARD = "credit_card",
@@ -31,11 +31,16 @@ export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
-  total = async (options?: { month?: Date; invoiced?: boolean }) => {
+  total = async (options?: {
+    month?: Date;
+    invoiced?: boolean;
+    studentId?: number;
+  }) => {
     const path = this.basePath + "/total";
 
     let whereBetween: WhereBetween | undefined;
     let whereEquals: Where | undefined;
+    let whereRelation: WhereRelation | undefined;
 
     if (options) {
       // Filter by Month
@@ -49,11 +54,18 @@ export default class PaymentRequest extends ApiModelRequest<
       if (options.invoiced !== undefined) {
         whereEquals = { invoiced: options.invoiced ? "1" : "0" };
       }
+      // Filter by student
+      if (options.studentId !== undefined) {
+        whereRelation = {
+          id: { relation: "student", value: options.studentId }
+        };
+      }
     }
 
     const pathWithQueryParams = this.queryStringBuilder(path)
       .withWhereBetween(whereBetween)
       .withWhereEquals(whereEquals)
+      .withWhereRelation(whereRelation)
       .build();
 
     const res = await this.httpClient.fetch(pathWithQueryParams, Method.GET, {

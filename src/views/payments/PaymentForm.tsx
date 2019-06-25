@@ -8,7 +8,6 @@ import FormBuilder, {
 } from "../../components/FormBuilder/FormBuilder";
 import { useState, useEffect } from "react";
 import api from "../../modules/api";
-import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 
 interface PaymentFormValues {

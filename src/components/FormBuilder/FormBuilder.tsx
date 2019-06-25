@@ -5,7 +5,7 @@ import { Formik, FormikProps } from "formik";
 import MultiSelect from "./MultiSelect";
 import Select, { SelectOption } from "./Select";
 import Checkbox from "./Checkbox";
-import Input, { makeInputStyle } from "./Input";
+import Input from "./Input";
 import DatePicker from "react-datepicker";
 
 export type FormErrors = {

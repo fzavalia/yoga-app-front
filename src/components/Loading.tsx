@@ -14,7 +14,7 @@ const Loading = () => {
   return (
     <section className="loading">
       <div className="loading-container">
-        <img className="loading-logo" src={logo} />
+        <img className="loading-logo" src={logo} alt='...'/>
         <h3 className="loading-text">Cargando...</h3>
       </div>
     </section>
