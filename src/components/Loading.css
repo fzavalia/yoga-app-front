@@ -25,6 +25,8 @@
 }
 
 .loading-logo {
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
   animation-name: spin;
   animation-duration: 5s;
