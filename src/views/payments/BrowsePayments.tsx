@@ -165,7 +165,7 @@ const Totals = (props: TotalsProps) => {
         Total: <b>${total}</b>
       </div>
       {monthTotal !== undefined && (
-        <div>
+        <div style={{ marginBottom: "1rem" }}>
           Total del Mes: <b>${monthTotal}</b>
         </div>
       )}
