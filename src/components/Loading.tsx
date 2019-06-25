@@ -7,9 +7,9 @@ import { AppState } from "../modules/redux/reducers";
 const Loading = () => {
   const show = useSelector((state: AppState) => state.loading.isLoading);
 
-  // if (!show) {
-  //   return null;
-  // }
+  if (!show) {
+    return null;
+  }
 
   return (
     <section className="loading">
