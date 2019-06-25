@@ -16,6 +16,7 @@ const Select = (props: {
     focused: focused,
     invalid: props.invalid
   });
+  
   style.backgroundColor = "unset";
 
   return (

@@ -7,7 +7,6 @@ import Select, { SelectOption } from "./Select";
 import Checkbox from "./Checkbox";
 import Input, { makeInputStyle } from "./Input";
 import DatePicker from "react-datepicker";
-import { any } from "prop-types";
 
 export type FormErrors = {
   [error: string]: string;
