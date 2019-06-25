@@ -6,11 +6,12 @@ import {
   Payment
 } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
-import BrowseView, { FilterType } from "../../components/BrowseView";
+import BrowseView from "../../components/BrowseView/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Subject } from "rxjs";
 import Totals from "./Totals";
+import { FilterType } from "../../components/BrowseView/Filter";
 
 export default (props: { history: History }) => {
   const onMonthChangedEmitter = new Subject<Date | undefined>();

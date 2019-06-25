@@ -1,11 +1,12 @@
 import React from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import BrowseView, { FilterType } from "../../components/BrowseView";
+import BrowseView from "../../components/BrowseView/BrowseView";
 import { YogaClass } from "../../modules/api/requests/YogaClassRequest";
 import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
+import { FilterType } from "../../components/BrowseView/Filter";
 
 export default (props: { history: History }) => {
   const getFormatedDateFromYogaClass = (yogaClass: YogaClass) =>

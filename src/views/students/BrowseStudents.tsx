@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import BrowseView from "../../components/BrowseView";
+import BrowseView from "../../components/BrowseView/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 
