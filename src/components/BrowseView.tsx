@@ -18,7 +18,8 @@ import { OrderType } from "../modules/api/core/QueryStringBuilder";
 export enum FilterType {
   TEXT,
   MONTH,
-  SELECT
+  SELECT,
+  SELECT_STUDENT
 }
 
 export interface FilterDefinition {
@@ -227,12 +228,31 @@ const ItemButton = (props: { onClick: () => void; children: any }) => (
   </Button>
 );
 
-const Filter = (props: {
+interface FilterProps {
   filter: FilterDefinition;
   onChange: (newFilterValue: any) => void;
-}) => {
+}
+
+interface StudentOption {
+  value: any;
+  label: string;
+}
+
+const Filter = (props: FilterProps) => {
   const { filter, onChange } = props;
+
   const [currentValue, setCurrentValue] = useState<any>();
+  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
+
+  useEffect(() => {
+    if (props.filter.type === FilterType.SELECT_STUDENT) {
+      api.student
+        .list({ order: { by: "name", type: OrderType.ASC } })
+        .then(res => {
+          setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
+        });
+    }
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -269,6 +289,18 @@ const Filter = (props: {
           />
         </InputContainer>
       );
+    case FilterType.SELECT_STUDENT:
+      return (
+        <InputContainer>
+          <InputName>{filter.label}</InputName>
+          <Select
+            name={filter.name}
+            value={currentValue}
+            options={studentOptions}
+            onChange={(_, v) => setCurrentValue(v)}
+          />
+        </InputContainer>
+      );
     default:
       return (
         <InputContainer>
@@ -282,23 +314,4 @@ const Filter = (props: {
         </InputContainer>
       );
   }
-};
-
-interface StudentOption {
-  value: any;
-  label: string;
-}
-
-export const useStudentOptions = () => {
-  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
-
-  useEffect(() => {
-    api.student
-      .list({ order: { by: "name", type: OrderType.ASC } })
-      .then(res => {
-        setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
-      });
-  }, []);
-
-  return studentOptions;
 };

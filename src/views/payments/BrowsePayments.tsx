@@ -6,17 +6,13 @@ import {
   Payment
 } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
-import BrowseView, {
-  FilterType,
-  useStudentOptions
-} from "../../components/BrowseView";
+import BrowseView, { FilterType } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Observable, Subject } from "rxjs";
 import Button from "../../components/Button";
 
 export default (props: { history: History }) => {
-  const studentOptions = useStudentOptions();
   const onMonthChangedEmitter = new Subject<Date | undefined>();
   const onPaymentDeletedEmitter = new Subject<Payment>();
 
@@ -70,7 +66,7 @@ export default (props: { history: History }) => {
         if (filters) {
           // Filter by student
           if (filters.student) {
-            console.log(filters.student)
+            console.log(filters.student);
             options.whereRelationEquals = {
               id: { relation: "student", value: filters.student }
             };
@@ -90,8 +86,7 @@ export default (props: { history: History }) => {
         {
           name: "student",
           label: "Filtrar por alumno",
-          type: FilterType.SELECT,
-          options: studentOptions
+          type: FilterType.SELECT_STUDENT
         },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}

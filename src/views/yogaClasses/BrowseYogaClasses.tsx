@@ -1,18 +1,13 @@
 import React from "react";
 import api from "../../modules/api";
 import { History } from "history";
-import BrowseView, {
-  FilterType,
-  useStudentOptions
-} from "../../components/BrowseView";
+import BrowseView, { FilterType } from "../../components/BrowseView";
 import { YogaClass } from "../../modules/api/requests/YogaClassRequest";
 import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 
 export default (props: { history: History }) => {
-  const studentOptions = useStudentOptions();
-
   const getFormatedDateFromYogaClass = (yogaClass: YogaClass) =>
     helpers.date.normalizeAndFormatForView(yogaClass.date);
 
@@ -56,8 +51,7 @@ export default (props: { history: History }) => {
         {
           name: "student",
           label: "Filtrar por Alumno",
-          type: FilterType.SELECT,
-          options: studentOptions
+          type: FilterType.SELECT_STUDENT
         },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
