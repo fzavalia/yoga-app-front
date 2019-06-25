@@ -36,17 +36,17 @@ export default (props: { history: History }) => {
           order: { by: "date", type: OrderType.DESC }
         };
         if (filters) {
+          // Filter by Student
+          if (filters.student) {
+            options.whereRelationEquals = {
+              id: { relation: "students", value: filters.student }
+            };
+          }
           // Filter by Month
           if (filters.month) {
             const dateRange = helpers.date.getFormatedMonthRange(filters.month);
             options.whereBetween = {
               date: { min: dateRange.start, max: dateRange.end }
-            };
-          }
-          // Filter by Student
-          if (filters.student !== undefined) {
-            options.whereRelationEquals = {
-              id: { relation: "students", value: filters.student }
             };
           }
         }

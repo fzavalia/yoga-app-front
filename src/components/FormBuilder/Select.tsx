@@ -27,9 +27,7 @@ const Select = (props: {
       onBlur={() => setFocused(false)}
       onChange={e => props.onChange(props.name, e.target.value)}
     >
-      <option value={undefined}>
-        -
-      </option>
+      <option value="">-</option>
       {props.options.map((o, k) => {
         return (
           <option key={k} value={o.value}>
