@@ -49,6 +49,14 @@ export default class ApiQueryStringBuilder implements QueryStringBuilder {
       where
     );
 
+  withWhereEquals = (where?: Where) =>
+    this.whereBase<Where>(
+      (where, filter) => where[filter].length > 0,
+      "where_equals",
+      (where, filter) => `${filter}:${where[filter]}`,
+      where
+    );
+
   withWhereRelation = (where?: WhereRelation) =>
     this.whereBase<WhereRelation>(
       (where, filter) => where[filter].value.length > 0,

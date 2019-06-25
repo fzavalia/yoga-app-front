@@ -102,6 +102,9 @@ const Totals = (props: TotalsProps) => {
   const [show, setShow] = useState(false);
   const [total, setTotal] = useState(0);
   const [monthTotal, setMonthTotal] = useState<number | undefined>();
+  const [invoicedMonthTotal, setInvoicedMonthTotal] = useState<
+    number | undefined
+  >();
 
   useEffect(() => {
     // Get Total from all payments since the beginning
@@ -115,7 +118,10 @@ const Totals = (props: TotalsProps) => {
         if (!month) {
           setMonthTotal(undefined);
         } else {
-          api.payment.total(month).then(setMonthTotal);
+          api.payment.total({ month }).then(setMonthTotal);
+          api.payment
+            .total({ month, invoiced: true })
+            .then(setInvoicedMonthTotal);
         }
       }
     );
@@ -126,6 +132,9 @@ const Totals = (props: TotalsProps) => {
         if (monthTotal !== undefined) {
           setMonthTotal(monthTotal - payment.amount);
         }
+        if (invoicedMonthTotal !== undefined && payment.invoiced) {
+          setInvoicedMonthTotal(invoicedMonthTotal - payment.amount);
+        }
       }
     );
     // Handle Unsubscriptions
@@ -133,7 +142,7 @@ const Totals = (props: TotalsProps) => {
       onMonthChangedSubscription.unsubscribe();
       onPaymentDeletedSubscription.unsubscribe();
     };
-  }, [total, monthTotal]);
+  }, [total, monthTotal, invoicedMonthTotal]);
 
   if (!show) {
     return (
@@ -158,6 +167,11 @@ const Totals = (props: TotalsProps) => {
       {monthTotal !== undefined && (
         <div>
           Total del Mes: <b>${monthTotal}</b>
+        </div>
+      )}
+      {invoicedMonthTotal !== undefined && (
+        <div>
+          Total Facturado del Mes: <b>${invoicedMonthTotal}</b>
         </div>
       )}
     </section>

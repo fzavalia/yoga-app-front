@@ -2,7 +2,7 @@ import ApiModelRequest from "../impl/ApiModelRequest";
 import StudentRequest, { Student } from "./StudentRequest";
 import helpers from "../../../helpers";
 import { Method } from "../core/HttpClient";
-import { WhereBetween } from "../core/QueryStringBuilder";
+import { WhereBetween, Where } from "../core/QueryStringBuilder";
 
 export enum PaymentType {
   CREDIT_CARD = "credit_card",
@@ -31,21 +31,32 @@ export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
-  total = async (month?: Date) => {
+  total = async (options?: { month?: Date; invoiced?: boolean }) => {
     const path = this.basePath + "/total";
 
-    let filterByMonth: WhereBetween | undefined;
+    let whereBetween: WhereBetween | undefined;
+    let whereEquals: Where | undefined;
 
-    if (month) {
-      const range = helpers.date.getFormatedMonthRange(month);
-      filterByMonth = {
-        payed_at: { min: range.start, max: range.end }
-      };
+    if (options) {
+      // Filter by Month
+      if (options.month) {
+        const range = helpers.date.getFormatedMonthRange(options.month);
+        whereBetween = {
+          payed_at: { min: range.start, max: range.end }
+        };
+      }
+      // Filter by invoiced
+      if (options.invoiced !== undefined) {
+        whereEquals = { invoiced: options.invoiced ? "1" : "0" };
+      }
     }
 
     const pathWithQueryParams = this.queryStringBuilder(path)
-      .withWhereBetween(filterByMonth)
+      .withWhereBetween(whereBetween)
+      .withWhereEquals(whereEquals)
       .build();
+
+      console.log(pathWithQueryParams)
 
     const res = await this.httpClient.fetch(pathWithQueryParams, Method.GET, {
       withCredentials: true

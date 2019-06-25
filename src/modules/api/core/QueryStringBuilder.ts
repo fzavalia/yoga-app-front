@@ -33,6 +33,7 @@ export default interface QueryStringBuilder {
   withPagination: (pagination?: Pagination) => QueryStringBuilder;
   withOrder: (order?: Order) => QueryStringBuilder;
   withWhere: (where?: Where) => QueryStringBuilder;
+  withWhereEquals: (where?: Where) => QueryStringBuilder;
   withWhereBetween: (where?: WhereBetween) => QueryStringBuilder;
   withWhereRelation: (where?: WhereRelation) => QueryStringBuilder;
   withWhereRelationBetween: (
