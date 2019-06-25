@@ -6,30 +6,11 @@ import {
   Payment
 } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
-import BrowseView, { FilterType } from "../../components/BrowseView";
+import BrowseView, { FilterType, useStudentOptions } from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Observable, Subject } from "rxjs";
 import Button from "../../components/Button";
-
-interface StudentOption {
-  value: any;
-  label: string;
-}
-
-const useStudentOptions = () => {
-  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
-
-  useEffect(() => {
-    api.student
-      .list({ order: { by: "name", type: OrderType.ASC } })
-      .then(res => {
-        setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
-      });
-  }, []);
-
-  return studentOptions;
-};
 
 export default (props: { history: History }) => {
   const studentOptions = useStudentOptions();

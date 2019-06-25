@@ -12,6 +12,8 @@ import {
 } from "./FormBuilder/FormBuilder";
 import Input from "./FormBuilder/Input";
 import Select from "./FormBuilder/Select";
+import api from "../modules/api";
+import { OrderType } from "../modules/api/core/QueryStringBuilder";
 
 export enum FilterType {
   TEXT,
@@ -280,4 +282,23 @@ const Filter = (props: {
         </InputContainer>
       );
   }
+};
+
+interface StudentOption {
+  value: any;
+  label: string;
+}
+
+export const useStudentOptions = () => {
+  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
+
+  useEffect(() => {
+    api.student
+      .list({ order: { by: "name", type: OrderType.ASC } })
+      .then(res => {
+        setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
+      });
+  }, []);
+
+  return studentOptions;
 };
