@@ -98,13 +98,13 @@ interface TotalsProps {
   onPaymentDeletedObservable: Observable<Payment>;
 }
 
+type MonthTotal = number | undefined;
+
 const Totals = (props: TotalsProps) => {
   const [show, setShow] = useState(false);
   const [total, setTotal] = useState(0);
-  const [monthTotal, setMonthTotal] = useState<number | undefined>();
-  const [invoicedMonthTotal, setInvoicedMonthTotal] = useState<
-    number | undefined
-  >();
+  const [monthTotal, setMonthTotal] = useState<MonthTotal>();
+  const [invoicedMonthTotal, setInvoicedMonthTotal] = useState<MonthTotal>();
 
   useEffect(() => {
     // Get Total from all payments since the beginning
@@ -117,6 +117,7 @@ const Totals = (props: TotalsProps) => {
       month => {
         if (!month) {
           setMonthTotal(undefined);
+          setInvoicedMonthTotal(undefined);
         } else {
           api.payment.total({ month }).then(setMonthTotal);
           api.payment
