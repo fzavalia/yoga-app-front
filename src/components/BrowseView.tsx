@@ -252,7 +252,7 @@ const Filter = (props: FilterProps) => {
           setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
         });
     }
-  }, [filter.type]);
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -263,7 +263,7 @@ const Filter = (props: FilterProps) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [currentValue, onChange]);
+  }, [currentValue]);
 
   switch (filter.type) {
     case FilterType.MONTH:
