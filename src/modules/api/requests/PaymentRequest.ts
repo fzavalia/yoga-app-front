@@ -56,8 +56,6 @@ export default class PaymentRequest extends ApiModelRequest<
       .withWhereEquals(whereEquals)
       .build();
 
-      console.log(pathWithQueryParams)
-
     const res = await this.httpClient.fetch(pathWithQueryParams, Method.GET, {
       withCredentials: true
     });
