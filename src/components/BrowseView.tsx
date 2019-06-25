@@ -11,16 +11,19 @@ import {
   CustomDatePickerInput
 } from "./FormBuilder/FormBuilder";
 import Input from "./FormBuilder/Input";
+import Select from "./FormBuilder/Select";
 
 export enum FilterType {
   TEXT,
-  MONTH
+  MONTH,
+  SELECT
 }
 
 export interface FilterDefinition {
   name: string;
   label: string;
   type?: FilterType;
+  options?: { value: any; label: string }[];
 }
 
 interface BrowseViewProps {
@@ -251,6 +254,18 @@ const Filter = (props: {
           customInput={<CustomDatePickerInput emptyLabel="Seleccione el Mes" />}
           isClearable
         />
+      );
+    case FilterType.SELECT:
+      return (
+        <InputContainer>
+          <InputName>{filter.label}</InputName>
+          <Select
+            name={filter.name}
+            value={currentValue}
+            options={filter.options || []}
+            onChange={(_, v) => setCurrentValue(v)}
+          />
+        </InputContainer>
       );
     default:
       return (

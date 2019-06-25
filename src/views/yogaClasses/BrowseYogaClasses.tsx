@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../modules/api";
 import { History } from "history";
 import BrowseView, { FilterType } from "../../components/BrowseView";
@@ -7,8 +7,29 @@ import helpers from "../../helpers";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 
+interface StudentOption {
+  value: any;
+  label: string;
+}
+
+const useStudentOptions = () => {
+  const [studentOptions, setStudentOptions] = useState<StudentOption[]>([]);
+
+  useEffect(() => {
+    api.student
+      .list({ order: { by: "name", type: OrderType.ASC } })
+      .then(res => {
+        setStudentOptions(res.map(x => ({ value: x.id, label: x.name })));
+      });
+  }, []);
+
+  return studentOptions;
+};
+
 export default (props: { history: History }) => {
-  const date = (yogaClass: YogaClass) =>
+  const studentOptions = useStudentOptions();
+
+  const getFormatedDateFromYogaClass = (yogaClass: YogaClass) =>
     helpers.date.normalizeAndFormatForView(yogaClass.date);
 
   return (
@@ -18,9 +39,11 @@ export default (props: { history: History }) => {
       createItemPath={`/yoga_classes/create`}
       updateItemPath={yogaClass => `/yoga_classes/update/${yogaClass.id}`}
       deletePromise={yogaClass => api.yogaClass.delete(yogaClass.id)}
-      deleteMessage={yogaClass => "Eliminar Clase" + date(yogaClass)}
+      deleteMessage={yogaClass =>
+        "Eliminar Clase" + getFormatedDateFromYogaClass(yogaClass)
+      }
       mapItem={yogaClass => ({
-        title: date(yogaClass),
+        title: getFormatedDateFromYogaClass(yogaClass),
         props: [{ label: "Asistencias", value: yogaClass.students.length }]
       })}
       loadMore={(page, filters) => {
@@ -28,16 +51,30 @@ export default (props: { history: History }) => {
           include: ["students"],
           order: { by: "date", type: OrderType.DESC }
         };
-        // Filter by Month
-        if (filters && filters.month) {
-          const dateRange = helpers.date.getFormatedMonthRange(filters.month);
-          options.whereBetween = {
-            date: { min: dateRange.start, max: dateRange.end }
-          };
+        if (filters) {
+          // Filter by Month
+          if (filters.month) {
+            const dateRange = helpers.date.getFormatedMonthRange(filters.month);
+            options.whereBetween = {
+              date: { min: dateRange.start, max: dateRange.end }
+            };
+          }
+          // Filter by Student
+          if (filters.student !== undefined) {
+            options.whereRelation = {
+              id: { relation: "students", value: filters.student }
+            };
+          }
         }
         return api.yogaClass.paginatedList(page, options);
       }}
       filters={[
+        {
+          name: "student",
+          label: "Filtrar por Alumno",
+          type: FilterType.SELECT,
+          options: studentOptions
+        },
         { name: "month", label: "Buscar por Més", type: FilterType.MONTH }
       ]}
     />
