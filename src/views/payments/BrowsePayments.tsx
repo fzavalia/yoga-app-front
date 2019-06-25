@@ -6,7 +6,10 @@ import {
   Payment
 } from "../../modules/api/requests/PaymentRequest";
 import helpers from "../../helpers";
-import BrowseView, { FilterType, useStudentOptions } from "../../components/BrowseView";
+import BrowseView, {
+  FilterType,
+  useStudentOptions
+} from "../../components/BrowseView";
 import { OrderType } from "../../modules/api/core/QueryStringBuilder";
 import { PaginatedListOptions } from "../../modules/api/impl/ApiModelRequest";
 import { Observable, Subject } from "rxjs";
@@ -67,7 +70,7 @@ export default (props: { history: History }) => {
         if (filters) {
           // Filter by student
           if (filters.student !== undefined) {
-            options.whereRelation = {
+            options.whereRelationEquals = {
               id: { relation: "student", value: filters.student }
             };
           }

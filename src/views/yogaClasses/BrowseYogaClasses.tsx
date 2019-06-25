@@ -45,7 +45,7 @@ export default (props: { history: History }) => {
           }
           // Filter by Student
           if (filters.student !== undefined) {
-            options.whereRelation = {
+            options.whereRelationEquals = {
               id: { relation: "students", value: filters.student }
             };
           }

@@ -10,8 +10,10 @@ import Request from "../core/Request";
 
 export interface ListOptions {
   where?: Where;
-  whereBetween?: WhereBetween;
+  whereEquals?: Where;
   whereRelation?: WhereRelation;
+  whereRelationEquals?: WhereRelation;
+  whereBetween?: WhereBetween;
   whereRelationBetween?: WhereRelationBetween;
   include?: string[];
   order?: Order;
@@ -117,7 +119,9 @@ export default abstract class ApiModelRequest<
       .withInclude(options.include)
       .withOrder(options.order)
       .withWhere(options.where)
+      .withWhereEquals(options.whereEquals)
       .withWhereRelation(options.whereRelation)
+      .withWhereRelationEquals(options.whereRelationEquals)
       .withWhereBetween(options.whereBetween)
       .withWhereRelationBetween(options.whereRelationBetween);
   };

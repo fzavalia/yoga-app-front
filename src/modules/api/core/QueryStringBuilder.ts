@@ -34,8 +34,9 @@ export default interface QueryStringBuilder {
   withOrder: (order?: Order) => QueryStringBuilder;
   withWhere: (where?: Where) => QueryStringBuilder;
   withWhereEquals: (where?: Where) => QueryStringBuilder;
-  withWhereBetween: (where?: WhereBetween) => QueryStringBuilder;
   withWhereRelation: (where?: WhereRelation) => QueryStringBuilder;
+  withWhereRelationEquals: (where?: WhereRelation) => QueryStringBuilder;
+  withWhereBetween: (where?: WhereBetween) => QueryStringBuilder;
   withWhereRelationBetween: (
     where?: WhereRelationBetween
   ) => QueryStringBuilder;
