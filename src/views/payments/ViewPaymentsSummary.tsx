@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { PaymentsSummary } from "../../modules/api/requests/PaymentRequest";
 import api from "../../modules/api";
 import "./ViewPaymentsSummary.css";
+import DatePicker from "react-datepicker";
+import {
+  CustomDatePickerInput,
+  InputContainer,
+  InputName
+} from "../../components/FormBuilder/FormBuilder";
 
 const ViewPaymentsSummary = () => {
   const [summary, setSummary] = useState<PaymentsSummary | undefined>();
   const [month, setMonth] = useState(new Date());
 
+  const fetchSummary = useCallback(async () => {
+    const summary = await api.payment.summary(month);
+    // Sort students alphabetically
+    summary.students = summary.students.sort((a, b) =>
+      a.name > b.name ? 1 : -1
+    );
+    setSummary(summary);
+  }, [month]);
+
   useEffect(() => {
-    api.payment.summary(month).then(summary => {
-      summary.students = summary.students.sort((a, b) =>
-        a.name > b.name ? 1 : -1
-      );
-      setSummary(summary);
-    });
-  }, []);
+    fetchSummary();
+  }, [month]);
 
   if (!summary) {
     return null;
@@ -25,6 +35,16 @@ const ViewPaymentsSummary = () => {
       {/** Title */}
       <h1 style={{ textAlign: "center" }}>Resumen de Pagos</h1>
       {/** Totals */}
+      <InputContainer>
+        <InputName>Seleccione el Mes</InputName>
+        <DatePicker
+          showMonthYearPicker
+          selected={month}
+          onChange={date => setMonth(date || month)}
+          customInput={<CustomDatePickerInput />}
+        />
+      </InputContainer>
+
       <div className="payments-summary-totals">
         <span>Total: ${summary.total}</span>
         <span>Facturado: ${summary.totalInvoiced}</span>
