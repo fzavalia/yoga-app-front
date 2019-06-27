@@ -8,7 +8,12 @@ const ViewPaymentsSummary = () => {
   const [month, setMonth] = useState(new Date());
 
   useEffect(() => {
-    api.payment.summary(month).then(setSummary);
+    api.payment.summary(month).then(summary => {
+      summary.students = summary.students.sort((a, b) =>
+        a.name > b.name ? 1 : -1
+      );
+      setSummary(summary);
+    });
   }, []);
 
   if (!summary) {
