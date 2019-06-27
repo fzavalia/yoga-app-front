@@ -7,10 +7,10 @@ const postLoginRoutes: Route[] = [
   routes.browsePayments,
   routes.createPayment,
   routes.updatePayment,
-  routes.paymentsSummary,
   routes.browseClasses,
   routes.createClass,
   routes.updateClass,
+  routes.paymentsSummary,
   routes.viewAssistanceTable
 ];
 
