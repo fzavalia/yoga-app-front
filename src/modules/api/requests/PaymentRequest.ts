@@ -27,6 +27,12 @@ export interface SubmittablePayment {
   invoiced?: boolean;
 }
 
+export interface PaymentsSummary {
+  total: number;
+  totalInvoiced: number;
+  students: { id: number; name: string; payed: number; assisted: number }[];
+}
+
 export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
@@ -73,6 +79,21 @@ export default class PaymentRequest extends ApiModelRequest<
     });
 
     return res.total;
+  };
+
+  summary: (month: Date) => Promise<PaymentsSummary> = async month => {
+    const path =
+      this.basePath + "/summary/" + helpers.date.format(month, "YYYY-MM-DD");
+
+    const res = await this.httpClient.fetch(path, Method.GET, {
+      withCredentials: true
+    });
+
+    return {
+      total: res.total,
+      totalInvoiced: res.total_invoiced,
+      students: res.students
+    };
   };
 
   protected mapModelFromApi: (model: any) => Payment = model => {

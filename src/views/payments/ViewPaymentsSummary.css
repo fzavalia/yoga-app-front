@@ -1,0 +1,29 @@
+.payments-summary-totals {
+  display: flex;
+  justify-content: space-between;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 0.5rem;
+  border-color: #ccc;
+}
+
+.payments-summary-student-table {
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 0.5rem;
+  border-color: #ccc;
+}
+
+.payments-summary-student-table-header,
+.payments-summary-student-table-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.payments-summary-student-table
+  > .payments-summary-student-table-item:nth-child(even) {
+  background-color: #f3f3f3;
+}

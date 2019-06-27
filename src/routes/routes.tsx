@@ -8,6 +8,7 @@ import UpdateStudent from "../views/students/UpdateStudent";
 import BrowsePayments from "../views/payments/BrowsePayments";
 import CreatePayments from "../views/payments/CreatePayment";
 import UpdatePayments from "../views/payments/UpdatePayment";
+import ViewPaymentsSummary from "../views/payments/ViewPaymentsSummary";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
@@ -21,6 +22,8 @@ export interface Route {
   layout: Layout;
   isModuleEntrypoint: boolean;
 }
+
+// Routes should be defined here and implemented in postlogin / prelogin routes
 
 const routes = {
   browseStudents: {
@@ -63,6 +66,13 @@ const routes = {
     component: UpdatePayments,
     name: "Editar Pago",
     isModuleEntrypoint: false,
+    layout: Admin
+  },
+  paymentsSummary: {
+    path: "/payments/summary",
+    component: ViewPaymentsSummary,
+    name: "Resumen de Pagos",
+    isModuleEntrypoint: true,
     layout: Admin
   },
   browseClasses: {
