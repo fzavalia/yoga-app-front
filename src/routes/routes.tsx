@@ -8,7 +8,7 @@ import UpdateStudent from "../views/students/UpdateStudent";
 import BrowsePayments from "../views/payments/BrowsePayments";
 import CreatePayments from "../views/payments/CreatePayment";
 import UpdatePayments from "../views/payments/UpdatePayment";
-import ViewPaymentsSummary from "../views/payments/ViewPaymentsSummary";
+import ViewPaymentsSummary from "../views/payments/ViewPaymentsSummary/ViewPaymentsSummary";
 import BrowseYogaClasses from "../views/yogaClasses/BrowseYogaClasses";
 import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";

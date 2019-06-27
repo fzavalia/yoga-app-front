@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { PaymentsSummary } from "../../modules/api/requests/PaymentRequest";
-import api from "../../modules/api";
+import { PaymentsSummary } from "../../../modules/api/requests/PaymentRequest";
+import api from "../../../modules/api";
 import "./ViewPaymentsSummary.css";
 import DatePicker from "react-datepicker";
 import {
   CustomDatePickerInput,
   InputContainer,
   InputName
-} from "../../components/FormBuilder/FormBuilder";
+} from "../../../components/FormBuilder/FormBuilder";
 
 const ViewPaymentsSummary = () => {
   const [summary, setSummary] = useState<PaymentsSummary | undefined>();
