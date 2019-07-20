@@ -16,6 +16,10 @@
   border-color: #ccc;
 }
 
+.payments-summary-show-all-checkbox {
+  margin-bottom: 1rem;
+}
+
 .payments-summary-student-table-header,
 .payments-summary-student-table-item {
   display: flex;

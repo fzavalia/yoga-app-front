@@ -8,23 +8,35 @@ import {
   InputContainer,
   InputName
 } from "../../../components/FormBuilder/FormBuilder";
+import Input from "../../../components/FormBuilder/Input";
+import Checkbox from "../../../components/FormBuilder/Checkbox";
 
 const ViewPaymentsSummary = () => {
   const [summary, setSummary] = useState<PaymentsSummary | undefined>();
   const [month, setMonth] = useState(new Date());
+  const [showAllStudents, setShowAllStudents] = useState(false);
 
   const fetchSummary = useCallback(async () => {
     const summary = await api.payment.summary(month);
-    // Remove students that dont have assistances or payments in given month
-    summary.students = summary.students.filter(
-      student => student.payed !== 0 || student.assisted !== 0
-    );
     // Sort students alphabetically
     summary.students = summary.students.sort((a, b) =>
       a.name > b.name ? 1 : -1
     );
     setSummary(summary);
   }, [month]);
+
+  const getStudents = useCallback(() => {
+    if (!summary) {
+      return [];
+    } else if (showAllStudents) {
+      return summary.students;
+    } else {
+      // Remove students that dont have assistances or payments in given month
+      return summary.students.filter(
+        student => student.payed !== 0 || student.assisted !== 0
+      );
+    }
+  }, [summary, showAllStudents]);
 
   useEffect(() => {
     fetchSummary();
@@ -54,7 +66,18 @@ const ViewPaymentsSummary = () => {
         <span>Facturado: ${summary.totalInvoiced}</span>
       </div>
       <br />
-      <p>Los alumnos que no tengan asistencias ni pagos en el mes seleccionado no se mostraran en la lista</p>
+      {!showAllStudents && <p>
+        Los alumnos que no tengan asistencias ni pagos en el mes seleccionado no
+        se mostraran en la lista
+      </p>}
+      <div className="payments-summary-show-all-checkbox">
+        <Checkbox
+          name="showStudents"
+          onChange={(_, value) => setShowAllStudents(value)}
+          value={showAllStudents}
+        />
+        <span>Mostrar todos los alumnos</span>
+      </div>
       <div className="payments-summary-student-table">
         {/** Header */}
         <div className="payments-summary-student-table-header">
@@ -65,7 +88,7 @@ const ViewPaymentsSummary = () => {
         {/** Header Separator */}
         <div style={{ height: 1, backgroundColor: "#ccc" }} />
         {/** Students */}
-        {summary.students.map(student => (
+        {getStudents().map(student => (
           <div className="payments-summary-student-table-item" key={student.id}>
             <span style={{ flex: 1 }}>{student.name}</span>
             <span style={{ flex: 1, textAlign: "right" }}>
