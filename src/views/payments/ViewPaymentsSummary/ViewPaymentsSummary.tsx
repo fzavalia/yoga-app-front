@@ -54,6 +54,7 @@ const ViewPaymentsSummary = () => {
         <span>Facturado: ${summary.totalInvoiced}</span>
       </div>
       <br />
+      <p>Los alumnos que no tengan asistencias ni pagos en el mes seleccionado no se mostraran en la lista</p>
       <div className="payments-summary-student-table">
         {/** Header */}
         <div className="payments-summary-student-table-header">
