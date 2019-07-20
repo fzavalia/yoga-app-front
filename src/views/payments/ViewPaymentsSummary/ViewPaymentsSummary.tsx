@@ -15,6 +15,10 @@ const ViewPaymentsSummary = () => {
 
   const fetchSummary = useCallback(async () => {
     const summary = await api.payment.summary(month);
+    // Remove students that dont have assistances or payments in given month
+    summary.students = summary.students.filter(
+      student => student.payed !== 0 || student.assisted !== 0
+    );
     // Sort students alphabetically
     summary.students = summary.students.sort((a, b) =>
       a.name > b.name ? 1 : -1
