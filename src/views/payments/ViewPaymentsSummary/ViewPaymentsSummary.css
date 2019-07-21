@@ -6,6 +6,7 @@
   border-width: 1px;
   padding: 0.5rem;
   border-color: #ccc;
+  margin-bottom: 1rem;
 }
 
 .payments-summary-student-table {
@@ -14,10 +15,16 @@
   border-width: 1px;
   padding: 0.5rem;
   border-color: #ccc;
+  margin-bottom: 1rem;
 }
 
-.payments-summary-show-all-checkbox {
+.payments-summary-checkbox {
   margin-bottom: 1rem;
+  display: flex;
+}
+
+.payments-summary-checkbox > span {
+  margin-left: 0.2rem;
 }
 
 .payments-summary-student-table-header,
