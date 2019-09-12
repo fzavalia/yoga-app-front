@@ -126,58 +126,73 @@ const Sidebar = (props: {
   onCloseSidebar: () => void;
 }) => {
   return (
-    <section
-      style={{
-        position: "fixed",
-        top: 0,
-        backgroundColor: helpers.color.secondary,
-        height: "100vh",
-        width: props.open ? "100%" : 0,
-        maxWidth: 300,
-        boxShadow: `0 0 5px ${helpers.color.secondary}`,
-        transition: "width 200ms",
-        overflow: "hidden",
-        zIndex: 1
-      }}
-    >
-      <div
+    <>
+      <section
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "2rem"
+          position: "fixed",
+          top: 0,
+          backgroundColor: helpers.color.secondary,
+          height: "100vh",
+          width: props.open ? "100%" : 0,
+          maxWidth: 300,
+          boxShadow: `0 0 5px ${helpers.color.secondary}`,
+          transition: "width 200ms",
+          overflow: "hidden",
+          zIndex: 1
         }}
       >
-        <ToggleSidebarButton onClick={props.onCloseSidebar} />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}
-      >
-        {props.routes
-          .filter(route => route.isModuleEntrypoint)
-          .map((route, key) => (
-            <Link
-              key={key}
-              to={route.path}
-              style={{ width: "100%", maxWidth: 200 }}
-            >
-              <Button
-                style={{ display: "block", marginBottom: "1rem" }}
-                colors={{
-                  main: helpers.color.primary,
-                  selected: helpers.color.primaryLight
-                }}
-                selected={window.location.pathname.startsWith(route.path)}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "2rem"
+          }}
+        >
+          <ToggleSidebarButton onClick={props.onCloseSidebar} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          {props.routes
+            .filter(route => route.isModuleEntrypoint)
+            .map((route, key) => (
+              <Link
+                key={key}
+                to={route.path}
+                style={{ width: "100%", maxWidth: 200 }}
               >
-                {route.name}
-              </Button>
-            </Link>
-          ))}
-      </div>
-    </section>
+                <Button
+                  style={{ display: "block", marginBottom: "1rem" }}
+                  colors={{
+                    main: helpers.color.primary,
+                    selected: helpers.color.primaryLight
+                  }}
+                  selected={window.location.pathname.startsWith(route.path)}
+                >
+                  {route.name}
+                </Button>
+              </Link>
+            ))}
+        </div>
+      </section>
+      {/** Sidebar Background */}
+      {props.open &&
+        <div
+          onClick={props.onCloseSidebar}
+          style={{
+            position: 'fixed',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: "#ababab42"
+          }}
+        />}
+    </>
   );
 };
 
