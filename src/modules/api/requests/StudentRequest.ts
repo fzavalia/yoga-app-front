@@ -1,4 +1,5 @@
 import ApiModelRequest from "../impl/ApiModelRequest";
+import PaymentRequest, { Payment } from "./PaymentRequest";
 
 export interface Student {
   id: number;
@@ -6,6 +7,7 @@ export interface Student {
   phoneNumber: string;
   email: string;
   dni: string;
+  payments: Payment[]
 }
 
 export interface SubmittableStudent {
@@ -18,13 +20,14 @@ export interface SubmittableStudent {
 export default class StudentRequest extends ApiModelRequest<
   Student,
   SubmittableStudent
-> {
+  > {
   static mapModelFromApi: (model: any) => Student = model => ({
     id: model.id,
     name: model.name,
     email: model.email,
     dni: model.dni,
-    phoneNumber: model.phone_number
+    phoneNumber: model.phone_number,
+    payments: model.payments ? model.payments.map(PaymentRequest.mapModelFromApi) : []
   });
 
   protected mapModelFromApi = StudentRequest.mapModelFromApi;

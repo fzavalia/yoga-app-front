@@ -37,6 +37,21 @@ export default class PaymentRequest extends ApiModelRequest<
   Payment,
   SubmittablePayment
 > {
+
+  static mapModelFromApi: (model: any) => Payment = model => {
+    return {
+      amount: model.amount,
+      id: model.id,
+      payedAt: new Date(model.payed_at),
+      student: model.student
+        ? StudentRequest.mapModelFromApi(model.student)
+        : undefined,
+      studentId: model.student_id,
+      invoiced: model.invoiced,
+      type: model.type
+    };
+  }
+
   total = async (options?: {
     month?: Date;
     invoiced?: boolean;
@@ -96,19 +111,7 @@ export default class PaymentRequest extends ApiModelRequest<
     };
   };
 
-  protected mapModelFromApi: (model: any) => Payment = model => {
-    return {
-      amount: model.amount,
-      id: model.id,
-      payedAt: new Date(model.payed_at),
-      student: model.student
-        ? StudentRequest.mapModelFromApi(model.student)
-        : undefined,
-      studentId: model.student_id,
-      invoiced: model.invoiced,
-      type: model.type
-    };
-  };
+  protected mapModelFromApi = PaymentRequest.mapModelFromApi;
 
   protected mapSubmittableForApi: (
     model: SubmittablePayment
