@@ -14,7 +14,6 @@ import CreateYogaClass from "../views/yogaClasses/CreateYogaClass";
 import UpdateYogaClass from "../views/yogaClasses/UpdateYogaClass";
 import ViewAssistanceTable from "../views/yogaClasses/ViewAssistanceTable";
 import Login from "../views/auth/Login";
-import Dashboard from '../views/dashboard/Dashboard'
 
 export interface Route {
   path: string;
@@ -27,13 +26,6 @@ export interface Route {
 // Routes should be defined here and implemented in postlogin / prelogin routes
 
 const routes = {
-  dashboard: {
-    path: "/dashboard",
-    component: Dashboard,
-    name: "Gráficos",
-    isModuleEntrypoint: true,
-    layout: Admin
-  },
   browseStudents: {
     path: "/students",
     component: BrowseStudents,

@@ -1,7 +1,6 @@
 import routes, { Route } from "./routes";
 
 const postLoginRoutes: Route[] = [
-  routes.dashboard,
   routes.browseStudents,
   routes.createStudent,
   routes.updateStudent,
